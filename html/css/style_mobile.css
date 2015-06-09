@@ -1,0 +1,106 @@
+/*==========  Non-Mobile First Method  ==========*/
+
+@media (max-width: 1366px) {
+	
+}
+
+@media (min-width: 1200px){
+	.container {width: 1050px;}
+	.col-searchfilter .search-filter-left { position: fixed; max-width: 205px; z-index: 1;}  
+
+}
+@media only screen and (min-width : 992px) {
+	.col-searchfilter {max-width: 235px;}
+	.col-main { width: calc(100% - 235px);}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+	
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 991px) {	
+	.col-searchfilter .search-filter-left {display: none;}
+	.fancybox_search_filter {margin-left: 5px;}
+	.fancybox_search_filter i {font-size: 14px; 	}
+	.jcarousel-skin-tango .jcarousel-clip-vertical { height: 300px;}
+	.btnCircle {margin: 3px;}
+}
+
+/* Small Devices, Tablets */
+ 
+@media only screen and (min-width:768px) and (max-width:1200px){
+	.navbar-nav > li > a {padding: 30px 20px;}
+	.under .navbar>.container .navbar-brand , .index .navbar>.container .navbar-brand {background-size: 100%; width: 170px; margin-left: -15px;}
+	.navbar .navbar-nav {margin-left: 145px;}
+	.navbar-default .navbar-form {padding-left: 10px;}
+
+}
+
+@media only screen and (max-width : 767px) { 
+	.under .content .main-content {padding-top: 25px;}
+	.navbar-default .navbar-brand, .under .navbar>.container .navbar-brand {margin-left: 5px; left: 0;}
+	.navbar {min-height: auto;}
+	.navbar {  min-height: 48px;} 
+	.navbar-brand {background-size: 60%;height: 70px;}
+	.navbar .navbar-nav {margin-left: 0;}
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a {color: #fff;}
+	.navbar-default .navbar-collapse, .navbar-default .navbar-form {border: none;} 
+	.navbar-nav > li > a {padding: 12px 10px;}
+	.navbar-nav .open .dropdown-menu>li>a {padding-top: 10px;}
+	.navbar-default .navbar-collapse {padding-top: 30px;}
+	.col-sm-5ths {width: 50%; float: left;}
+	.main-search {position: relative; margin: 0 0 15px; width: 100%; border-radius: 0;}
+	.shadow {display: none;}
+	.navbar-form {padding-left: 15px;}
+	.main-search .option {width: 100%;}
+
+ 	.main-search .option:last-child {margin-top: 10px;}
+	.box-text {display: block; width: 100%;}
+	.box-text:last-child {margin-top: 20px;}
+	.list-tours-item img {width: 100%;}
+	.banner {margin-top: 49px;}
+	
+	.cookies {display: none;}
+	.main-search .option input {margin-top: 10px;}
+	#myCarousel2 .img-left {padding-top:20px; }
+	.slider .item h3 {margin: 15px 0; font-size: 20px;}
+	.slider .item p {font-size: 15px;}
+
+	.main-content {padding: 30px 10px;}
+	.nav-sort {  margin-bottom: 6px;}
+	.top-description .txt-desc  {position: static; background: rgba(0,0,0, 0.8); }
+	.search-results-nav .nav-btn { float: left; margin-bottom: 5px;}
+	.search-results-nav .text-right {text-align: left;  float: right;}
+	.col-txt .info-top {margin-top: 10px;}
+	.btnkontact {/*background: rgba(54,176,81,0.6); border: 1px solid #f8fffa; */ padding: 5px 15px;}
+	.newsletter .form-inline .form-group {  width: 98%;}
+	.wrap_btnkontact_footer {position: static;}
+	.wrap_btnkontact .btnkontact {display: none;}
+	.wrap_btnkontact_footer  .btnkontact {  position: fixed; background: rgba(54,176,81,0.8);
+		border-radius: 0; right: auto;right: 0;bottom: 0;display: inline-block; top: auto;
+		z-index: 999; width: 100%; text-align: center; line-height: 30px; font-size: 13px; padding: 0 20px;
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	.footer-below {padding-bottom: 38px;} 
+	.navbar-brand {top:-3px; }
+	.container.pad0 {padding-left: 10px; padding-right: 10px; background: #fff;} 
+
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) {
+	.search-results-nav .text-right {float: left;  }
+	.thumbnail_article {  float: none;  max-width: 100%;  padding-bottom: 10px;  display: block;}
+	.tak-content .infomations {padding: 5px;}
+	.jcarousel-skin-tango .jcarousel-clip-vertical { height: 180px;} 
+	.footer-above .col-2 {margin-bottom: 40px;}
+	.each_box_info .header-meta p {font-size: 13px; color: #222222;}
+	.each_box_info .header-meta i {font-size: 13px; margin-right: 2px;  }
+	.rowAntal label, .customer_info .form-control {font-size: 13px;  margin-top: 0;}
+}
