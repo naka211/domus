@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_SETTINGS_FORM_LBL_SETTING_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="key" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_SETTINGS_FORM_LBL_SETTING_KEY"
+            description="COM_SETTINGS_FORM_DESC_SETTING_KEY" 
+                                                    
+                                                    
+                                                     required="true" 
+                                                    filter="safehtml" /> 
+
+       <field name="value" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_SETTINGS_FORM_LBL_SETTING_VALUE"
+            description="COM_SETTINGS_FORM_DESC_SETTING_VALUE" 
+                                                    
+                                                    
+                                                     required="true" 
+                                                    filter="safehtml" />
+
+	</fieldset>
+
+</form>

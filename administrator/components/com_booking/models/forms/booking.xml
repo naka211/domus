@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="COM_BOOKING_FORM_LBL_BOOKING_ID"
+            readonly="true" class="readonly"
+            description="JGLOBAL_FIELD_ID_DESC" /> 
+
+       <field name="supplier_id" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_SUPPLIER_ID"
+            description="COM_BOOKING_FORM_DESC_BOOKING_SUPPLIER_ID" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="first_name" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_FIRST_NAME"
+            description="COM_BOOKING_FORM_DESC_BOOKING_FIRST_NAME" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="last_name" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_LAST_NAME"
+            description="COM_BOOKING_FORM_DESC_BOOKING_LAST_NAME" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="house_id" type="text"
+                
+            label="COM_BOOKING_FORM_LBL_BOOKING_HOUSE_ID"
+            description="COM_BOOKING_FORM_DESC_BOOKING_HOUSE_ID" 
+                
+                
+                 /> 
+
+       <field name="information" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_BOOKING_FORM_LBL_BOOKING_INFORMATION"
+            description="COM_BOOKING_FORM_DESC_BOOKING_INFORMATION"  /> 
+
+       <field name="checkin" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_CHECKIN"
+            description="COM_BOOKING_FORM_DESC_BOOKING_CHECKIN" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="checkout" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_CHECKOUT"
+            description="COM_BOOKING_FORM_DESC_BOOKING_CHECKOUT" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="total" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_TOTAL"
+            description="COM_BOOKING_FORM_DESC_BOOKING_TOTAL" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="booking_date" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_BOOKING_DATE"
+            description="COM_BOOKING_FORM_DESC_BOOKING_BOOKING_DATE" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="pay_30" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_PAY_30"
+            description="COM_BOOKING_FORM_DESC_BOOKING_PAY_30" 
+                                                     default="0" 
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="pay_all" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_PAY_ALL"
+            description="COM_BOOKING_FORM_DESC_BOOKING_PAY_ALL" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="status" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_STATUS"
+            description="COM_BOOKING_FORM_DESC_BOOKING_STATUS" 
+                                                     default="0" 
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="number_of_persons" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_NUMBER_OF_PERSONS"
+            description="COM_BOOKING_FORM_DESC_BOOKING_NUMBER_OF_PERSONS" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="address" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_BOOKING_FORM_LBL_BOOKING_ADDRESS"
+            description="COM_BOOKING_FORM_DESC_BOOKING_ADDRESS"  /> 
+
+       <field name="zip" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_ZIP"
+            description="COM_BOOKING_FORM_DESC_BOOKING_ZIP" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="city" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_CITY"
+            description="COM_BOOKING_FORM_DESC_BOOKING_CITY" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="email" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_EMAIL"
+            description="COM_BOOKING_FORM_DESC_BOOKING_EMAIL" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="phone" type="text" size="40" class="inputbox"
+                                                    
+            label="COM_BOOKING_FORM_LBL_BOOKING_PHONE"
+            description="COM_BOOKING_FORM_DESC_BOOKING_PHONE" 
+                                                    
+                                                    
+                                                    
+                                                    filter="safehtml" /> 
+
+       <field name="comment" type="editor" buttons="true"
+        class="inputbox"
+        filter="safehtml"
+        
+        
+        
+        
+            label="COM_BOOKING_FORM_LBL_BOOKING_COMMENT"
+            description="COM_BOOKING_FORM_DESC_BOOKING_COMMENT"  />
+
+	</fieldset>
+
+</form>
