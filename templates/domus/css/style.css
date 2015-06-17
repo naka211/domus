@@ -277,7 +277,7 @@ ul.list-result-item-footer {list-style: none;}
 .each_wrapper.wrap-filter-price {  padding-bottom: 20px;}
 .search-filter-left .wrap_checbox label {font-size: 13px;}
 .wrap-filter-price > p {margin-bottom: 22px; font-size: 16px;}
-.wrap-filter-price > p span {font-size: 13px;}
+.wrap-filter-price > p span {font-size: 13px;}}
 #range {margin-top: 15px;padding: 0 4px;}
 .range_price { margin-top: 0; clear: both;}
 .range_price span { font-size: 12px;  margin-top: -22px;}
@@ -484,5 +484,3 @@ img.img_article {margin: 12px 0 15px 0;}
 #slideshow-carousel li {margin-bottom: 10px; max-width: 100%;}
 .jcarousel-skin-tango .jcarousel-prev-vertical { top: -42px; left: auto; right: 0;}
 .jcarousel-skin-tango .jcarousel-next-vertical {left: auto; right: 40px;}
-.info .col-md-3 > a span:nth-child(2) { display: inline-block; width: calc(100% - 40px);margin: 5px 0 2px 0; font-size: 14px;  text-transform: uppercase;}
-.info .col-md-3 > a span:nth-child(3) { display: inline-block; }
