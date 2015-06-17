@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/'.$this->template.'/';
+unset($this->_scripts[JURI::root(true).'/media/jui/js/jquery-noconflict.js']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,9 +10,10 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="apple-mobile-web-app-capable" content="YES" />
+
+	<jdoc:include type="head" />
 	
 	<link rel="shortcut icon" href="<?php echo $tmpl;?>favicon.ico">
 	<link rel="shortcut icon" href="<?php echo $tmpl;?>favicon.png">
@@ -44,7 +46,7 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
 
  	    
     <!-- jQuery   -->   
-    <script src="<?php echo $tmpl;?>js/jquery-1.11.1.min.js"></script>
+    
     <script src="<?php echo $tmpl;?>js/bootstrap.min.js"></script>
     <script src="<?php echo $tmpl;?>js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="<?php echo $tmpl;?>js/jquery.ui.datepicker-da.js"></script>
@@ -93,7 +95,7 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
             //JS for button Close cookie
             $('.btnClose').click(function(e) {
                 e.preventDefault();
-                $('.cookies').toggle('slide');
+                jQuery('.cookies').toggle('slide');
             });
 
 	    });
