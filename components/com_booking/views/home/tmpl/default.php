@@ -3,25 +3,11 @@
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
 ?>
-<div class="wrap_btnkontact">
-	<div class="container">
-		<a class="btnkontact" href="#">KONTAKT OS VIA E-MAIL</a> <!-- hvr-fade -->
-	</div>
-</div>
-
 <section class="banner">
 	<div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
 	   <!-- Carousel items -->
 		<div class="carousel-inner">
-			<div class="active item">
-				<img src="<?php echo $tmpl;?>img/slider01.jpg" alt="">
-			</div>
-			<div class="item">
-				<img src="<?php echo $tmpl;?>img/slider02.jpg" alt="">
-			</div>
-			<div class="item">
-				<img src="<?php echo $tmpl;?>img/slider03.jpg" alt="">
-			</div>
+			{module Home Slider - Top}
 			<div class="container relative">
 			<div class="main-search">
 				<div class="row mb10">
@@ -238,34 +224,7 @@ $tmpl = JURI::base().'templates/domus/';
 <section class="info">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-3 pad0">
-				<a href="#">
-					<span class="btnCircle hvr-fade"><i class="fa fa-home fa-1-5x"></i></span>
-					<h6>Offer your Home</h6>
-					<p>Do you have a vacation home to offer?</p>
-				</a>
-			</div>
-			<div class="col-md-3 pad0">
-				<a href="#">
-					<span class="btnCircle hvr-fade"><i class="fa fa-exclamation fa-1-5x"></i></span>
-					<h6>About us</h6>
-					<p>Read more about VacaVilla’s Team</p>
-				</a>
-			</div>
-			<div class="col-md-3 pad0">
-				<a href="#">
-					<span class="btnCircle hvr-fade"><i class="fa fa-map-marker fa-1-5x"></i></span>
-					<h6>Contact us</h6>
-					<p>If you need assistance contact our staff</p>
-				</a>
-			</div>
-			<div class="col-md-3 pad0">
-				<a href="#">
-					<span class="btnCircle hvr-fade"><i class="fa fa-star fa-1-5x"></i></span>
-					<h6>Exclusive services</h6>
-					<p>Exclusive services for your holidays</p>
-				</a>
-			</div>
+			{modulepos content-bottom}
 		</div>
 	</div>
 </section>
@@ -275,7 +234,8 @@ $tmpl = JURI::base().'templates/domus/';
 		<div id="myCarousel2" class="carousel slide" data-interval="3000" data-ride="carousel">
 		   <!-- Carousel items -->
 			<div class="carousel-inner">
-				<div class="active item">
+				{module Home Slider - Bottom}
+				<!--<div class="active item">
 					<div class="col-md-5 img-left">
 						<img class="img-responsive" src="<?php echo $tmpl;?>img/img04.png" alt="">
 					</div>
@@ -301,7 +261,7 @@ $tmpl = JURI::base().'templates/domus/';
 						<h3>Find billige villa og lejlighed på din<br> mobil eller tablet 3</h3>
 						<p>Understøtter alle typer mobile enheder!</p>
 					</div>
-				</div>
+				</div>-->
 			</div>
 			<!-- Carousel nav -->
 			<a class="carousel-control left" href="#myCarousel2" data-slide="prev">

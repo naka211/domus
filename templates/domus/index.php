@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/'.$this->template.'/';
+$session = JFactory::getSession();
 //unset($this->_scripts[JURI::root(true).'/media/jui/js/jquery-noconflict.js']);
 ?>
 <!DOCTYPE html>
@@ -102,7 +103,7 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
     </script>
 </head>
 
-<body id="page-top" class="index">
+<body id="page-top" class="<?php if(JUri::getInstance()->toString() == JUri::base()){echo 'index';} else {echo 'under';}?>">
 
      <!--Navigation -->
 	<nav class="navbar navbar-default navbar-fixed-top" id="fixedNav">
@@ -115,7 +116,7 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php"></a>
+				<a class="navbar-brand" href=""></a>
 			</div>
 	
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -143,31 +144,35 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
 		<!-- /.container-fluid -->
 	</nav>
 	
+	<div class="wrap_btnkontact">
+		<div class="container">
+			<a class="btnkontact" href="#">KONTAKT OS VIA E-MAIL</a> <!-- hvr-fade -->
+		</div>
+	</div>
+
 	<jdoc:include type="component" />
-	
+	<?php //print_r($session->get('notify'));exit;
+	if($session->get('notify') != 1){?>
+        <script language="javascript">
+	$(document).ready(function() {
+		$(".btnClose").click(function(event) {
+			jQuery.post("<?php echo JURI::base().'index.php?option=com_booking&task=home.set_session'?>");
+		});
+	});
+	</script>
     <div class="cookies">
     	<p>Domus Holidays anvender cookies til analyse og<br> genkendelse.</p>
-    	<a class="btnClose" href="#">Luk</a>
+    	<a class="btnClose" href="javascript:void(0);">Luk</a>
     </div>
-
+	<?php }?>
+	
     <footer>
 		<div class="footer-above">
 			<div class="container">
 				<div class="row">
 				   <div class="col-md-3 col-xs-6 col-1">
 						<h2>Home</h2>
-						<ul>
-							<li><a href="kontakt.php">Kontakt</a></li>
-							<li><a href="handelsbetingelser.php">Handelsbetingelser</a></li>
-							<li><a href="text.php">FAQ spørgsmål/svar!</a></li>
-							<li><a href="text.php">Lande/Regions beskrivelser</a></li>
-							<li><a href="om-os.php">Om os – hvem er vi?</a></li>
-							<li><a href="text.php">Når du ankommer?</a></li>
-							<li><a href="text.php">Når du rejser?</a></li>
-							<li><a href="text.php">Billeje?</a></li>
-							<li><a href="text.php">Fly?</a></li>
-							<li><a href="text.php">Rejseforsikring?</a></li>
-						</ul>
+						{module Footer Menu}
 				   </div>
 					<div class="col-md-3 col-xs-6 col-2">
 						<h2>Destinations</h2>
@@ -253,12 +258,12 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
 		</div>
 	</div>
 
-
+	<?php if(JUri::getInstance()->toString() == JUri::base()){?>
     <script> 
 	  $(document).ready(function() {
 	    $('#ppNewletter').fancybox().trigger('click'); 
 	});
-  </script>
+  	</script>
     <div id="ppNewletter" style="display:none">
 		 <div>
 		 	<h4>Nyhedsbrev tilmelding</h4>
@@ -278,6 +283,6 @@ $tmpl = JURI::base().'templates/'.$this->template.'/';
 		 	</form>
 		 </div>
 	</div><!--ppSearch_filter-->
-
+	<?php }?>
 </body> 
 </html>

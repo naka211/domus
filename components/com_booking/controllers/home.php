@@ -26,4 +26,10 @@ class BookingControllerHome extends BookingController
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
+	
+	function set_session(){
+		$session = JFactory::getSession();
+        $session->set('notify', 1);
+        die(true);
+	}
 }
