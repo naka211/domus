@@ -146,7 +146,7 @@ footer {position: relative; z-index: 10;}
 .newsletter p {margin-bottom: 0;}
 .newsletter .col-sm-3 {padding: 0; margin-left: 15px;}
 .newsletter .form-inline .form-group {width: 100%;}
-.newsletter .form-inline .form-group input {height: 27px; width: 100%; -webkit-border-radius: 3px;	-moz-border-radius: 3px; border-radius: 3px; background-color: #fff; border: solid 1px #c0c0c0;}
+.newsletter .form-inline .form-group form-control {height: 27px; width: 100%; -webkit-border-radius: 3px;	-moz-border-radius: 3px; border-radius: 3px; background-color: #fff; border: solid 1px #c0c0c0;}
 .newsletter .btn { height: 27px; padding: 4px 25px; }
 .btnSignup {background: #187b19; color: #fff; padding: 3px 20px;}
 .btnSignup:hover {color: #fff; background: #075608 !important;}
@@ -484,3 +484,22 @@ img.img_article {margin: 12px 0 15px 0;}
 #slideshow-carousel li {margin-bottom: 10px; max-width: 100%;}
 .jcarousel-skin-tango .jcarousel-prev-vertical { top: -42px; left: auto; right: 0;}
 .jcarousel-skin-tango .jcarousel-next-vertical {left: auto; right: 40px;}
+
+.invalid{border:1px solid red !important;}
+
+/*Popup Fancy Newletter*/
+#myModal {text-align: center;}
+#myModal .modal-dialog {margin-top: 100px;}
+#myModal .modal-content {border-radius: 0;}
+#myModal .modal-body {padding: 0;}
+#myModal .modal-header {border-bottom: none; padding-bottom: 0;}
+#myModal h4 {color: #000; margin-top: 0;}
+#myModal .modal-content form {width: 72%; min-width: 230px; margin: 15px auto 5px auto;}
+#myModal .form-control {height: 30px;  margin-bottom: 10px ; font-size: 12px;}
+#myModal form p {text-align: left;}
+#myModal form .btn {width: 100%; margin-bottom: 20px;}
+
+
+@media (min-width: 768px){
+ .modal-dialog {width: 400px;}
+}

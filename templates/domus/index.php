@@ -261,28 +261,10 @@ $session = JFactory::getSession();
 	<?php if(JUri::getInstance()->toString() == JUri::base()){?>
     <script> 
 	  $(document).ready(function() {
-	    $('#ppNewletter').fancybox().trigger('click'); 
+	    $("#myModal").modal('show'); 
 	});
   	</script>
-    <div id="ppNewletter" style="display:none">
-		 <div>
-		 	<h4>Nyhedsbrev tilmelding</h4>
-		 	<p>Få inspiration, nyheder og fantastiske priser. Send mig nyeste rejseinspiration, insidertips og gode priser fra Domus Holidays</p>
-		 	<form>
-		 		<div class="form-group">
-				    <input type="email" class="form-control" placeholder="Fornavn *">
-			  	</div> 
-			  	<div class="form-group">
-				    <input type="email" class="form-control" placeholder="Efternavn *">
-			  	</div>
-			  	<div class="form-group">
-				    <input type="email" class="form-control" placeholder="E-mail *">
-			  	</div>
-			  	<p>Felter markeret med * skal udfyldes</p>
-			  	<button type="submit" class="btn">TILMELD</button>
-		 	</form>
-		 </div>
-	</div><!--ppSearch_filter-->
+	{module AcyMailing Module Popup}
 	<?php }?>
 </body> 
 </html>

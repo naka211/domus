@@ -16,9 +16,6 @@ defined('_JEXEC') or die;
 <?php
 foreach ($list as $i => &$item)
 {
-    if($i==0)
-        continue;
-    
 	$class = 'item-' . $item->id;
 
 	if (($item->id == $active_id) OR ($item->type == 'alias' AND $item->params->get('aliasoptions') == $active_id))

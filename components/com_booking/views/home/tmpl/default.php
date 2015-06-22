@@ -224,7 +224,34 @@ $tmpl = JURI::base().'templates/domus/';
 <section class="info">
 	<div class="container">
 		<div class="row">
-			{modulepos content-bottom}
+			<div class="col-md-3 pad0">
+				<a href="#">
+					<span class="btnCircle hvr-fade"><i class="fa fa-home fa-1-5x"></i></span>
+					<h6>Offer your Home</h6>
+					<p>Do you have a vacation home to offer?</p>
+				</a>
+			</div>
+			<div class="col-md-3 pad0">
+				<a href="index.php?option=com_content&view=article&id=4&Itemid=135">
+					<span class="btnCircle hvr-fade"><i class="fa fa-exclamation fa-1-5x"></i></span>
+					<h6>About us</h6>
+					<p>Read more about VacaVilla’s Team</p>
+				</a>
+			</div>
+			<div class="col-md-3 pad0">
+				<a href="index.php?option=com_contact&view=contact&id=1&Itemid=131">
+					<span class="btnCircle hvr-fade"><i class="fa fa-map-marker fa-1-5x"></i></span>
+					<h6>Contact us</h6>
+					<p>If you need assistance contact our staff</p>
+				</a>
+			</div>
+			<div class="col-md-3 pad0">
+				<a href="#">
+					<span class="btnCircle hvr-fade"><i class="fa fa-star fa-1-5x"></i></span>
+					<h6>Exclusive services</h6>
+					<p>Exclusive services for your holidays</p>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
@@ -235,33 +262,6 @@ $tmpl = JURI::base().'templates/domus/';
 		   <!-- Carousel items -->
 			<div class="carousel-inner">
 				{module Home Slider - Bottom}
-				<!--<div class="active item">
-					<div class="col-md-5 img-left">
-						<img class="img-responsive" src="<?php echo $tmpl;?>img/img04.png" alt="">
-					</div>
-					<div class="col-md-7">
-						<h3>Find billige villa og lejlighed på din<br> mobil eller tablet 1</h3>
-						<p>Understøtter alle typer mobile enheder!</p>
-					</div>
-				</div>
-				<div class="item">
-					<div class="col-md-5 img-left">
-						<img class="img-responsive" src="<?php echo $tmpl;?>img/img04.png" alt="">
-					</div>
-					<div class="col-md-7">
-						<h3>Find billige villa og lejlighed på din<br> mobil eller tablet 2</h3>
-						<p>Understøtter alle typer mobile enheder!</p>
-					</div>
-				</div>
-				<div class="item">
-					<div class="col-md-5 img-left">
-						<img class="img-responsive" src="<?php echo $tmpl;?>img/img04.png" alt="">
-					</div>
-					<div class="col-md-7">
-						<h3>Find billige villa og lejlighed på din<br> mobil eller tablet 3</h3>
-						<p>Understøtter alle typer mobile enheder!</p>
-					</div>
-				</div>-->
 			</div>
 			<!-- Carousel nav -->
 			<a class="carousel-control left" href="#myCarousel2" data-slide="prev">
@@ -273,35 +273,4 @@ $tmpl = JURI::base().'templates/domus/';
 		</div>
 	</div>
 </section>
-
-<section class="newsletter">
-	<div class="container">
-		<p>Få inspiration, nyheder og fantastiske priser. Send mig nyeste rejseinspiration, insidertips og gode priser fra Domus Holidays</p>
-		<form class="form-inline">
-			<div class="row">
-				<div class="col-sm-3">
-					 <div class="form-group">
-						<input type="email" class="form-control" placeholder="Fornavn *">
-					</div> 
-				</div>
-				<div class="col-sm-3">
-					<div class="form-group">
-						<input type="email" class="form-control" placeholder="Efternavn *">
-					</div> 
-				</div>
-				<div class="col-sm-3">
-					<div class="form-group">
-						<input type="email" class="form-control" placeholder="E-mail *">
-					</div> 
-				</div>
-				<div class="col-sm-2">
-					 <div class="form-group">
-						<button type="submit" class="btn">TILMELD</button>
-					</div> 
-				</div>  
-			</div>
-		</form> 
-	</div>
-</section>
-
-
+{module AcyMailing Module}
