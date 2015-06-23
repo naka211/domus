@@ -3,6 +3,7 @@ defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/'.$this->template.'/';
 $session = JFactory::getSession();
 //unset($this->_scripts[JURI::root(true).'/media/jui/js/jquery-noconflict.js']);
+JHTML::_('behavior.formvalidator');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -226,16 +227,26 @@ $session = JFactory::getSession();
 			<h2>Har du brug for hjælp?</h2>
 			<p>Udfyld formular, og vi kontakter dig hurtigst muligt!</p>
 			<div class="formcontactMe">
-				<div class="form-group">
-					<input class="txtInput form-control" placeholder="Navn *">
+				<form id="contact-form" action="<?php echo JRoute::_('index.php'); ?>" method="post" class="form-validate">
+				<div class="form-group"> 
+					<input type="text" class="form-control required" placeholder="Navn *" name="jform[contact_name]">
 				</div>
-				<div class="form-group">
-					<input class="txtInput form-control" placeholder="Telefon *">
+				<div class="form-group"> 
+					<input type="text" class="form-control required" placeholder="E-mail *" name="jform[contact_email]">
 				</div>
-				<div class="form-group">
-					<textarea class="form-control" placeholder="Besked"></textarea>
+				<div class="form-group"> 
+					<input type="text" class="form-control required" placeholder="Telefon *"  name="jform[contact_phone]">
 				</div>
-				<a class="btn btnSend hvr-fade" href="#">SEND AFSTED!</a>
+				<div class="form-group"> 
+					<textarea  rows="7" class="form-control required" placeholder="Besked *"  name="jform[contact_message]"></textarea>  
+				</div>
+				<!--<a href="#" class="btn">SEND</a>-->
+				<button class="btn btnSend hvr-fade btn-primary validate" type="submit">SEND AFSTED!</button>
+				<input type="hidden" name="option" value="com_contact" />
+				<input type="hidden" name="task" value="contact.submit" />
+				<input type="hidden" name="id" value="1:domus" />
+				<?php echo JHtml::_('form.token'); ?>
+				</form>
 			</div><!-- formcontactMe -->
 		</div><!--boxContent-->
 	</div><!--boxContact-->

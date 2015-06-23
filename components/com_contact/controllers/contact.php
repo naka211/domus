@@ -87,7 +87,7 @@ class ContactControllerContact extends JControllerForm
 			return false;
 		}
 
-		$validate = $model->validate($form, $data);
+		/*$validate = $model->validate($form, $data);
 
 		if ($validate === false)
 		{
@@ -114,7 +114,7 @@ class ContactControllerContact extends JControllerForm
 			$this->setRedirect(JRoute::_('index.php?option=com_contact&view=contact&id=' . $stub, false));
 
 			return false;
-		}
+		}*/
 
 		// Validation succeeded, continue with custom handlers
 		$results = $dispatcher->trigger('onValidateContact', array(&$contact, &$data));
@@ -190,19 +190,21 @@ class ContactControllerContact extends JControllerForm
 			$sitename = $app->get('sitename');
 
 			$name    = $data['contact_name'];
-			$email   = JStringPunycode::emailToPunycode($data['contact_email']);
-			$subject = $data['contact_subject'];
+			//$email   = JStringPunycode::emailToPunycode($data['contact_email']);
+			$email   = $data['contact_email'];
+			$phone = $data['contact_phone'];
 			$body    = $data['contact_message'];
 
 			// Prepare email body
 			$prefix = JText::sprintf('COM_CONTACT_ENQUIRY_TEXT', JUri::base());
-			$body	= $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
+			//$body	= $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
+			$body	= 'Navn: '.$name . "\n\nTelefon: " . $phone . "\n\nE-mail: " . $email ."\n\nBesked: " . stripslashes($body);
 
 			$mail = JFactory::getMailer();
 			$mail->addRecipient($contact->email_to);
 			$mail->addReplyTo($email, $name);
 			$mail->setSender(array($mailfrom, $fromname));
-			$mail->setSubject($sitename . ': ' . $subject);
+			$mail->setSubject($sitename . ': From contact form');
 			$mail->setBody($body);
 			$sent = $mail->Send();
 

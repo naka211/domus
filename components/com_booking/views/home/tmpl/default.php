@@ -149,17 +149,19 @@ $tmpl = JURI::base().'templates/domus/';
 		<div class="main-content clearfix">
 			<div class="box clearfix">
 				<div class="box-text">
-					<h2>Ask us, just as you would ask a friend...</h2>
-					<p>We are an Italian Incoming Tour Operator, specialized in weekly holiday rentals in Tuscany, Umbria, the Amalfi Coast, Liguria, Lombardy, Veneto and Sicily. We offer villas and farmhouses with swimming pools in the countryside or on the coast, as well as apartments in the cities of Florence and Venice.</p>
+					<h2>{article 13}{title}{/article}</h2>
+					{article 13}{text}{/article}
 				</div>
 				<div class="box-text">
-					<h2>Ask us, just as you would ask a friend...</h2>
-					<p>We are an Italian Incoming Tour Operator, specialized in weekly holiday rentals in Tuscany, Umbria, the Amalfi Coast, Liguria, Lombardy, Veneto and Sicily. We offer villas and farmhouses with swimming pools in the countryside or on the coast, as well as apartments in the cities of Florence and Venice.</p>
+					<h2>{article 14}{title}{/article}</h2>
+					{article 14}{text}{/article}
 				</div>
 			</div>
 			<div class="list-tours">
 				<div class="row clearfix">
-					<div class="col-md-4 col-sm-6 list-tours-item">
+					{module Homepage_Article}
+				
+					<!--<div class="col-md-4 col-sm-6 list-tours-item">
 						<a href="#">
 							<div class="img-tour">
 								<img class="img-responsive" src="<?php echo $tmpl;?>img/img01.jpg" alt="">
@@ -167,54 +169,9 @@ $tmpl = JURI::base().'templates/domus/';
 							<h2>Special Offers</h2>
 						</a>
 						<p>Are you looking for a last minute offer or a discount for 2 or 3 weeks long stay holiday? Take a look at our selection of italian villas for rent and apartments in promotion...</p>
-					</div>
-					<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img02.jpg" alt="">
-							</div>
-							<h2>Exclusive services</h2>
-						</a>
-						<p>Find out  all about the customized services we have created to make your holiday unique and made to measure, all the services can be requested directly...</p>
-					</div>
-					<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img03.jpg" alt="">
-							</div>
-							<h2>Art Cities</h2>
-						</a>
-						<p>Spend a  weekend or a holiday filled with beauty, Italy is the country with the largest artistic heritage in the world and we at VacaVilla have selected...</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img01.jpg" alt="">
-							</div>
-							<h2>Special Offers</h2>
-						</a>
-						<p>Are you looking for a last minute offer or a discount for 2 or 3 weeks long stay holiday? Take a look at our selection of italian villas for rent and apartments in promotion...</p>
-					</div>
-					<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img02.jpg" alt="">
-							</div>
-							<h2>Exclusive services</h2>
-						</a>
-						<p>Find out  all about the customized services we have created to make your holiday unique and made to measure, all the services can be requested directly...</p>
-					</div>
-					<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img03.jpg" alt="">
-							</div>
-							<h2>Art Cities</h2>
-						</a>
-						<p>Spend a  weekend or a holiday filled with beauty, Italy is the country with the largest artistic heritage in the world and we at VacaVilla have selected...</p>
-					</div>
+					</div>-->
+					
+					
 				</div>
 			</div>
 		</div>
