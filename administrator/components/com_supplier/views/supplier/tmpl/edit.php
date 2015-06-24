@@ -58,6 +58,10 @@ $document->addStyleSheet('components/com_supplier/assets/css/supplier.css');
 				<div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('name'); ?></div>
 			</div>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('email'); ?></div>
+				<div class="controls"><?php echo $this->form->getInput('email'); ?></div>
+			</div>
 				<input type="hidden" name="jform[state]" value="<?php echo $this->item->state; ?>" />
 
 

@@ -120,6 +120,9 @@ if (!empty($this->extra_sidebar)) {
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_SUPPLIER_SUPPLIERS_NAME', 'a.name', $listDirn, $listOrder); ?>
 				</th>
+				<th class='left'>
+				<?php echo JHtml::_('grid.sort',  'COM_SUPPLIER_SUPPLIERS_EMAIL', 'a.email', $listDirn, $listOrder); ?>
+				</th>
                     
                     
                 <?php if (isset($this->items[0]->id)): ?>
@@ -193,6 +196,10 @@ if (!empty($this->extra_sidebar)) {
 				<?php else : ?>
 					<?php echo $this->escape($item->name); ?>
 				<?php endif; ?>
+				</td>
+				<td>
+
+					<?php echo $item->email; ?>
 				</td>
 
 

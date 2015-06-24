@@ -14,6 +14,14 @@
                 
                  /> 
 
+       <field name="email" type="text"
+                
+            label="COM_SUPPLIER_FORM_LBL_SUPPLIER_EMAIL"
+            description="COM_SUPPLIER_FORM_DESC_SUPPLIER_EMAIL" 
+                
+                
+                 /> 
+
          <field
         name="state"
         type="list"

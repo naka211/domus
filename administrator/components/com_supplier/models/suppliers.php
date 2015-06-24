@@ -28,6 +28,7 @@ class SupplierModelSuppliers extends JModelList {
             $config['filter_fields'] = array(
                                 'id', 'a.id',
                 'name', 'a.name',
+                'email', 'a.email',
                 'state', 'a.state',
 
             );

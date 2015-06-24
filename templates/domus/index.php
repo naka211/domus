@@ -177,17 +177,13 @@ JHTML::_('behavior.formvalidator');
 				   </div>
 					<div class="col-md-3 col-xs-6 col-2">
 						<h2>Destinations</h2>
+						<?php 
+						$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+						?>
 						<ul>
-							<li><a href="tuscany.php">Tuscany</a></li>
-							<li><a href="#">Veneto</a></li>
-							<li><a href="#">Amalfi Coast</a></li>
-							<li><a href="#">Sicily</a></li>
-							<li><a href="#">Lake Garda</a></li>
-							<li><a href="#">Lombardy</a></li>
-							<li><a href="#">Umbria</a></li>
-							<li><a href="#">Liguria</a></li>
-							<li><a href="#">Lazio</a></li>
-							<li><a href="#">Marche</a></li>
+						<?php foreach($des->zone as $item){?>
+							<li><a href="tuscany.php"><?php echo $item->name;?></a></li>
+						<?php }?>
 						</ul>
 					</div>
 					<div class="col-md-3 col-xs-6 col-3">

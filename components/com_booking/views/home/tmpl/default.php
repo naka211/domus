@@ -159,19 +159,7 @@ $tmpl = JURI::base().'templates/domus/';
 			</div>
 			<div class="list-tours">
 				<div class="row clearfix">
-					{module Homepage_Article}
-				
-					<!--<div class="col-md-4 col-sm-6 list-tours-item">
-						<a href="#">
-							<div class="img-tour">
-								<img class="img-responsive" src="<?php echo $tmpl;?>img/img01.jpg" alt="">
-							</div>
-							<h2>Special Offers</h2>
-						</a>
-						<p>Are you looking for a last minute offer or a discount for 2 or 3 weeks long stay holiday? Take a look at our selection of italian villas for rent and apartments in promotion...</p>
-					</div>-->
-					
-					
+					{module Homepage Articles}
 				</div>
 			</div>
 		</div>

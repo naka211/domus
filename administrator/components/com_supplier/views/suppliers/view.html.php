@@ -125,6 +125,7 @@ class SupplierViewSuppliers extends JViewLegacy {
 		return array(
 		'a.id' => JText::_('JGRID_HEADING_ID'),
 		'a.name' => JText::_('COM_SUPPLIER_SUPPLIERS_NAME'),
+		'a.email' => JText::_('COM_SUPPLIER_SUPPLIERS_EMAIL'),
 		'a.state' => JText::_('JSTATUS'),
 		);
 	}

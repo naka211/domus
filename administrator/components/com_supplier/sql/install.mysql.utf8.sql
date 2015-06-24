@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `#__supplier` (
 `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 
 `name` VARCHAR(255)  NOT NULL ,
+`email` VARCHAR(255)  NOT NULL ,
 `state` TINYINT(1)  NOT NULL ,
 PRIMARY KEY (`id`)
 ) DEFAULT COLLATE=utf8_general_ci;
