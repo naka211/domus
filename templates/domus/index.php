@@ -128,7 +128,7 @@ JHTML::_('behavior.formvalidator');
 					<li><a href="tuscany.php">Villas</a></li>
 					<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Other Destinations <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="map.php">Italy</a></li> 
+							<li><a href="index.php?option=com_booking&view=map&Itemid=143">Italy</a></li> 
 						</ul>
 					</li>
 				</ul>
