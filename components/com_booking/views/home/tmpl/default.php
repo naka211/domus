@@ -9,76 +9,89 @@ $tmpl = JURI::base().'templates/domus/';
 		<div class="carousel-inner">
 			{module Home Slider - Top}
 			<div class="container relative">
+			<form action="index.php" method="get">
 			<div class="main-search">
 				<div class="row mb10">
 					<div class="col-md-12">
 						<h2>Find your italian villa in Tuscany and other regions</h2>
 						<div class="form-inline">
+							<?php if($this->filters['apartment']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Apartment
+								  <input type="checkbox" name="apartment" value="1"> Apartment
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['independent_house']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Independent house
+								  <input type="checkbox" name="independent_house" value="1"> Independent house
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['villa']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Villa
+								  <input type="checkbox" name="villa" value="1"> Villa
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['pet_allowed']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Pet allowed
+								  <input type="checkbox" name="pet_allowed" value="1"> Pet allowed
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['air_conditioning']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Air conditioning
+								  <input type="checkbox" name="air_conditioning" value="1"> Air conditioning
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['internet_access']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Internet access
+								  <input type="checkbox" name="internet_access" value="1"> Internet access
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['swimming_pool']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Swimming Pool
+								  <input type="checkbox" name="swimming_pool" value="1"> Swimming Pool
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['golf_course']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Golf course
+								  <input type="checkbox" name="golf_course" value="1"> Golf course
 								</label>
 							</div>
+							<?php }?>
+							<?php if($this->filters['tennis']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
-								  <input type="checkbox"> Tennis
+								  <input type="checkbox" name="tennis" value="1"> Tennis
 								</label>
 							</div>
+							<?php }?>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="option">
-							<select class="form-control mb10">
-								<option>Any Region</option>
-								<option>Tuscany</option>
-								<option>Veneto</option>
-								<option>Amalfi Coast</option>
-								<option>Sicily</option>
-								<option>Umbria</option>
-								<option>Lake Garda and Lake Maggiore</option>
-								<option>Lombardy</option>
-								<option>Sardinia</option>
-								<option>Liguria</option>
-								<option>Lazio</option>
-								<option>Marche</option>
-								<option>Piedmont</option>
+							<?php 
+							$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+							?>
+							<select class="form-control mb10" name="zone">
+								<option value="0">Any Region</option>
+								<?php foreach($des->zone as $item){?>
+								<option value="<?php echo  strtolower($item->name)?>"><?php echo $item->name;?></option>
+								<?php }?>
 							</select>
 							<select class="form-control mb10">
 								<option>Any Town</option>
@@ -132,7 +145,9 @@ $tmpl = JURI::base().'templates/domus/';
 				</div>
 			</div>
 		</div>
-
+		<input type="hidden" name="option" value="com_booking" />
+		<input type="hidden" name="view" value="search" />
+		</form>
 		</div>
 		<!-- Carousel nav -->
 		<a class="carousel-control left" href="#myCarousel" data-slide="prev">

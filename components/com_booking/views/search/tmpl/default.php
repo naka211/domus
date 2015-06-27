@@ -144,6 +144,7 @@ $params = json_decode($this->category->params);
 				</div><!--col-searchfilter-->
 
 				<div class="col-md-9 col-main">
+					<?php if($this->category){?>
 					<div class="top-description">
 						<a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>"><img src="<?php echo $params->image;?>"></a>
 						<div class="txt-desc">
@@ -151,6 +152,7 @@ $params = json_decode($this->category->params);
 							<?php echo $this->category->description;?> <a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>">see_more</a></p>
 						</div>
 					</div><!-- top-description -->
+					<?php }?>
 					<h1>6 Holiday homes in Tuscany, Florence</h1>   
 					 
 					<div class="row search-results-nav">

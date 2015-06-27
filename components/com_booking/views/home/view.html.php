@@ -26,6 +26,8 @@ class BookingViewHome extends JViewLegacy {
         $app = JFactory::getApplication();
 		$this->params = $app->getParams('com_booking');
 		
+		$this->filters = $this->get('Filters');
+		
         $this->_prepareDocument();
         parent::display($tpl);
     }
