@@ -123,8 +123,8 @@ JHTML::_('behavior.formvalidator');
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="tuscany.php">Tuscany</a></li>
-					<li><a href="tuscany.php">Venice</a></li>
+					<li><a href="tuscany.php">Tuscany</a></li>
+					<li><a href="index.php?option=com_content&view=">Venice</a></li>
 					<li><a href="tuscany.php">Villas</a></li>
 					<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Other Destinations <b class="caret"></b></a>
 						<ul class="dropdown-menu">

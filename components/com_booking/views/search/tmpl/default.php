@@ -2,81 +2,408 @@
 // no direct access
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
+$params = json_decode($this->category->params);
 ?>
-<script type="text/javascript" src="<?php echo $tmpl;?>js/jquery.imagemapster.js"></script>
-<script type="text/javascript">
-$( document ).ready(function() {
- 	$('.map').mapster({
-		areas: [
-			{
-				key: 'Tuscany',
-				selected: true,
-				render_select: {
-					fillColor: 'ffe347',
-					fillOpacity: 0.6,
-					stroke: false            
-				}
-			} 
-	   ],
-		mapKey: 'state'
-	}); 
-});	  
-</script>
+<script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script>  
 <section class="content clearfix">
 	<div class="container pad0">
-		<div class="main-content content-article clearfix">  
+		<div class="main-content clearfix"> 
 			<div class="row">
-				<div class="col-sm-12">
-					<h4>{article 21}{title}{/article}</h4>
-					{article 21}{text}{/article}
-					<div class="wrapper_map">
-						<img class="map" src="<?php echo $tmpl;?>img/map-italy.jpg" width="990" height="758" usemap="#italy">
-						<map id="usa_image_map" name="italy"> 
-							<area shape="poly" coords="338,442,333,439,333,429,332,425,328,422,329,418,327,417,324,417,321,418,319,414,317,414,312,419,312,422,309,423,306,422,296,435,293,434,290,433,283,440,280,441,274,437,269,434,268,430,265,431,265,437,266,438,266,440,263,442,264,445,264,451,266,452,269,451,272,453,274,463,274,471,276,476,274,482,274,488,271,492,271,501,274,506,274,512,268,518,268,523,265,528,263,530,263,542,264,544,271,551,273,554,273,562,274,564,276,564,280,562,283,562,287,567,289,565,294,560,299,558,300,557,297,550,298,548,301,548,304,548,308,546,310,546,313,551,319,554,321,555,323,555,323,529,329,509,332,496,334,479,335,477,343,471,344,469,340,465,340,455,336,448,336,446" href="tuscany.php" state="Sardinia" alt="Sardinia" title="Sardinia"/>
+				<div class="col-md-3 col-searchfilter"> 
+					<div class="search-filter-left">
+						<form> 
+							<div class="each_wrapper wrap_option">
+								<div class="option">
+									<select class="form-control mb10">
+										<option>Any Region</option>
+										<option>Tuscany</option>
+										<option>Veneto</option>
+										<option>Amalfi Coast</option>
+										<option>Sicily</option>
+										<option>Umbria</option>
+										<option>Lake Garda and Lake Maggiore</option>
+										<option>Lombardy</option>
+										<option>Sardinia</option>
+										<option>Liguria</option>
+										<option>Lazio</option>
+										<option>Marche</option>
+										<option>Piedmont</option>
+									</select>
+									<select class="form-control mb10">
+										<option>Any Town</option>
+										<option>Tuscany</option>
+										<option>Veneto</option>
+										<option>Amalfi Coast</option>
+										<option>Sicily</option>
+										<option>Umbria</option>
+										<option>Lake Garda and Lake Maggiore</option>
+										<option>Lombardy</option>
+										<option>Sardinia</option>
+										<option>Liguria</option>
+										<option>Lazio</option>
+										<option>Marche</option>
+										<option>Piedmont</option>
+									</select>
+								</div>
+								<div class="option">
+									<select class="form-control mb10">
+										<option>Any Area</option>
+										<option>Tuscany</option>
+										<option>Veneto</option>
+										<option>Amalfi Coast</option>
+										<option>Sicily</option>
+										<option>Umbria</option>
+										<option>Lake Garda and Lake Maggiore</option>
+										<option>Lombardy</option>
+										<option>Sardinia</option>
+										<option>Liguria</option>
+										<option>Lazio</option>
+										<option>Marche</option>
+										<option>Piedmont</option>
+									</select>
+									<select class="form-control">
+										<option>Person</option>
+										<option>Anny</option>
+										<option>1</option>
+										<option>2 Coast</option>
+										<option>....</option>
+									</select>
+								</div>
+								<div class="option option_day">
+									<input type="text" class="form-control date-input mb10" placeholder="Starting date">
+									<input type="text" class="form-control date-input" placeholder="Ending date">
+								</div>
+							</div><!-- each_wrapper -->
+							<div class="each_wrapper wrap_checbox">  
+								<div class="checkbox">
+									<label><input type="checkbox"> Apartment</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Independent house</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Villa</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Pet allowed</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Air conditioning</label>
+								</div>
+								<div class="checkbox ">
+									<label><input type="checkbox"> Internet access</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Swimming Pool</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Golf course</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox"> Tennis</label>
+								</div> 
+							</div> <!--  wrap_checbox -->         
+							<script>  
+							   $(function(){ 
+								  $('#range-1').noUiSlider({
+									 start: [ 0, 10000 ],
+									 step: 500,
+									 margin: 20,
+									 connect: true,
+									 direction: 'ltr',
+									 orientation: 'horizontal',                                  
+									 // Configure tapping, or make the selected range dragable.
+									 behaviour: 'tap-drag',               
+									 // Full number format support.
+									 format: wNumb({
+										mark: '',
+										decimals: 0
+									 }),                              
+									 // Support for non-linear ranges by adding intervals.
+									 range: {
+										'min': 0,
+										'max': 10000
+									 }
+								  }); 
+								   // ruler
+									$('#range-1').noUiSlider_pips({
+										mode: 'values',
+										values: [1000, ,2000,3000,4000, 5000,6000,7000,8000,9000],
+										density: 10
+									});
+					
+							   }); 
+							</script>
+							<div class="each_wrapper wrap-filter-price">
+								<p>Pris <span>(samlet)</span></p>
+								<div class="range_price"><span class="lb_min">€0</span> <span class="lb_max">€10000</span></div> 
+								<div id="range-1"></div> 
+							</div>
+						</form>
+					</div><!--search-filter-left-->
+				</div><!--col-searchfilter-->
 
-							<area shape="poly" coords="619,623,615,626,609,626,607,625,605,625,599,630,597,630,588,630,582,631,572,636,567,639,561,638,557,638,555,640,551,640,547,636,542,636,540,636,537,638,533,640,530,640,524,637,521,635,519,636,517,635,510,629,508,629,507,628,507,627,490,626,486,632,484,633,477,628,475,627,473,627,462,636,461,638,462,640,463,642,463,645,461,646,460,647,460,651,463,653,464,657,466,657,468,656,469,658,470,661,471,663,474,665,477,664,480,663,483,663,485,665,489,669,495,669,499,677,502,678,507,683,508,684,515,684,534,694,539,694,543,694,558,707,559,714,560,715,564,716,569,721,577,722,583,722,588,727,590,728,593,727,595,724,595,716,596,712,604,706,604,702,598,696,598,691,593,687,593,678,592,676,592,674,595,673,601,669,599,664,600,662,605,655,612,642,613,637,614,634,616,631,619,627" href="tuscany.php" state="Sicily" alt="Sicily" title="Sicily"/>
+				<div class="col-md-9 col-main">
+					<div class="top-description">
+						<a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>"><img src="<?php echo $params->image;?>"></a>
+						<div class="txt-desc">
+							<h2><a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>"> <?php echo $this->category->title;?></a></h2>
+							<?php echo $this->category->description;?> <a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>">see_more</a></p>
+						</div>
+					</div><!-- top-description -->
+					<h1>6 Holiday homes in Tuscany, Florence</h1>   
+					 
+					<div class="row search-results-nav">
+					   <div class="col-sm-4 nav-sort">
+							<span>Sort By </span>   
+							<select class="form-control">
+								<option>Relevancy</option>
+								<option>Rating</option>
+								<option>Price</option>
+								<option>Sleeps</option> 
+							</select> 
+					   </div>
+					   <div class="col-sm-5 nav-btn">
+						  <span>Displaying <strong class="liststart">21</strong> - <strong class="listend">40</strong></span>
+						  <a href="#" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+						  <a href="#" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+					   </div>
+					   <div class="col-sm-3 text-right">
+						  <a href="#popupMap_larger" class="btn btn-xs fancybox search-results-on-map"> <i class="fa fa-map-marker"></i>View on map </a> 
+					   </div>
+					</div><!-- search-results-nav -->
 
-							<area shape="poly" coords="665,507,661,517,658,518,656,519,651,519,649,521,647,520,640,514,637,516,631,516,627,511,625,511,626,513,628,516,628,526,638,543,642,551,642,565,650,578,650,589,642,595,641,599,634,599,632,602,634,611,629,623,625,627,625,635,626,639,626,642,624,643,625,645,629,650,631,650,635,647,642,647,647,642,647,634,649,630,663,618,669,609,669,599,671,596,683,587,690,585,695,582,697,580,697,570,695,567,695,564,697,557,698,552,695,547,689,545,679,536,675,536,670,536,667,528,669,525,673,520,672,512,671,508,668,507" href="tuscany.php" state="Calabria" alt="Calabria" title="Calabria"/>
+					<div class="list-items">
+						<div class="each-result-item">
+							<h2><a href="tuscany-detail.php"> Agriturismo Il Sole</a></h2>
+							<div class="row">
+							   <div class="col-sm-4 col-img">
+								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+							   </div>
+							   <div class="col-sm-8 col-txt"> 
+									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+							<ul class="list-result-item-footer">
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Il Limone</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li> 
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">La Melagrana</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li> 
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Il Sole</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+									<ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+									</ul> 
+									<a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+							</ul>
+						</div><!-- each-result-item -->
+						<div class="each-result-item">
+							<h2><a href="tuscany-detail.php">Le Beringhe</a></h2>
+							<div class="row">
+							   <div class="col-sm-4 col-img">
+								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+							   </div>
+							   <div class="col-sm-8 col-txt"> 
+									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+							<ul class="list-result-item-footer">
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Il Limone</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Il Sole</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+							</ul>
+						</div><!-- each-result-item --> 
+						<div class="each-result-item">
+							<h2><a href="tuscany-detail.php">Le Rocche</a></h2>
+							<div class="row">
+							   <div class="col-sm-4 col-img">
+								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+							   </div>
+							   <div class="col-sm-8 col-txt"> 
+									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+							<ul class="list-result-item-footer">   
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Casalerocche Ginestra</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Casalerocche Mimosa</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>
+							</ul>
+						</div><!-- each-result-item -->
+						<div class="each-result-item">
+							<h2><a href="tuscany-detail.php">Eden</a></h2>
+							<div class="row">
+							   <div class="col-sm-4 col-img">
+								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+							   </div>
+							   <div class="col-sm-8 col-txt"> 
+									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+							<ul class="list-result-item-footer">   
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Eden</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+							</ul>
+						</div><!-- each-result-item --> 
+						<div class="each-result-item">
+							<h2><a href="tuscany-detail.php">Medici</a></h2>
+							<div class="row">
+							   <div class="col-sm-4 col-img">
+								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+							   </div>
+							   <div class="col-sm-8 col-txt"> 
+									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+							<ul class="list-result-item-footer">   
+								<li class="result-item-footer">
+								   <h3><a href="tuscany-detail.php">Medici</a></h3>
+								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+								   <div class="header-meta">
+									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
+								   </div> 
+								   <ul class="list-unstyled clearfix">
+									  <li><span>Property type: </span>Apartment</li>
+									  <li><span>Sleeps: </span>2</li>
+									  <li><span>Double bedrooms: </span>1</li>
+									  <li><span>Bathrooms: </span>1</li>
+									  <li><span>Featured pool: </span>Shared pool</li>
+								   </ul> 
+								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
+								</li>  
+							</ul>
+						</div><!-- each-result-item -->  
+					</div><!--list-items--> 
 
-							<area shape="poly" coords="686,487,679,475,678,471,677,467,675,466,668,467,664,469,662,468,660,465,660,461,659,458,658,457,653,456,649,456,645,449,644,445,642,442,637,445,635,446,632,445,631,444,627,446,626,450,624,453,622,455,617,455,617,458,621,462,618,469,618,472,623,477,628,485,631,494,630,501,628,506,627,507,627,509,632,514,634,515,637,515,640,513,642,514,645,516,648,519,649,519,654,517,659,516,661,513,664,506,665,505,669,506,671,507,672,506,677,499,678,498,678,495,684,488,686,487" href="tuscany.php" state="Basilicata" alt="Basilicata" title="Basilicata"/>
+					<div class="row search-results-nav">
+					   <div class="col-sm-4 nav-sort">
+							<span>Sort By </span>   
+							<select class="form-control">
+								<option>Relevancy</option>
+								<option>Rating</option>
+								<option>Price</option>
+								<option>Sleeps</option> 
+							</select>
+					   </div>
+					   <div class="col-sm-5 nav-btn">
+						  <span>Displaying <strong class="liststart">21</strong> - <strong class="listend">40</strong></span>
+						  <a href="#" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+						  <a href="#" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+					   </div>
+					   <div class="col-sm-3 text-right">
+						  <a href="#popupMap_larger" class="btn btn-xs fancybox search-results-on-map"> <i class="fa fa-map-marker"></i>View on map </a> 
+					   </div>
+					</div><!-- search-results-nav -->
 
-							<area shape="poly" coords="594,415,594,412,595,411,601,412,603,412,605,407,606,403,605,396,605,394,610,391,616,391,618,393,621,392,625,391,631,391,633,393,640,393,644,391,646,391,649,391,656,395,658,399,658,400,653,404,652,405,652,410,649,412,642,412,642,418,649,425,671,438,681,442,694,449,703,449,706,452,707,457,710,459,718,462,728,468,735,468,745,479,755,490,755,494,763,500,764,501,764,507,760,514,759,519,759,527,755,528,752,528,748,525,742,521,742,510,739,506,737,501,733,497,730,497,724,497,720,497,716,497,703,488,701,488,694,488,692,489,689,488,686,485,682,478,679,471,679,467,676,465,671,465,666,467,663,467,662,465,661,457,658,455,652,454,650,454,646,448,645,443,643,441,640,441,636,444,633,444,628,441,626,439,624,440,622,441,620,441,616,438,616,431,615,429,611,429,609,430,607,430,600,423,599,417,597,415" href="tuscany.php" state="Apulia" alt="Apulia" title="Apulia"/>
+				</div><!-- col-main -->
 
-							<area shape="poly" coords="593,415,589,415,583,421,576,421,572,417,563,417,559,419,556,421,553,419,550,418,549,419,548,420,545,420,545,427,540,434,540,442,540,444,542,447,546,451,546,455,542,458,541,459,541,463,544,465,548,465,552,461,560,461,564,464,564,468,562,471,562,473,564,475,566,475,569,471,571,471,574,475,576,474,579,472,582,472,586,478,590,483,594,488,595,490,591,496,591,498,597,502,606,510,608,510,610,508,613,510,614,510,621,510,625,508,629,502,630,496,628,487,624,480,618,474,616,472,616,468,619,464,620,462,615,458,614,456,616,453,621,453,624,449,628,444,628,442,626,441,624,441,623,443,620,443,615,439,614,436,615,431,613,430,611,430,607,432,601,426,598,422,599,418,596,416,593,415" href="tuscany.php" state="Campania" alt="Campania" title="Campania"/>
-
-							<area shape="poly" coords="593,410,601,410,604,407,604,405,604,397,602,393,595,386,592,384,586,383,583,382,583,380,581,380,580,384,578,386,573,387,567,392,565,390,562,387,560,385,557,388,558,390,559,393,554,395,551,400,548,400,547,402,550,405,551,414,551,416,554,417,555,419,557,419,561,415,571,415,577,420,582,420,587,414,592,414" href="tuscany.php" state="Molise" alt="Molise" title="Molise"/>
-
-							<area shape="poly" coords="544,327,538,332,535,332,534,332,530,335,527,334,525,334,521,338,521,342,519,344,516,345,512,345,509,347,508,350,508,353,507,356,505,358,506,362,508,365,507,372,506,379,507,381,511,381,514,381,522,385,535,396,539,397,544,398,547,399,549,399,551,397,554,393,556,393,557,392,557,390,555,388,557,385,559,383,562,385,566,389,568,389,573,386,578,384,578,382,578,381,582,378,582,376,582,375,570,366,554,352,553,347,552,343,545,327" href="tuscany.php" state="Abruzzo" alt="Abruzzo" title="Abruzzo"/>
-
-							<area shape="poly" coords="450,327,448,329,450,332,444,338,441,344,438,349,434,353,434,355,444,365,453,376,457,384,464,391,464,394,476,406,485,413,488,415,492,416,497,420,499,424,499,426,502,429,509,429,516,428,522,430,529,435,530,436,535,436,538,434,544,425,544,419,546,417,549,417,549,406,547,403,543,400,542,399,536,399,527,391,519,384,515,383,507,384,505,381,505,374,507,370,507,366,505,363,503,360,504,357,506,354,507,352,507,348,511,344,515,344,518,341,519,340,519,338,515,340,513,341,510,342,504,342,499,348,498,349,492,349,485,354,477,355,474,353,468,347,467,344,467,342,464,339,459,338,456,340,454,338,453,335,456,332,456,330,453,329,451,329,450,327" href="tuscany.php" state="Latium" alt="Latium" title="Latium"/>
-
-							<area shape="poly" coords="454,336,457,332,457,329,455,329,455,327,456,323,459,320,459,316,460,314,463,310,463,307,461,304,462,301,466,299,471,299,473,294,473,292,469,286,468,284,468,282,470,281,472,282,473,283,478,283,485,292,491,293,498,300,500,323,503,325,511,329,516,333,517,336,517,338,512,340,504,340,498,347,491,347,485,353,476,353,469,346,468,340,464,337,460,337,456,339" href="tuscany.php" state="Umbria" alt="Umbria" title="Umbria"/>
-
-							<area shape="poly" coords="497,254,492,261,490,262,483,256,478,256,476,258,473,257,471,257,470,262,470,264,468,264,469,267,472,267,475,265,478,269,474,273,474,276,475,280,476,282,480,284,486,291,492,292,500,299,501,312,502,322,504,324,509,326,513,329,519,335,519,337,521,337,524,333,526,332,529,333,530,333,532,331,535,330,539,330,542,327,542,323,541,318,540,305,538,296,535,289,532,284,527,280,515,271,507,264" href="tuscany.php" state="Marches" alt="Marches" title="Marches"/>
-
-							<area shape="poly" coords="495,254,493,250,486,244,483,233,476,224,476,221,479,218,478,210,478,203,479,200,476,195,473,192,469,192,465,190,460,194,458,195,455,194,453,193,446,193,435,188,432,188,422,188,419,190,414,190,408,185,406,186,403,188,401,188,396,184,394,184,389,185,382,181,373,174,372,173,369,173,367,175,364,175,361,172,360,171,354,171,352,173,352,183,349,191,346,196,341,202,341,204,345,204,347,205,350,207,350,212,361,218,363,220,363,228,365,230,369,230,370,230,370,226,376,221,377,221,382,225,388,227,391,228,403,230,407,232,413,239,424,240,429,243,437,244,446,244,450,244,453,249,453,254,460,255,464,258,467,262,469,262,469,260,471,255,474,255,476,255,481,254,484,255,490,260,492,260,495,257,495,254" href="tuscany.php" state="Amilia-Romagna" alt="Amilia-Romagna" title="Amilia-Romagna"/>
-
-							<area shape="poly" coords="450,246,439,246,437,245,433,246,427,245,423,241,414,241,412,240,404,232,400,230,391,230,380,226,377,222,371,227,372,232,373,234,377,237,380,241,379,244,377,246,377,248,382,252,383,258,382,263,380,270,386,282,389,290,393,299,392,302,389,308,390,312,394,315,398,319,398,323,401,325,406,330,410,336,416,345,418,350,423,351,428,351,432,353,439,345,443,339,445,335,447,333,448,331,448,330,447,328,450,324,453,327,454,327,455,322,458,320,458,316,460,313,461,310,461,307,460,302,464,298,472,294,472,293,466,284,466,282,469,279,471,279,472,280,473,279,472,275,473,273,477,269,477,268,475,267,472,268,472,269,470,269,465,261,460,257,458,256,453,256,451,254,452,248" href="tuscany.php" state="Tuscany" alt="Tuscany" title="Tuscany"/>
-
-							<area shape="poly" coords="268,226,260,234,258,238,259,243,259,244,261,246,261,247,262,247,264,245,266,245,267,246,270,247,277,247,279,246,282,245,283,244,287,240,288,238,288,233,289,231,292,227,294,226,296,225,299,224,308,217,313,214,316,213,319,213,323,213,329,217,335,221,343,221,344,223,350,226,358,232,368,242,372,245,375,246,376,246,376,245,378,243,379,242,379,240,375,237,370,233,369,231,364,231,362,229,361,223,361,220,358,217,351,214,349,212,348,211,348,207,346,206,343,206,341,206,339,204,334,204,327,204,323,208,321,209,319,209,317,207,315,205,311,208,306,208,299,205,296,203,294,203,291,205,293,208,287,214,287,221,282,225,269,226" href="tuscany.php" state="Liguria" alt="Liguria" title="Liguria"/>
-
-							<area shape="poly" coords="254,108,245,118,245,120,248,126,250,129,251,131,250,132,249,134,249,139,251,139,252,139,254,138,256,138,257,136,264,136,268,136,269,137,271,138,274,138,278,135,281,135,282,132,284,129,285,129,286,130,288,130,288,124,288,122,286,119,286,110,284,109,276,109,271,117,266,117" href="tuscany.php" state="Aosta Valley" alt="Aosta Valley" title="Aosta Valley"/>
-
-							<area shape="poly" coords="315,78,314,78,311,81,309,83,308,84,305,85,303,85,301,85,299,87,297,88,297,91,297,94,298,95,298,97,297,98,296,100,291,105,288,107,287,107,287,118,289,122,290,126,290,130,289,131,284,131,283,135,278,137,273,140,268,138,263,138,257,138,253,140,251,140,248,144,247,146,247,148,240,152,240,158,233,158,230,160,229,160,229,163,242,175,243,178,242,184,241,187,238,192,233,196,233,199,234,200,235,203,238,213,241,216,245,218,247,219,248,222,250,222,256,216,258,216,260,217,267,224,268,225,271,224,280,223,282,223,284,222,285,220,285,216,286,213,290,210,291,208,290,207,289,205,290,204,295,201,297,202,302,205,306,206,310,206,312,206,315,203,317,204,318,206,320,207,322,207,326,202,327,202,330,202,336,202,337,203,339,203,340,202,341,200,341,199,339,196,339,190,337,187,328,177,326,173,326,171,322,171,319,172,314,171,312,168,311,167,311,159,310,158,309,155,309,154,311,152,314,149,318,149,319,150,322,152,324,150,325,149,325,147,320,141,318,138,318,135,318,131,314,127,315,119,313,116,313,112,319,111,323,107,324,102,324,98,321,94,317,89,317,87,316,82,316,78" href="tuscany.php" state="Piedmont" alt="Piedmont" title="Piedmont"/>
-
-							<area shape="poly" coords="417,134,415,132,410,137,408,138,406,135,404,132,404,127,405,115,406,110,406,99,408,96,408,93,408,90,402,86,400,83,398,79,395,77,392,77,390,79,388,82,386,88,386,90,386,93,385,94,383,95,380,94,375,99,373,100,370,97,364,92,363,90,364,82,363,81,359,81,358,82,358,92,357,95,353,100,347,103,344,105,344,109,338,115,335,118,332,116,330,112,331,109,333,107,333,103,333,101,330,99,327,99,326,99,325,102,324,107,322,110,319,112,315,112,314,113,314,115,316,119,315,122,316,127,319,131,319,136,322,141,326,146,326,150,324,152,322,153,320,152,317,150,314,151,311,154,311,156,313,157,313,166,313,167,316,170,321,170,327,169,328,171,328,174,329,176,340,188,340,195,341,197,343,197,344,196,350,186,350,182,350,173,353,170,356,169,359,169,361,170,364,171,366,173,367,173,369,172,371,171,372,171,374,172,380,178,388,182,389,183,390,183,392,183,393,183,395,182,396,182,398,184,402,186,404,185,406,185,408,184,410,185,412,187,415,188,418,188,420,187,422,187,426,187,430,187,432,187,432,185,431,184,419,173,418,171,418,166,416,164,415,166,414,167,412,165,410,161,409,157,410,152,413,149,416,146,418,145,418,143,416,142,416,136,417,135" href="tuscany.php" state="Lombardy" alt="Lombardy" title="Lombardy"/>
-
-							<area shape="poly" coords="513,85,508,89,508,91,509,92,505,93,501,97,500,101,498,101,489,112,488,114,489,118,490,125,496,133,496,138,500,143,503,142,507,140,509,138,513,140,518,146,520,147,523,148,527,147,532,149,535,149,541,143,543,145,546,151,548,153,552,153,552,147,550,141,544,135,544,132,545,129,549,122,549,117,542,109,542,107,543,105,546,104,549,104,550,102,550,100,548,98,544,96,536,93,531,92,527,91,521,88" href="tuscany.php" state="Friuli-Vanezia Giulia" alt="Friuli-Vanezia Giulia" title="Friuli-Vanezia Giulia"/>
-
-							<area shape="poly" coords="464,96,470,95,474,95,488,82,492,82,496,80,497,79,501,79,509,83,511,85,504,92,498,98,498,100,488,110,487,112,487,125,489,127,495,133,495,138,500,144,502,144,509,140,511,140,518,149,517,150,514,151,505,152,498,154,493,155,483,160,481,162,481,172,480,178,478,182,478,184,479,185,486,191,488,194,488,196,485,198,481,200,479,198,476,193,473,190,469,189,465,189,462,190,459,193,457,193,455,191,453,190,451,191,447,191,442,190,439,189,436,187,420,171,419,168,419,164,418,163,416,163,415,164,413,163,411,160,411,155,412,152,417,147,419,146,420,144,418,140,418,137,418,135,421,133,424,134,425,136,434,136,437,134,445,126,446,123,446,120,448,119,451,119,453,121,455,122,458,122,460,121,461,119,462,117,463,114,463,112,465,112,467,111,471,107,470,105,464,100,463,98" href="tuscany.php" state="Veneto" alt="Veneto" title="Veneto"/>
-
-							<area shape="poly" coords="418,133,421,131,426,134,432,134,436,133,439,131,443,126,444,123,444,119,447,118,452,118,455,120,458,120,460,117,460,115,460,112,461,111,464,111,466,110,469,107,468,105,463,102,462,101,462,98,462,95,467,94,472,93,476,91,484,83,490,80,495,79,495,77,495,76,491,70,490,67,487,64,485,63,483,63,483,54,483,53,481,51,479,52,476,52,468,56,464,57,461,57,455,53,454,52,450,52,441,61,438,62,437,63,435,62,430,60,426,59,419,57,418,55,418,53,416,50,415,50,407,58,407,60,409,62,408,64,400,71,399,72,399,78,401,82,410,90,410,92,409,95,408,99,407,113,406,117,405,129,405,132,407,135,409,135,414,130,416,131" href="tuscany.php" state="Trentino Alto Adige" alt="Trentino Alto Adige" title="Trentino Alto Adige"/>
-
-						</map>
-							
-					</div> <!-- wrapper_map -->
-				</div> 
-			</div> <!-- row -->  
+			</div><!--row-->
 		</div><!--main-content -->
 	</div><!--container-->
-</section> 
+</section>
