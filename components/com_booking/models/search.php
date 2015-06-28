@@ -35,5 +35,24 @@ class BookingModelSearch extends JModelList
 		
 		return $result;
 	}
+	
+	function getFilters(){
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query
+			->select($db->quoteName(array('key', 'value')))
+			->from($db->quoteName('#__settings'))
+			->where($db->quoteName('id') . ' IN (1,2,3,4,5,6,7,8,9)');
+		 
+		$db->setQuery($query);
+		 
+		$filters = $db->loadObjectList();
+		
+		foreach($filters as $key=>$filter){
+			$filters[$filter->key] = $filter->value;
+			unset($filters[$key]);
+		}
+		return $filters;
+	}
 
 }

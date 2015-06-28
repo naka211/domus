@@ -69,8 +69,16 @@ JHTML::_('behavior.formvalidator');
                 $(this).attr('href', $("#slideshow-main li.active img").attr("src"));
             });
 	    	//Js for datepicker
-            $( ".date-input" ).datepicker({
-                "option"    :$.datepicker.regional[ "da" ]
+            $( "#start_date" ).datepicker({
+                "option"    :$.datepicker.regional[ "da" ],
+				minDate: 0,
+				onSelect: function(selected) {
+				  $("#end_date").datepicker("option","minDate", selected)
+				}
+            });
+			$( "#end_date" ).datepicker({
+                "option"    :$.datepicker.regional[ "da" ],
+				minDate: 1
             });
 
             // JS for POPUP Login

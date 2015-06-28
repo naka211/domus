@@ -27,6 +27,7 @@ class BookingViewSearch extends JViewLegacy {
 		$this->params = $app->getParams('com_booking');
 		
 		$this->category = $this->get('Category');
+		$this->filters = $this->get('Filters');
         $this->_prepareDocument();
         parent::display($tpl);
     }

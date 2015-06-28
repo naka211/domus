@@ -44,4 +44,16 @@ class BookingControllerHome extends BookingController
 		}
 		die($html);
 	}
+	
+	function getTown(){
+		$subzone = JRequest::getVar('subzone');
+		
+		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.$subzone.'/api.xml');
+
+		$html = '';
+		foreach($towns->town as $town){
+			$html .= '<option value="'.$town.'">'.$town.'</option>';
+		}
+		die($html);
+	}
 }

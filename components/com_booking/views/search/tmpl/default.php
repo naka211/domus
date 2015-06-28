@@ -3,6 +3,17 @@
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
 $params = json_decode($this->category->params);
+$zones = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+
+if(JRequest::getVar('zone')){
+	$subzones = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/subzones_in_zone/zone/'.JRequest::getVar('zone').'/depth/1/api.xml');
+	if(JRequest::getVar('subzone')){
+		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('subzone').'/api.xml');
+	} else {
+		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('zone').'/api.xml');
+	}
+	
+}
 ?>
 <script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script>  
 <section class="content clearfix">
@@ -14,70 +25,51 @@ $params = json_decode($this->category->params);
 						<form> 
 							<div class="each_wrapper wrap_option">
 								<div class="option">
-									<select class="form-control mb10">
-										<option>Any Region</option>
-										<option>Tuscany</option>
-										<option>Veneto</option>
-										<option>Amalfi Coast</option>
-										<option>Sicily</option>
-										<option>Umbria</option>
-										<option>Lake Garda and Lake Maggiore</option>
-										<option>Lombardy</option>
-										<option>Sardinia</option>
-										<option>Liguria</option>
-										<option>Lazio</option>
-										<option>Marche</option>
-										<option>Piedmont</option>
+									<select class="form-control mb10" name="zone" id="zone">
+										<option value="0">Any Region</option>
+										<?php foreach($zones->zone as $item){?>
+										<option value="<?php echo $item['code'];?>" <?php if($item['code'] == JRequest::getVar('zone')) echo 'selected';?>><?php echo $item->name;?></option>
+										<?php }?>
 									</select>
 									<select class="form-control mb10">
-										<option>Any Town</option>
-										<option>Tuscany</option>
-										<option>Veneto</option>
-										<option>Amalfi Coast</option>
-										<option>Sicily</option>
-										<option>Umbria</option>
-										<option>Lake Garda and Lake Maggiore</option>
-										<option>Lombardy</option>
-										<option>Sardinia</option>
-										<option>Liguria</option>
-										<option>Lazio</option>
-										<option>Marche</option>
-										<option>Piedmont</option>
+										<option value="0">Any Town</option>
+										<?php 
+										if(JRequest::getVar('zone')){
+										foreach($subzones->zone as $item){?>
+										<option value="<?php echo $item['code'];?>" <?php if($item['code'] == JRequest::getVar('subzone')) echo 'selected';?>><?php echo $item->name;?></option>
+										<?php }}?>
 									</select>
 								</div>
 								<div class="option">
 									<select class="form-control mb10">
-										<option>Any Area</option>
-										<option>Tuscany</option>
-										<option>Veneto</option>
-										<option>Amalfi Coast</option>
-										<option>Sicily</option>
-										<option>Umbria</option>
-										<option>Lake Garda and Lake Maggiore</option>
-										<option>Lombardy</option>
-										<option>Sardinia</option>
-										<option>Liguria</option>
-										<option>Lazio</option>
-										<option>Marche</option>
-										<option>Piedmont</option>
+										<option value="0">Any Area</option>
+										<?php 
+										if(JRequest::getVar('zone')){
+										foreach($towns->town as $item){?>
+										<option value="<?php echo $item;?>" <?php if($item == JRequest::getVar('town')) echo 'selected';?>><?php echo $item;?></option>
+										<?php }}?>
 									</select>
 									<select class="form-control">
-										<option>Person</option>
-										<option>Anny</option>
-										<option>1</option>
-										<option>2 Coast</option>
-										<option>....</option>
+										<option value="0">Person</option>
+										<option value="Any" <?php if(JRequest::getVar('person')=='Any') echo 'selected';?>>Any</option>
+										<?php for($i=2; $i<=30; $i++){?>
+										<option value="<?php echo $i;?>" <?php if(JRequest::getVar('person')==$i) echo 'selected';?>><?php echo $i;?></option>
+										<?php }?>
 									</select>
 								</div>
 								<div class="option option_day">
-									<input type="text" class="form-control date-input mb10" placeholder="Starting date">
-									<input type="text" class="form-control date-input" placeholder="Ending date">
+									<input id="start_date" name="start_date" type="text" class="form-control date-input mb10" placeholder="Starting date" value="<?php echo JRequest::getVar('start_date');?>">
+									<input id="end_date" name="end_date" type="text" class="form-control date-input" placeholder="Ending date" value="<?php echo JRequest::getVar('end_date');?>">
 								</div>
 							</div><!-- each_wrapper -->
-							<div class="each_wrapper wrap_checbox">  
+							<div class="each_wrapper wrap_checbox">
+								<?php if($this->filters['apartment']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Apartment</label>
+									<label>
+									  <input type="checkbox" name="apartment" value="1" <?php if(JRequest::getVar('apartment')) echo 'checked';?>> Apartment
+									</label>
 								</div>
+								<?php }?>  
 								<div class="checkbox">
 									<label><input type="checkbox"> Independent house</label>
 								</div>

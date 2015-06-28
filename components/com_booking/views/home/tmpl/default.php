@@ -7,8 +7,12 @@ $tmpl = JURI::base().'templates/domus/';
 $(document).ready(function(){
 	$("#zone").change(function(e) {
 		var zone = $("#zone").val();
-		$("#subzone").attr("disabled");
+		$("#subzone").attr("disabled","disabled");
 		$('#subzone option[value!="0"]').remove();
+		
+		$("#town").attr("disabled","disabled");
+		$('#town option[value!="0"]').remove();
+		
 		$.ajax({
 			method: "POST",
 			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getSubzone",
@@ -16,6 +20,29 @@ $(document).ready(function(){
 		}).done(function( html ) {
 			$("#subzone").append(html);
 			$("#subzone").removeAttr("disabled");
+		});
+		
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getTown",
+			data: { subzone: zone }
+		}).done(function( html ) {
+			$("#town").append(html);
+			$("#town").removeAttr("disabled");
+		});
+	});
+	
+	$("#subzone").change(function(e) {
+		var subzone = $("#subzone").val();
+		$("#town").attr("disabled","disabled");
+		$('#town option[value!="0"]').remove();
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getTown",
+			data: { subzone: subzone }
+		}).done(function( html ) {
+			$("#town").append(html);
+			$("#town").removeAttr("disabled");
 		});
 	});
 });
@@ -107,41 +134,28 @@ $(document).ready(function(){
 							<select class="form-control mb10" name="zone" id="zone">
 								<option value="0">Any Region</option>
 								<?php foreach($des->zone as $item){?>
-								<option value="<?php echo  $item['code'];?>"><?php echo $item->name;?></option>
+								<option value="<?php echo $item['code'];?>"><?php echo $item->name;?></option>
 								<?php }?>
 							</select>
 							<select class="form-control mb10" name="subzone" id="subzone">
 								<option value="0">Any Town</option>
-								
 							</select>
 						</div>
 						<div class="option">
-							<select class="form-control mb10">
-								<option>Any Area</option>
-								<option>Tuscany</option>
-								<option>Veneto</option>
-								<option>Amalfi Coast</option>
-								<option>Sicily</option>
-								<option>Umbria</option>
-								<option>Lake Garda and Lake Maggiore</option>
-								<option>Lombardy</option>
-								<option>Sardinia</option>
-								<option>Liguria</option>
-								<option>Lazio</option>
-								<option>Marche</option>
-								<option>Piedmont</option>
+							<select class="form-control mb10" name="town" id="town">
+								<option value="0">Any Area</option>
 							</select>
-							<select class="form-control">
-								<option>Person</option>
-								<option>Anny</option>
-								<option>1</option>
-								<option>2 Coast</option>
-								<option>....</option>
+							<select class="form-control" name="person">
+								<option value="0">Person</option>
+								<option value="Any">Any</option>
+								<?php for($i=2; $i<=30; $i++){?>
+								<option value="<?php echo $i;?>"><?php echo $i;?></option>
+								<?php }?>
 							</select>
 						</div>
 						<div class="option option_day">
-							<input type="text" class="form-control date-input mb10" placeholder="Starting date">
-							<input type="text" class="form-control date-input" placeholder="Ending date">
+							<input id="start_date" name="start_date" type="text" class="form-control date-input mb10" placeholder="Starting date">
+							<input id="end_date" name="end_date" type="text" class="form-control date-input" placeholder="Ending date">
 						</div>
 						
 						<div class="option">
