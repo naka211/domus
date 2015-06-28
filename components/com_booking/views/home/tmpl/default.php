@@ -3,6 +3,23 @@
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
 ?>
+<script language="javascript">
+$(document).ready(function(){
+	$("#zone").change(function(e) {
+		var zone = $("#zone").val();
+		$("#subzone").attr("disabled");
+		$('#subzone option[value!="0"]').remove();
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getSubzone",
+			data: { zone: zone }
+		}).done(function( html ) {
+			$("#subzone").append(html);
+			$("#subzone").removeAttr("disabled");
+		});
+	});
+});
+</script>
 <section class="banner">
 	<div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
 	   <!-- Carousel items -->
@@ -87,26 +104,15 @@ $tmpl = JURI::base().'templates/domus/';
 							<?php 
 							$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
 							?>
-							<select class="form-control mb10" name="zone">
+							<select class="form-control mb10" name="zone" id="zone">
 								<option value="0">Any Region</option>
 								<?php foreach($des->zone as $item){?>
-								<option value="<?php echo  strtolower($item->name)?>"><?php echo $item->name;?></option>
+								<option value="<?php echo  $item['code'];?>"><?php echo $item->name;?></option>
 								<?php }?>
 							</select>
-							<select class="form-control mb10">
-								<option>Any Town</option>
-								<option>Tuscany</option>
-								<option>Veneto</option>
-								<option>Amalfi Coast</option>
-								<option>Sicily</option>
-								<option>Umbria</option>
-								<option>Lake Garda and Lake Maggiore</option>
-								<option>Lombardy</option>
-								<option>Sardinia</option>
-								<option>Liguria</option>
-								<option>Lazio</option>
-								<option>Marche</option>
-								<option>Piedmont</option>
+							<select class="form-control mb10" name="subzone" id="subzone">
+								<option value="0">Any Town</option>
+								
 							</select>
 						</div>
 						<div class="option">

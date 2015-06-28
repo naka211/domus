@@ -27,7 +27,7 @@ class BookingModelSearch extends JModelList
 		$query
 			->select($db->quoteName(array('id', 'title', 'description', 'params')))
 			->from($db->quoteName('#__categories'))
-			->where($db->quoteName('alias') . ' LIKE \''.$zone.'\'');
+			->where($db->quoteName('note') . ' LIKE \''.$zone.'\'');
 		 
 		$db->setQuery($query);
 		 

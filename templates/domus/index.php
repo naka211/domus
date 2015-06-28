@@ -123,7 +123,7 @@ JHTML::_('behavior.formvalidator');
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="index.php?option=com_booking&view=search&zone=tuscany">Tuscany</a></li>
+					<li><a href="index.php?option=com_booking&view=search&zone=TOS">Tuscany</a></li>
 					<li><a href="index.php?option=com_content&view=">Venice</a></li>
 					<li><a href="tuscany.php">Villas</a></li>
 					<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Other Destinations <b class="caret"></b></a>
@@ -178,11 +178,11 @@ JHTML::_('behavior.formvalidator');
 					<div class="col-md-3 col-xs-6 col-2">
 						<h2>Destinations</h2>
 						<?php 
-						$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');print_r($des);exit;
+						$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
 						?>
 						<ul>
 						<?php foreach($des->zone as $item){?>
-							<li><a href="index.php?option=com_booking&view=search&zone=<?php echo JFilterOutput::stringURLSafe($item->name);?>"><?php echo $item->name;?></a></li>
+							<li><a href="index.php?option=com_booking&view=search&zone=<?php echo $item['code'];?>"><?php echo $item->name;?></a></li>
 						<?php }?>
 						</ul>
 					</div>
@@ -268,7 +268,7 @@ JHTML::_('behavior.formvalidator');
 	<?php if(JUri::getInstance()->toString() == JUri::base()){?>
     <script> 
 	  $(document).ready(function() {
-	    $("#myModal").modal('show'); 
+	    //$("#myModal").modal('show'); 
 	});
   	</script>
 	{module AcyMailing Module Popup}
