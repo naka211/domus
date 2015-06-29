@@ -18,8 +18,12 @@ class BookingModelSearch extends JModelList
 {
 
 	function getCategory(){
-		$zone = JRequest::getVar('zone');
-		
+		if(JRequest::getVar('subzone')){
+			$zone = JRequest::getVar('subzone');
+		} else {
+			$zone = JRequest::getVar('zone');
+		}
+
 		$db = JFactory::getDbo();
 		 
 		$query = $db->getQuery(true);

@@ -15,14 +15,58 @@ if(JRequest::getVar('zone')){
 	
 }
 ?>
-<script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script>  
+<script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script> 
+<script language="javascript">
+$(document).ready(function(){
+	$("#zone").change(function(e) {
+		var zone = $("#zone").val();
+		$("#subzone").attr("disabled","disabled");
+		$('#subzone option[value!="0"]').remove();
+		
+		$("#town").attr("disabled","disabled");
+		$('#town option[value!="0"]').remove();
+		
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getSubzone",
+			data: { zone: zone }
+		}).done(function( html ) {
+			$("#subzone").append(html);
+			$("#subzone").removeAttr("disabled");
+		});
+		
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getTown",
+			data: { subzone: zone }
+		}).done(function( html ) {
+			$("#town").append(html);
+			$("#town").removeAttr("disabled");
+		});
+	});
+	
+	$("#subzone").change(function(e) {
+		var subzone = $("#subzone").val();
+		$("#town").attr("disabled","disabled");
+		$('#town option[value!="0"]').remove();
+		$.ajax({
+			method: "POST",
+			url: "<?php echo JURI::base();?>index.php?option=com_booking&task=home.getTown",
+			data: { subzone: subzone }
+		}).done(function( html ) {
+			$("#town").append(html);
+			$("#town").removeAttr("disabled");
+		});
+	});
+});
+</script> 
 <section class="content clearfix">
 	<div class="container pad0">
 		<div class="main-content clearfix"> 
 			<div class="row">
 				<div class="col-md-3 col-searchfilter"> 
 					<div class="search-filter-left">
-						<form> 
+						<form action="index.php" method="get"> 
 							<div class="each_wrapper wrap_option">
 								<div class="option">
 									<select class="form-control mb10" name="zone" id="zone">
@@ -31,7 +75,7 @@ if(JRequest::getVar('zone')){
 										<option value="<?php echo $item['code'];?>" <?php if($item['code'] == JRequest::getVar('zone')) echo 'selected';?>><?php echo $item->name;?></option>
 										<?php }?>
 									</select>
-									<select class="form-control mb10">
+									<select class="form-control mb10" name="subzone" id="subzone">
 										<option value="0">Any Town</option>
 										<?php 
 										if(JRequest::getVar('zone')){
@@ -41,7 +85,7 @@ if(JRequest::getVar('zone')){
 									</select>
 								</div>
 								<div class="option">
-									<select class="form-control mb10">
+									<select class="form-control mb10" name="town" id="town">
 										<option value="0">Any Area</option>
 										<?php 
 										if(JRequest::getVar('zone')){
@@ -49,7 +93,7 @@ if(JRequest::getVar('zone')){
 										<option value="<?php echo $item;?>" <?php if($item == JRequest::getVar('town')) echo 'selected';?>><?php echo $item;?></option>
 										<?php }}?>
 									</select>
-									<select class="form-control">
+									<select class="form-control" name="person">
 										<option value="0">Person</option>
 										<option value="Any" <?php if(JRequest::getVar('person')=='Any') echo 'selected';?>>Any</option>
 										<?php for($i=2; $i<=30; $i++){?>
@@ -70,35 +114,67 @@ if(JRequest::getVar('zone')){
 									</label>
 								</div>
 								<?php }?>  
+								<?php if($this->filters['independent_house']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Independent house</label>
+									<label>
+									  <input type="checkbox" name="independent_house" value="1" <?php if(JRequest::getVar('independent_house')) echo 'checked';?>> Independent house
+									</label>
 								</div>
+								<?php }?>
+								<?php if($this->filters['villa']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Villa</label>
+									<label>
+									  <input type="checkbox" name="villa" value="1" <?php if(JRequest::getVar('villa')) echo 'checked';?>> Villa
+									</label>
 								</div>
+								<?php }?>
+								<?php if($this->filters['pet_allowed']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Pet allowed</label>
+									<label>
+									  <input type="checkbox" name="pet_allowed" value="1" <?php if(JRequest::getVar('pet_allowed')) echo 'checked';?>> Pet allowed
+									</label>
 								</div>
+								<?php }?>
+								<?php if($this->filters['air_conditioning']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Air conditioning</label>
+									<label>
+									  <input type="checkbox" name="air_conditioning" value="1" <?php if(JRequest::getVar('air_conditioning')) echo 'checked';?>> Air conditioning
+									</label>
 								</div>
-								<div class="checkbox ">
-									<label><input type="checkbox"> Internet access</label>
-								</div>
+								<?php }?>
+								<?php if($this->filters['internet_access']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Swimming Pool</label>
+									<label>
+									  <input type="checkbox" name="internet_access" value="1" <?php if(JRequest::getVar('internet_access')) echo 'checked';?>> Internet access
+									</label>
 								</div>
+								<?php }?>
+								<?php if($this->filters['swimming_pool']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Golf course</label>
+									<label>
+									  <input type="checkbox" name="swimming_pool" value="1" <?php if(JRequest::getVar('swimming_pool')) echo 'checked';?>> Swimming Pool
+									</label>
 								</div>
+								<?php }?>
+								<?php if($this->filters['golf_course']){?>
 								<div class="checkbox">
-									<label><input type="checkbox"> Tennis</label>
-								</div> 
+									<label>
+									  <input type="checkbox" name="golf_course" value="1" <?php if(JRequest::getVar('golf_course')) echo 'checked';?>> Golf course
+									</label>
+								</div>
+								<?php }?>
+								<?php if($this->filters['tennis']){?>
+								<div class="checkbox">
+									<label>
+									  <input type="checkbox" name="tennis" value="1" <?php if(JRequest::getVar('tennis')) echo 'checked';?>> Tennis
+									</label>
+								</div>
+								<?php }?>
 							</div> <!--  wrap_checbox -->         
 							<script>  
 							   $(function(){ 
 								  $('#range-1').noUiSlider({
-									 start: [ 0, 10000 ],
+									 start: [ <?php echo JRequest::getVar('upper_value')?>, <?php echo JRequest::getVar('lower_value')?> ],
 									 step: 500,
 									 margin: 20,
 									 connect: true,
@@ -118,19 +194,30 @@ if(JRequest::getVar('zone')){
 									 }
 								  }); 
 								   // ruler
+								   	$('#range-1').Link('upper').to($('#lower_value'));
+									$('#range-1').Link('lower').to($('#upper_value'));
+									
+									$('#range-1').Link('upper').to($('.lb_max'), 'html');
+									$('#range-1').Link('lower').to($('.lb_min'), 'html');
+									
 									$('#range-1').noUiSlider_pips({
 										mode: 'values',
-										values: [1000, ,2000,3000,4000, 5000,6000,7000,8000,9000],
+										values: [1000,2000,3000,4000, 5000,6000,7000,8000,9000],
 										density: 10
 									});
 					
 							   }); 
 							</script>
 							<div class="each_wrapper wrap-filter-price">
-								<p>Pris <span>(samlet)</span></p>
-								<div class="range_price"><span class="lb_min">€0</span> <span class="lb_max">€10000</span></div> 
+								<p>Pris(€) <span>(samlet)</span></p>
+								<div class="range_price"><span class="lb_min">0</span> <span class="lb_max">10000</span></div> 
 								<div id="range-1"></div> 
 							</div>
+							<input id="lower_value" name="lower_value" type="hidden">
+							<input id="upper_value" name="upper_value" type="hidden">
+							<input type="submit" class="btn btnSearch" value="Search" />
+							<input type="hidden" name="option" value="com_booking" />
+							<input type="hidden" name="view" value="search" />
 						</form>
 					</div><!--search-filter-left-->
 				</div><!--col-searchfilter-->
