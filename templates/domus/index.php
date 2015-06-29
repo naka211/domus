@@ -104,6 +104,7 @@ JHTML::_('behavior.formvalidator');
 
             //JS for button Close cookie
             $('.btnClose').click(function(e) {
+				jQuery.post("<?php echo JURI::base().'index.php?option=com_booking&task=home.set_session'?>");
                 e.preventDefault();
                 jQuery('.cookies').toggle('slide');
             });
@@ -162,13 +163,7 @@ JHTML::_('behavior.formvalidator');
 	<jdoc:include type="component" />
 	<?php //print_r($session->get('notify'));exit;
 	if($session->get('notify') != 1){?>
-        <script language="javascript">
-	$(document).ready(function() {
-		$(".btnClose").click(function(event) {
-			jQuery.post("<?php echo JURI::base().'index.php?option=com_booking&task=home.set_session'?>");
-		});
-	});
-	</script>
+        
     <div class="cookies">
     	<p>Domus Holidays anvender cookies til analyse og<br> genkendelse.</p>
     	<a class="btnClose" href="javascript:void(0);">Luk</a>
@@ -254,12 +249,6 @@ JHTML::_('behavior.formvalidator');
 			</div><!-- formcontactMe -->
 		</div><!--boxContent-->
 	</div><!--boxContact-->
-	
-	<div id="popupMap_min" style="display:none;">
-		<div class="wrap_popupMap_min">
-			<iframe width="578" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=43.856076,10.64957&amp;z=13&amp;output=embed"></iframe>
-		</div><!-- wrap_popupMap -->
-	</div><!-- popupMap --> 
 	
 	<div id="popupMap_larger" style="display:none;">
 		<div class="wrap_popupMap_larger">
