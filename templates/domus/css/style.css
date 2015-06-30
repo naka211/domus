@@ -330,7 +330,7 @@ ul.list-result-item-footer {list-style: none;}
 .each_box_info .header-meta p {font-size: 16px; font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica; font-weight: bold; color: #444}
 .each_box_info .header-meta i {font-size: 25px; opacity: 0.6; vertical-align: middle; margin-right: 5px;}
 .each_box_info .row_equipment ul { padding-left: 0;}
-.row_equipment ul li {display: inline-block; min-width: 150px}
+.row_equipment ul li {display: inline-block; min-width: 200px}
 .infomations .btn-book {margin: 10px 0;}
 .infomations .header-meta {  margin-bottom: 18px;}
 
@@ -479,12 +479,12 @@ img.img_article {margin: 12px 0 15px 0;}
 .jcarousel-skin-tango .jcarousel-container-vertical {height: 0;}
 .jcarousel-skin-tango .jcarousel-item {height: auto;}
 .jcarousel-skin-tango .jcarousel-clip-vertical {height: 548px;}
-#slideshow-main li a img {width: 100%; }
+#slideshow-main li a img {width: 100%; max-height:500px; }
 #slideshow-carousel {padding-left: 0;}
 #slideshow-carousel li {margin-bottom: 10px; max-width: 100%;}
 .jcarousel-skin-tango .jcarousel-prev-vertical { top: -42px; left: auto; right: 0;}
 .jcarousel-skin-tango .jcarousel-next-vertical {left: auto; right: 40px;}
-
+#carousel img{max-height:120px;}
 .invalid{border:1px solid red !important;}
 
 /*Popup Fancy Newletter*/

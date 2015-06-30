@@ -45,6 +45,19 @@ $(document).ready(function(){
 			$("#town").removeAttr("disabled");
 		});
 	});
+	
+	//Js for datepicker
+	$( "#start_date" ).datepicker({
+		"option"    :$.datepicker.regional[ "da" ],
+		minDate: 0,
+		onSelect: function(selected) {
+		  	$( "#end_date" ).datepicker({
+				"option"    :$.datepicker.regional[ "da" ],
+				minDate: selected
+			});
+		}
+	});
+	
 });
 </script>
 <section class="banner">
@@ -58,7 +71,7 @@ $(document).ready(function(){
 				<div class="row mb10">
 					<div class="col-md-12">
 						<h2>Find your italian villa in Tuscany and other regions</h2>
-						<div class="form-inline">
+						<!--<div class="form-inline">
 							<?php if($this->filters['apartment']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
@@ -122,7 +135,7 @@ $(document).ready(function(){
 								</label>
 							</div>
 							<?php }?>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				<div class="row">

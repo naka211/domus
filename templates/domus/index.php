@@ -49,6 +49,7 @@ JHTML::_('behavior.formvalidator');
  	    
     <!-- jQuery   -->   
     <script src="<?php echo $tmpl;?>js/jquery-1.11.1.min.js"></script>
+	<script src="<?php echo $tmpl;?>js/jquery-migrate.min.js"></script>
     <script src="<?php echo $tmpl;?>js/bootstrap.min.js"></script>
     <script src="<?php echo $tmpl;?>js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="<?php echo $tmpl;?>js/jquery.ui.datepicker-da.js"></script>
@@ -67,18 +68,6 @@ JHTML::_('behavior.formvalidator');
             //Get 'href' for button Zoom on detail-page
             $('.btn_zoom').click(function(){
                 $(this).attr('href', $("#slideshow-main li.active img").attr("src"));
-            });
-	    	//Js for datepicker
-            $( "#start_date" ).datepicker({
-                "option"    :$.datepicker.regional[ "da" ],
-				minDate: 0,
-				onSelect: function(selected) {
-				  $("#end_date").datepicker("option","minDate", selected)
-				}
-            });
-			$( "#end_date" ).datepicker({
-                "option"    :$.datepicker.regional[ "da" ],
-				minDate: 1
             });
 
             // JS for POPUP Login

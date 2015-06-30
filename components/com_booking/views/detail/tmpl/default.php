@@ -3,7 +3,7 @@
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
 $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/description:1,amenities:1,pictures:1,prices:1,extraprices:1,calendar:1/house/'.JRequest::getVar('id').'/api.xml');
-/*print_r($detail->extracost->included->price[1]);exit;*/
+/*print_r($detail->bookingconditions->condition[0]->startday);exit;*/
 ?>
 <script type="text/javascript">
     $(document).ready(function () {  
@@ -43,6 +43,44 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
         // $('div#slideshow-carousel a img').css({'opacity': '0.5'});
         // $('div#slideshow-carousel a img:first').css({'opacity': '1.0'});
         // $('div#slideshow-carousel li a:first').append('<span class="arrow"></span>')
+		
+		//Js for datepicker
+		$( "#start_date" ).datepicker({
+			"option"    :$.datepicker.regional[ "da" ],
+			minDate: 0,
+			onSelect: function(selected) {
+				$( "#end_date" ).datepicker({
+					"option"    :$.datepicker.regional[ "da" ],
+					minDate: selected,
+					beforeShowDay: function(date){
+					  if(date.getDay() == <?php echo $detail->bookingconditions->condition[0]->startday;?>){
+							return [true];
+						} else {
+							return [false];
+						}
+					}
+				});
+			},
+			beforeShowDay: function(date){
+			  if(date.getDay() == <?php echo $detail->bookingconditions->condition[0]->startday;?>){
+					return [true];
+				} else {
+					return [false];
+				}
+			}
+		});
+		$('#loading_image').hide();
+		$("#end_date").change(function(e) {
+			$('#loading_image').show();
+			$.ajax({
+				method: "POST",
+				url: "<?php echo JURI::base();?>index.php?option=com_booking&task=detail.getPrice",
+				data: { start_date: $("#start_date").val(), end_date: $("#end_date").val(), id: <?php echo JRequest::getVar('id');?> }
+			}).done(function( html ) {
+				$('#loading_image').hide();
+				console.log(html);
+			});
+		});
     });
 
     //$(".btn_zoom").attr("href", $("#slideshow-main li.active img").attr("src"));
@@ -68,46 +106,30 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 						<a rel="gallery1" href="#" class="btn_zoom fancybox"><i class="fa fa-search-plus"></i> Zoom</a>
 						<ul>
 							<li class="p1 active">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_01_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_01_lg.jpg"  alt=""/> 
+								<a rel="gallery1" href="<?php echo $detail->pictures->mainpicture['path'];?>" class="fancybox">
+									<img src="<?php echo $detail->pictures->mainpicture['path'];?>"  alt=""/> 
 								</a>
 							</li>
-							<li class="p2">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_02_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_02_lg.jpg"  alt=""/> 
+							<?php 
+							$p = 2;
+							foreach($detail->pictures->picture as $picture){?>
+							<li class="p<?php echo $p;?>">
+								<a rel="gallery1" href="<?php echo $picture['path'];?>" class="fancybox">
+									<img src="<?php echo $picture['path'];?>"  alt="<?php echo $picture->description;?>"/> 
 								</a>
 							</li>
-							<li class="p3">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_03_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_03_lg.jpg" alt=""/> 
-								</a>
-							</li>
-							<li class="p4">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_04_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_04_lg.jpg" alt=""/> 
-								</a>
-							</li>
-							<li class="p5">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_05_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_05_lg.jpg" alt=""/> 
-								</a>
-							</li>
-							<li class="p6">
-								<a rel="gallery1" href="<?php echo $tmpl;?>img/gallery_06_lg.jpg" class="fancybox">
-									<img src="<?php echo $tmpl;?>img/gallery_06_lg.jpg" alt=""/> 
-								</a>
-							</li> 
+							<?php $p++;}?>
 						</ul>                                       
 					</div><!-- slideshow-main -->
 							
 					<div id="slideshow-carousel"  class="col-xs-3 col-sm-2">               
 						  <ul id="carousel" class="jcarousel jcarousel-skin-tango">
-							<li><a href="" rel="p1" ><img src="<?php echo $tmpl;?>img/gallery_01_lg.jpg" alt="#"/></a></li>
-							<li><a href="#" rel="p2"><img src="<?php echo $tmpl;?>img/gallery_02_lg.jpg" alt="#"/></a></li>
-							<li><a href="#" rel="p3"><img src="<?php echo $tmpl;?>img/gallery_03_lg.jpg" alt="#"/></a></li>
-							<li><a href="#" rel="p4"><img src="<?php echo $tmpl;?>img/gallery_04_lg.jpg" alt="#"/></a></li>
-							<li><a href="#" rel="p5"><img src="<?php echo $tmpl;?>img/gallery_05_lg.jpg" alt="#"/></a></li>
-							<li><a href="#" rel="p6"><img src="<?php echo $tmpl;?>img/gallery_06_lg.jpg" alt="#"/></a></li> 
+							<li><a href="" rel="p1" ><img src="<?php echo $detail->pictures->mainpicture['path'];?>" alt="<?php echo $detail->pictures->mainpicture->description;?>"/></a></li>
+							<?php 
+							$p = 2;
+							foreach($detail->pictures->picture as $picture){?>
+							<li><a href="#" rel="p<?php echo $p;?>"><img src="<?php echo $picture['path'];?>" alt="<?php echo $picture->description;?>"/></a></li>
+							<?php $p++;}?>
 						  </ul>
 					</div><!-- slideshow-carousel -->
 				</div><!-- row -->
@@ -150,22 +172,42 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 							<div class="each_row row_equipment">
 								<label>Equipment: </label>
 								<ul>
-									<?php foreach($detail->amenities->amenity as $amenity){?>
+									<?php foreach($detail->amenities->amenity as $amenity){
+									if($amenity->categories->category->name == "Equipment"){
+									?>
 									<li><?php echo $amenity->name;?></li>
-									<?php }?>
+									<?php }}?>
 								</ul>
 							</div> 
 						</div>
 						<div class="each_box_info">
-							<div class="each_row"><label>Activities:</label></div>
-							<div class="each_row">
-								<p><?php echo $detail->descriptions->interior;?></p>
-								<p><?php echo $detail->descriptions->distances;?></p> 
-							</div> 
+							<div class="each_row row_equipment">
+								<label>Services:</label>
+								<ul>
+									<?php foreach($detail->amenities->amenity as $amenity){
+									if($amenity->categories->category->name == "Services"){
+									?>
+									<li><?php echo $amenity->name;?></li>
+									<?php }}?>
+								</ul>
+							</div>
+						</div>
+						<div class="each_box_info">
+							<div class="each_row row_equipment">
+								<label>Activities:</label>
+								<ul>
+									<?php foreach($detail->amenities->amenity as $amenity){
+									if($amenity->categories->category->name == "Activities"){
+									?>
+									<li><?php echo $amenity->name.': '.$amenity->value.' '. $amenity->metrics;?></li>
+									<?php }}?>
+								</ul>
+							</div>
 						</div>
 						<div class="each_box_info">
 							<div class="header-meta">
-							  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
+							  <!--<p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>-->
+							  <p><i class="fa fa-tag"></i><span class="price"><img id="loading_image" src="<?php echo JURI::base().'images/loading.gif';?>" /></span></p>
 							</div>
 						</div>
 					</div> <!-- col-sm-6 --> 
@@ -174,16 +216,16 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 							<div class="house-booking-form text-center alert-success alert">
 								<p class="lead">Vælg datoer for tilgængelighed og priser</p>
 								<hr>
-								<form  class="book-house-form form-inline"> 
+								<form class="book-house-form form-inline"> 
 									<div class="row">
 										<div class="col-xs-6">
 											<div class="input-group ">
-												<input type="text" class="form-control date-input" placeholder="Check in"> 
+												<input type="text" class="form-control date-input" placeholder="Check in" id="start_date" name="start_date"> 
 											</div>
 										</div>
 										<div class=" col-xs-6">
 											<div class="input-group ">
-												<input type="text" class="form-control date-input" placeholder="Check ud">
+												<input type="text" class="form-control date-input" placeholder="Check ud" id="end_date" name="end_date">
 											</div>
 										</div>
 									</div>
@@ -205,8 +247,20 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 							<div class="each_row">
 								<label>Extra costs to be paid on the spot</label>
 								<ul>
-									<li>Refundable deposit in cash (to be handed over on arrival) (per booking): 100,00 EUR</li> 
-									<li>Possible tourist tax to be paid locally (price depending on each municipality).</li> 
+									<?php foreach($detail->extracost->extra->price as $item){
+										$value = '';
+										if($item->rules != 3){
+											if($item->rules == 2){
+												if($item->value != '0.00'){
+													$value = ': '.$item->value.' '.$item->currency;
+												}
+											} else if($item->rules == 0){
+												$value = ': Upon consumption';
+											}
+											
+									?>
+									<li><?php echo $item->description.$value;?></li> 
+									 <?php }}?>
 								</ul>
 							</div> 
 						</div>
@@ -214,8 +268,15 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 							<div class="each_row">
 								<label>Optional extra services on request </label>
 								<ul>
-									<li>Extra bed: children from 7 up to 12 per person/day: 25,00 EUR</li> 
-									<li>Extra bed: children/adults over 13 years per person/day: 30,00 EUR</li>    
+									<?php foreach($detail->extracost->extra->price as $item){
+										$value = '';
+										if($item->rules == 3){
+											if($item->value != '0.00'){
+												$value = ': '.$item->value.' '.$item->currency;
+											}
+									?>
+									<li><?php echo $item->description.$value;?></li> 
+									 <?php }}?>
 								</ul>
 							</div> 
 						</div>

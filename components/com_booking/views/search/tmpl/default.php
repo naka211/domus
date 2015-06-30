@@ -106,6 +106,7 @@ $(document).ready(function(){
 									<input id="end_date" name="end_date" type="text" class="form-control date-input" placeholder="Ending date" value="<?php echo JRequest::getVar('end_date');?>">
 								</div>
 							</div><!-- each_wrapper -->
+							<?php /*?>
 							<div class="each_wrapper wrap_checbox">
 								<?php if($this->filters['apartment']){?>
 								<div class="checkbox">
@@ -215,6 +216,7 @@ $(document).ready(function(){
 							</div>
 							<input id="lower_value" name="lower_value" type="hidden">
 							<input id="upper_value" name="upper_value" type="hidden">
+							<?php */?>
 							<input type="submit" class="btn btnSearch" value="Search" />
 							<input type="hidden" name="option" value="com_booking" />
 							<input type="hidden" name="view" value="search" />
