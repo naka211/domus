@@ -2,8 +2,21 @@
 // no direct access
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
-$detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/description:1,amenities:1,pictures:1,prices:1,extraprices:1,calendar:1/house/'.JRequest::getVar('id').'/api.xml');
-/*print_r($detail->bookingconditions->condition[0]->startday);exit;*/
+$detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/description:1,amenities:1,pictures:1,prices:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml');
+$get = file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/calendar:1/house/'.JRequest::getVar('id').'/api.xml');
+$get = str_replace('">A</status>', '"><a>A</a></status>', $get);
+$get = str_replace('">O</status>', '"><a>O</a></status>', $get);
+$get = str_replace('">B</status>', '"><a>B</a></status>', $get);
+$get = str_replace('">U</status>', '"><a>U</a></status>', $get);
+$calendar = simplexml_load_string($get);
+$disable = '';
+foreach($calendar->calendar->status as $key=>$item){
+	if($item->a != "A"){
+		$disable .= '"'.substr($item['date'],0,4).'-'.substr($item['date'],4,2).'-'.substr($item['date'],6,2).'",';
+	}
+	unset($calendar->calendar->status[$key]);
+}
+$disable = rtrim($disable, ',');
 ?>
 <script type="text/javascript">
     $(document).ready(function () {  
@@ -45,15 +58,31 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
         // $('div#slideshow-carousel li a:first').append('<span class="arrow"></span>')
 		
 		//Js for datepicker
+		var array = [<?php echo $disable;?>];
 		$( "#start_date" ).datepicker({
 			"option"    :$.datepicker.regional[ "da" ],
 			minDate: 0,
-			onSelect: function(selected) {
+			onSelect: function(selected, inst) {
+				<?php if($calendar->bookingconditions->condition[0]->minstay){?>
+				var minDateValue = $('#start_date').datepicker('getDate');
+				minDateValue.setDate(minDateValue.getDate()+<?php echo $calendar->bookingconditions->condition[0]->minstay;?>);
+				<?php } else {?>
+				var minDateValue = selected;
+				<?php }?>
+				<?php if($calendar->bookingconditions->condition[0]->maxstay){?>
+				var maxDateValue = $('#start_date').datepicker('getDate');
+				maxDateValue.setDate(maxDateValue.getDate()+<?php echo $calendar->bookingconditions->condition[0]->maxstay;?>);
+				<?php } else {?>
+				var maxDateValue = '';
+				<?php }?>
+				
 				$( "#end_date" ).datepicker({
 					"option"    :$.datepicker.regional[ "da" ],
-					minDate: selected,
+					minDate: minDateValue,
+					maxDate: maxDateValue,
 					beforeShowDay: function(date){
-					  if(date.getDay() == <?php echo $detail->bookingconditions->condition[0]->startday;?>){
+						var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+					  	if((date.getDay() == <?php echo $calendar->bookingconditions->condition[0]->startday;?>) && (array.indexOf(string) == -1)){
 							return [true];
 						} else {
 							return [false];
@@ -62,7 +91,10 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 				});
 			},
 			beforeShowDay: function(date){
-			  if(date.getDay() == <?php echo $detail->bookingconditions->condition[0]->startday;?>){
+				var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+        		/*return [ array.indexOf(string) == -1 ];*/
+				
+				if((date.getDay() == <?php echo $calendar->bookingconditions->condition[0]->startday;?>) && (array.indexOf(string) == -1)){
 					return [true];
 				} else {
 					return [false];
@@ -216,7 +248,7 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 							<div class="house-booking-form text-center alert-success alert">
 								<p class="lead">Vælg datoer for tilgængelighed og priser</p>
 								<hr>
-								<form class="book-house-form form-inline"> 
+								<form class="book-house-form form-inline" action="index.php" method="post" id="bookingForm"> 
 									<div class="row">
 										<div class="col-xs-6">
 											<div class="input-group ">
@@ -229,6 +261,10 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 											</div>
 										</div>
 									</div>
+									<input type="hidden" name="id" value="<?php echo JRequest::getVar('id');?>" />
+									<input type="hidden" name="price" id="price" value="" />
+									<input type="hidden" name="option" value="com_booking" />
+									<input type="hidden" name="task" value="detail.order" />
 								</form> 
 							</div>  
 						</div> 
@@ -280,7 +316,7 @@ $detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/servi
 								</ul>
 							</div> 
 						</div>
-						<a href="orderbooking.php" class="btn btn-lg btn-book">BOOK BOLIGEN <i class="fa fa-angle-double-right"></i></a>
+						<a href="javascript:void(0);" onClick="document.getElementById('bookingForm').submit();" class="btn btn-lg btn-book">BOOK BOLIGEN <i class="fa fa-angle-double-right"></i></a>
 					</div><!-- col-sm-6 -->
 				</div>
 			</div><!-- infomations -->  
