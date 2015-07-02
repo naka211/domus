@@ -12,8 +12,51 @@ if(JRequest::getVar('zone')){
 	} else {
 		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('zone').'/api.xml');
 	}
-	
 }
+
+if(JRequest::getVar('end_date')){
+	$start_tmp = explode("-", JRequest::getVar('start_date'));
+	$start_time = mktime(0, 0, 0, $start_tmp[1], $start_tmp[0], $start_tmp[2]);
+	$end_tmp = explode("-", JRequest::getVar('end_date'));
+	$end_time = mktime(0, 0, 0, $end_tmp[1], $end_tmp[0], $end_tmp[2]);
+	
+	$number_of_days_time = $end_time - $start_time;
+	$number_of_days = floor($number_of_days_time/(60*60*24));
+	
+	$time_text = "from/".$start_tmp[0]."/".$start_tmp[1]."/".$start_tmp[2]."/nights/".$number_of_days."/";
+}
+
+$db = JFactory::getDBO();
+$db->setQuery("SELECT value FROM #__settings WHERE id = 11");
+$limit = $db->loadResult();
+$db->setQuery("SELECT value FROM #__settings WHERE id = 10");
+$rate = $db->loadResult();
+
+if(JRequest::getVar('start')){
+	$limit_text = "start/".JRequest::getVar('start')."/items/".$limit."/";
+	$start_view = JRequest::getVar('start');
+} else {
+	$limit_text = "start/0/items/".$limit."/";
+	$start_view = 1;
+}
+
+if(JRequest::getVar('zone')){
+	if(JRequest::getVar('subzone')){
+		if(JRequest::getVar('town')){
+			$zone_text = "town/".JRequest::getVar('town')."/";
+		} else {
+			$zone_text = "zone/".JRequest::getVar('subzone')."/";
+		}
+	} else {
+		$zone_text = "zone/".JRequest::getVar('zone')."/";
+	}
+	
+} else {
+	$zone_text = "";
+}
+
+$link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."/country/ITA/".$zone_text.$time_text."/data/description:1,pictures:1,prices:1/api.xml";
+$houses = simplexml_load_file($link);
 ?>
 <script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script> 
 <script language="javascript">
@@ -58,6 +101,18 @@ $(document).ready(function(){
 			$("#town").removeAttr("disabled");
 		});
 	});
+	
+	//Js for datepicker
+	$( "#start_date" ).datepicker({
+		"option"    :$.datepicker.regional[ "da" ],
+		minDate: 0,
+		onSelect: function(selected) {
+		  	$( "#end_date" ).datepicker({
+				"option"    :$.datepicker.regional[ "da" ],
+				minDate: selected
+			});
+		}
+	});
 });
 </script> 
 <section class="content clearfix">
@@ -93,13 +148,13 @@ $(document).ready(function(){
 										<option value="<?php echo $item;?>" <?php if($item == JRequest::getVar('town')) echo 'selected';?>><?php echo $item;?></option>
 										<?php }}?>
 									</select>
-									<select class="form-control" name="person">
+									<!--<select class="form-control" name="person">
 										<option value="0">Person</option>
 										<option value="Any" <?php if(JRequest::getVar('person')=='Any') echo 'selected';?>>Any</option>
 										<?php for($i=2; $i<=30; $i++){?>
 										<option value="<?php echo $i;?>" <?php if(JRequest::getVar('person')==$i) echo 'selected';?>><?php echo $i;?></option>
 										<?php }?>
-									</select>
+									</select>-->
 								</div>
 								<div class="option option_day">
 									<input id="start_date" name="start_date" type="text" class="form-control date-input mb10" placeholder="Starting date" value="<?php echo JRequest::getVar('start_date');?>">
@@ -234,10 +289,10 @@ $(document).ready(function(){
 						</div>
 					</div><!-- top-description -->
 					<?php }?>
-					<h1>6 Holiday homes in Tuscany, Florence</h1>   
+					<!--<h1>6 Holiday homes in Tuscany, Florence</h1> -->  
 					 
 					<div class="row search-results-nav">
-					   <div class="col-sm-4 nav-sort">
+					   <!--<div class="col-sm-4 nav-sort">
 							<span>Sort By </span>   
 							<select class="form-control">
 								<option>Relevancy</option>
@@ -245,227 +300,73 @@ $(document).ready(function(){
 								<option>Price</option>
 								<option>Sleeps</option> 
 							</select> 
-					   </div>
+					   </div>-->
 					   <div class="col-sm-5 nav-btn">
-						  <span>Displaying <strong class="liststart">21</strong> - <strong class="listend">40</strong></span>
-						  <a href="#" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
-						  <a href="#" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+						  <span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
+						  <?php if(JRequest::getVar('start')){
+							$query = $_GET;
+							$query['start'] = JRequest::getVar('start') - $limit;
+							$query_result = http_build_query($query); 
+							?>
+						  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+						  <?php }?>
+						  <?php if(count($houses->property) == $limit){
+							$query = $_GET;
+							$query['start'] = JRequest::getVar('start') + $limit;
+							$query_result = http_build_query($query);  
+							?>
+						  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+						  <?php }?>
 					   </div>
-					   <div class="col-sm-3 text-right">
+					   <!--<div class="col-sm-3 text-right">
 						  <a href="#popupMap_larger" class="btn btn-xs fancybox search-results-on-map"> <i class="fa fa-map-marker"></i>View on map </a> 
-					   </div>
+					   </div>-->
 					</div><!-- search-results-nav -->
 
 					<div class="list-items">
+						<?php $i = 0; 
+							foreach($houses->property as $house){
+								$link = "index.php?option=com_booking&view=detail&id=".$house['id'];
+								$day_price = $house->prices->price[0]->value;
+								foreach($house->prices->price as $price){
+									if((int)$day_price > (int)$price->value){
+										$day_price = $price->value;
+									}
+								}
+								$week_price_eu = number_format($day_price * 7, 0, ',', '.');
+								$week_price_da = number_format($day_price * 7 * $rate, 2, ',', '.');
+								
+						?>
 						<div class="each-result-item">
-							<h2><a href="tuscany-detail.php"> Agriturismo Il Sole</a></h2>
+							<h2><a href="<?php echo $link;?>"><?php echo $house->name;?></a></h2>
 							<div class="row">
 							   <div class="col-sm-4 col-img">
-								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
+								  <a href="<?php echo $link;?>" class="loader" title=""><img src="<?php echo $house->pictures->mainpicture['path'];?>" alt="<?php echo $house->pictures->mainpicture->description;?>"></a>
 							   </div>
 							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
+									 <div class="info-top"><span><strong>Area:</strong> </span><?php echo $house->town;?> - <?php echo $house->zone;?> <a class="fancybox view-map" href="#popupMap_min<?php echo $i;?>"> <i class="fa fa-map-marker"></i>View Map</a></div>
+									 <div id="popupMap_min<?php echo $i;?>" style="display:none;">
+										<div class="wrap_popupMap_min">
+											<iframe width="578" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $house->latitute.','.$house->longitude;?>&amp;z=13&amp;output=embed"></iframe>
+										</div><!-- wrap_popupMap -->
+									</div><!-- popupMap -->
+									 <div class="info-top">
+									 	<span><strong>Property type:</strong> </span><?php echo $house->proptype;?><br />
+										<span><strong>Sleeps:</strong> </span><?php echo $house->minsleeps;?><br />
+										<span><strong>Double bedrooms:</strong> </span><?php echo $house->doublebedrooms;?><br />
+										<span><strong>Bathrooms:</strong> </span><?php echo $house->bathrooms;?><br />
+									 </div>
+									 <div class="info-top" style="font-size:20px;">from <?php echo $week_price_eu;?> EUR/WEEK (<?php echo $week_price_da;?> DKK/UGE)</div>
+									 <p class="description"><?php echo $house->descriptions->description;?> <a href="<?php echo $link;?>" class="see_more">Se mere</a></p>
 							   </div>
 							</div>
-							<ul class="list-result-item-footer">
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Il Limone</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li> 
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">La Melagrana</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li> 
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Il Sole</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-									<ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-									</ul> 
-									<a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-							</ul>
 						</div><!-- each-result-item -->
-						<div class="each-result-item">
-							<h2><a href="tuscany-detail.php">Le Beringhe</a></h2>
-							<div class="row">
-							   <div class="col-sm-4 col-img">
-								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
-							   </div>
-							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
-							   </div>
-							</div>
-							<ul class="list-result-item-footer">
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Il Limone</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Il Sole</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-							</ul>
-						</div><!-- each-result-item --> 
-						<div class="each-result-item">
-							<h2><a href="tuscany-detail.php">Le Rocche</a></h2>
-							<div class="row">
-							   <div class="col-sm-4 col-img">
-								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
-							   </div>
-							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
-							   </div>
-							</div>
-							<ul class="list-result-item-footer">   
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Casalerocche Ginestra</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Casalerocche Mimosa</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>
-							</ul>
-						</div><!-- each-result-item -->
-						<div class="each-result-item">
-							<h2><a href="tuscany-detail.php">Eden</a></h2>
-							<div class="row">
-							   <div class="col-sm-4 col-img">
-								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
-							   </div>
-							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
-							   </div>
-							</div>
-							<ul class="list-result-item-footer">   
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Eden</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-							</ul>
-						</div><!-- each-result-item --> 
-						<div class="each-result-item">
-							<h2><a href="tuscany-detail.php">Medici</a></h2>
-							<div class="row">
-							   <div class="col-sm-4 col-img">
-								  <a href="tuscany-detail.php" class="loader" title=""><img src="<?php echo $tmpl;?>img/tuscany-02.jpg"></a>
-							   </div>
-							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span>Area: </span>Firenze - Florence - Tuscany <a class="fancybox view-map" href="#popupMap_min"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <p class="description">Lovely apartment of about 45 m2, recently restored, located on the mezzanine floor of a building a few steps from the famous La Fenice Theatre and just 5 minutes walk from Piazza San Marco, but at the same time immersed in the quietness of the streets of Venice. The house has a living room used as a bedroom, kitchenette and bathroom with shower. The decor in typically Venetian style, is very welcoming and warm. The living room has a double bed, wardrobe with 2 doors, round table for two and a plasma TV ... <a href="tuscany-detail.php" class="see_more">Se mere</a></p>
-							   </div>
-							</div>
-							<ul class="list-result-item-footer">   
-								<li class="result-item-footer">
-								   <h3><a href="tuscany-detail.php">Medici</a></h3>
-								   <div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-								   <div class="header-meta">
-									  <p><i class="fa fa-tag"></i><span class="price">from 1.484,00 EUR/Week (fra 21.500 DKK/UGE)</span></p>
-								   </div> 
-								   <ul class="list-unstyled clearfix">
-									  <li><span>Property type: </span>Apartment</li>
-									  <li><span>Sleeps: </span>2</li>
-									  <li><span>Double bedrooms: </span>1</li>
-									  <li><span>Bathrooms: </span>1</li>
-									  <li><span>Featured pool: </span>Shared pool</li>
-								   </ul> 
-								   <a href="tuscany-detail.php" class="btn btn-xs">VÆLG</a>
-								</li>  
-							</ul>
-						</div><!-- each-result-item -->  
+						<?php $i++;}?>
+						
 					</div><!--list-items--> 
 
 					<div class="row search-results-nav">
-					   <div class="col-sm-4 nav-sort">
+					   <!--<div class="col-sm-4 nav-sort">
 							<span>Sort By </span>   
 							<select class="form-control">
 								<option>Relevancy</option>
@@ -473,15 +374,27 @@ $(document).ready(function(){
 								<option>Price</option>
 								<option>Sleeps</option> 
 							</select>
-					   </div>
+					   </div>-->
 					   <div class="col-sm-5 nav-btn">
-						  <span>Displaying <strong class="liststart">21</strong> - <strong class="listend">40</strong></span>
-						  <a href="#" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
-						  <a href="#" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+						  	<span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
+							<?php if(JRequest::getVar('start')){
+							$query = $_GET;
+							$query['start'] = JRequest::getVar('start') - $limit;
+							$query_result = http_build_query($query); 
+							?>
+							<a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+							<?php }?>
+							<?php if(count($houses->property) == $limit){
+							$query = $_GET;
+							$query['start'] = JRequest::getVar('start') + $limit;
+							$query_result = http_build_query($query);  
+							?>
+							<a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+							<?php }?>
 					   </div>
-					   <div class="col-sm-3 text-right">
+					   <!--<div class="col-sm-3 text-right">
 						  <a href="#popupMap_larger" class="btn btn-xs fancybox search-results-on-map"> <i class="fa fa-map-marker"></i>View on map </a> 
-					   </div>
+					   </div>-->
 					</div><!-- search-results-nav -->
 
 				</div><!-- col-main -->

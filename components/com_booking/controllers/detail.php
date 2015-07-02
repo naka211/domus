@@ -28,6 +28,10 @@ class BookingControllerDetail extends BookingController
 	}
 	
 	function getPrice(){
+		$db = JFactory::getDBO();
+		$db->setQuery("SELECT value FROM #__settings WHERE id = 10");
+		$rate = $db->loadResult();
+		
 		$start_date = JRequest::getVar('start_date');
 		$end_date = JRequest::getVar('end_date');
 		
@@ -57,7 +61,46 @@ class BookingControllerDetail extends BookingController
 			$number_of_days_time = $end_time - $start_time;
 			$number_of_days = floor($number_of_days_time/(60*60*24));
 			$amount = $number_of_days * $prices->prices->price[$start_key]->value;
+			$amount = $amount + 3;
+		} else {
+			$amount1 = $amount2 = $amount3 = 0;
+			for($i=$start_key; $i<=$end_key; $i++){
+				if($start_key == $i){
+					$end_price_tmp = explode("/", $prices->prices->price[$i]['endtime']);
+					$end_price_time = mktime(0, 0, 0, $end_price_tmp[1], $end_price_tmp[0], $end_price_tmp[2]);
+					
+					$number_of_days_time = $end_price_time - $start_time;
+					$number_of_days = floor($number_of_days_time/(60*60*24)) + 1;
+					$amount1 = $number_of_days * $prices->prices->price[$i]->value;
+				}
+				
+				if($end_key == $i){
+					$start_price_tmp = explode("/", $prices->prices->price[$i]['starttime']);
+					$start_price_time = mktime(0, 0, 0, $start_price_tmp[1], $start_price_tmp[0], $start_price_tmp[2]);
+					
+					$number_of_days_time = $end_time - $start_price_time;
+					$number_of_days = floor($number_of_days_time/(60*60*24));
+					$amount2 = $number_of_days * $prices->prices->price[$i]->value;
+				}
+				
+				if($start_key != $i && $end_key != $i){
+					$start_price_tmp = explode("/", $prices->prices->price[$i]['starttime']);
+					$start_price_time = mktime(0, 0, 0, $start_price_tmp[1], $start_price_tmp[0], $start_price_tmp[2]);
+					$end_price_tmp = explode("/", $prices->prices->price[$i]['endtime']);
+					$end_price_time = mktime(0, 0, 0, $end_price_tmp[1], $end_price_tmp[0], $end_price_tmp[2]);
+					
+					$number_of_days_time = $end_price_time - $start_price_time;
+					$number_of_days = floor($number_of_days_time/(60*60*24));
+					$amount3 = $number_of_days * $prices->prices->price[$i]->value;
+				}
+			}
+			$amount = $amount1 + $amount2 + $amount3 - 3;
 		}
-		print_r($amount);exit; 
+
+		$tmp_arr['text'] ='from '.number_format($amount, 0, '', '.').' EUR/WEEK ('.number_format($amount*$rate, 2, ',', '.').' DKK/UGE)';
+		$tmp_arr['amount'] = $amount*$rate;
+		
+		$ouput = json_encode($tmp_arr);
+		die($ouput);
 	}
 }

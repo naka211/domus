@@ -110,7 +110,9 @@ $disable = rtrim($disable, ',');
 				data: { start_date: $("#start_date").val(), end_date: $("#end_date").val(), id: <?php echo JRequest::getVar('id');?> }
 			}).done(function( html ) {
 				$('#loading_image').hide();
-				console.log(html);
+				var data = jQuery.parseJSON(html);
+				$(".price").html(data.text);
+				$("#amount").val(data.amount);
 			});
 		});
     });
@@ -262,7 +264,7 @@ $disable = rtrim($disable, ',');
 										</div>
 									</div>
 									<input type="hidden" name="id" value="<?php echo JRequest::getVar('id');?>" />
-									<input type="hidden" name="price" id="price" value="" />
+									<input type="hidden" name="amount" id="amount" value="" />
 									<input type="hidden" name="option" value="com_booking" />
 									<input type="hidden" name="task" value="detail.order" />
 								</form> 
