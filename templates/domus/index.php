@@ -122,20 +122,20 @@ JHTML::_('behavior.formvalidator');
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="index.php?option=com_booking&view=search&zone=TOS">Tuscany</a></li>
-					<li><a href="index.php?option=com_content&view=">Venice</a></li>
-					<li><a href="tuscany.php">Villas</a></li>
+					<li><a href="index.php?option=com_booking&view=search&zone=VEN&subzone=VNZ">Venice</a></li>
+					<li><a href="index.php?option=com_booking&view=search">Villas</a></li>
 					<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Other Destinations <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="index.php?option=com_booking&view=map&Itemid=143">Italy</a></li> 
 						</ul>
 					</li>
 				</ul>
-				<form role="search" class="navbar-form navbar-right">
+				<!--<form role="search" class="navbar-form navbar-right">
 					<div class="form-group search">
 						<input type="text" placeholder="Søg efter by eller sted" class="form-control">
 						<button type="submit" class="btn btnSearch"><i class="fa fa-search"></i></button>
 					</div>
-				</form>
+				</form>-->
 			</div>
 			<!-- /.navbar-collapse -->
 			<div class="shadow"></div> 

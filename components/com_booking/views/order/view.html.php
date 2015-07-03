@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Booking.
  */
-class BookingViewSearch extends JViewLegacy {
+class BookingViewOrder extends JViewLegacy {
 
     protected $params;
 
@@ -26,8 +26,6 @@ class BookingViewSearch extends JViewLegacy {
         $app = JFactory::getApplication();
 		$this->params = $app->getParams('com_booking');
 		
-		$this->article = $this->get('Article');
-		$this->filters = $this->get('Filters');
         $this->_prepareDocument();
         parent::display($tpl);
     }
@@ -56,7 +54,7 @@ class BookingViewSearch extends JViewLegacy {
         } elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
             $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
         }
-        $this->document->setTitle($title);
+        $this->document->setTitle('Domus Holidays - Ordre booking');
 
         if ($this->params->get('menu-meta_description')) {
             $this->document->setDescription($this->params->get('menu-meta_description'));

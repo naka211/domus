@@ -112,7 +112,9 @@ $disable = rtrim($disable, ',');
 				$('#loading_image').hide();
 				var data = jQuery.parseJSON(html);
 				$(".price").html(data.text);
-				$("#amount").val(data.amount);
+				$("#amountda").val(data.amountda);
+				$("#amounteu").val(data.amounteu);
+				$(".btn-book").show();
 			});
 		});
     });
@@ -264,9 +266,11 @@ $disable = rtrim($disable, ',');
 										</div>
 									</div>
 									<input type="hidden" name="id" value="<?php echo JRequest::getVar('id');?>" />
-									<input type="hidden" name="amount" id="amount" value="" />
+									<input type="hidden" name="amountda" id="amountda" value="" />
+									<input type="hidden" name="amounteu" id="amounteu" value="" />
+									<input type="hidden" name="data" id="data" value='<?php echo file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/amenities:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml');?>' />
 									<input type="hidden" name="option" value="com_booking" />
-									<input type="hidden" name="task" value="detail.order" />
+									<input type="hidden" name="task" value="order.order" />
 								</form> 
 							</div>  
 						</div> 
@@ -318,7 +322,7 @@ $disable = rtrim($disable, ',');
 								</ul>
 							</div> 
 						</div>
-						<a href="javascript:void(0);" onClick="document.getElementById('bookingForm').submit();" class="btn btn-lg btn-book">BOOK BOLIGEN <i class="fa fa-angle-double-right"></i></a>
+						<a href="javascript:void(0);" onClick="document.getElementById('bookingForm').submit();" class="btn btn-lg btn-book" style="display:none;">BOOK BOLIGEN <i class="fa fa-angle-double-right"></i></a>
 					</div><!-- col-sm-6 -->
 				</div>
 			</div><!-- infomations -->  

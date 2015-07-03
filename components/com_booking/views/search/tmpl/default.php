@@ -2,7 +2,7 @@
 // no direct access
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
-$params = json_decode($this->category->params);
+
 $zones = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
 
 if(JRequest::getVar('zone')){
@@ -24,6 +24,8 @@ if(JRequest::getVar('end_date')){
 	$number_of_days = floor($number_of_days_time/(60*60*24));
 	
 	$time_text = "from/".$start_tmp[0]."/".$start_tmp[1]."/".$start_tmp[2]."/nights/".$number_of_days."/";
+} else {
+	$time_text = '';
 }
 
 $db = JFactory::getDBO();
@@ -280,12 +282,14 @@ $(document).ready(function(){
 				</div><!--col-searchfilter-->
 
 				<div class="col-md-9 col-main">
-					<?php if($this->category){?>
+					<?php if($this->article){
+						$images = json_decode($this->article->images);
+					?>
 					<div class="top-description">
-						<a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>"><img src="<?php echo $params->image;?>"></a>
+						<a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"><img src="<?php echo $images->image_intro;?>"></a>
 						<div class="txt-desc">
-							<h2><a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>"> <?php echo $this->category->title;?></a></h2>
-							<?php echo $this->category->description;?> <a href="index.php?option=com_content&view=category&id=<?php echo $this->category->id;?>">see_more</a></p>
+							<h2><a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"> <?php echo $this->article->title;?></a></h2>
+							<?php echo $this->article->introtext;?> <a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>">see_more</a></p>
 						</div>
 					</div><!-- top-description -->
 					<?php }?>

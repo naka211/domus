@@ -17,11 +17,11 @@ jimport('joomla.application.component.modellist');
 class BookingModelSearch extends JModelList
 {
 
-	function getCategory(){
+	function getArticle(){
 		if(JRequest::getVar('subzone')){
 			$zone = JRequest::getVar('subzone');
 		} else {
-			$zone = JRequest::getVar('zone');
+			$zone = JRequest::getVar('zone', 'ITA');
 		}
 
 		$db = JFactory::getDbo();
@@ -29,9 +29,9 @@ class BookingModelSearch extends JModelList
 		$query = $db->getQuery(true);
 
 		$query
-			->select($db->quoteName(array('id', 'title', 'description', 'params')))
-			->from($db->quoteName('#__categories'))
-			->where($db->quoteName('note') . ' LIKE \''.$zone.'\'');
+			->select($db->quoteName(array('id', 'title', 'alias', 'introtext', 'fulltext', 'images')))
+			->from($db->quoteName('#__content'))
+			->where($db->quoteName('xreference') . ' LIKE \''.$zone.'\'');
 		 
 		$db->setQuery($query);
 		 

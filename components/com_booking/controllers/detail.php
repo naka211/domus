@@ -98,7 +98,8 @@ class BookingControllerDetail extends BookingController
 		}
 
 		$tmp_arr['text'] ='from '.number_format($amount, 0, '', '.').' EUR/WEEK ('.number_format($amount*$rate, 2, ',', '.').' DKK/UGE)';
-		$tmp_arr['amount'] = $amount*$rate;
+		$tmp_arr['amounteu'] = $amount;
+		$tmp_arr['amountda'] = $amount*$rate;
 		
 		$ouput = json_encode($tmp_arr);
 		die($ouput);

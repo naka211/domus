@@ -258,7 +258,7 @@ class ContentViewArticle extends JViewLegacy
 			$title = $this->item->title;
 		}
 
-		$this->document->setTitle($title);
+		$this->document->setTitle($title.' - '.$this->item->title);
 
 		if ($this->item->metadesc)
 		{
