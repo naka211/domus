@@ -158,44 +158,44 @@ $detail = simplexml_load_string($all['data']);
 										</div> 
 									</div>
 									<div class="form-group"> 
-										<input type="text" class="form-control" placeholder="Fornavn *">
+										<input type="text" class="form-control required" placeholder="Fornavn *" name="first_name">
 									</div>
 									<div class="form-group"> 
-										<input type="text" class="form-control" placeholder="Efternavn *">
+										<input type="text" class="form-control required" placeholder="Efternavn *" name="last_name">
 									</div>  
 									<div class="form-group"> 
-										<input type="text" class="form-control" placeholder="Adresse *">
+										<input type="text" class="form-control required" placeholder="Adresse *" name="address">
 									</div>
 									<div class="row rowBy">
 										<div class="col-xs-3">
 											<div class="form-group"> 
-												<input type="text" class="form-control" placeholder="Postnr. *">
+												<input type="text" class="form-control required" placeholder="Postnr. *" name="zip">
 											</div>
 										</div>
 										<div class="col-xs-9">
 											<div class="form-group"> 
-												<input type="text" class="form-control" placeholder="By *">
+												<input type="text" class="form-control required" placeholder="By *" name="city">
 											</div>
 										</div>
 									</div> 
 									<div class="form-group"> 
-										<input type="text" class="form-control" placeholder="E-mail *">
+										<input type="text" class="form-control required" placeholder="E-mail *" name="email">
 									</div>
 									<div class="form-group"> 
-										<input type="text" class="form-control" placeholder="Telefon *">
+										<input type="text" class="form-control required" placeholder="Telefon *" name="phone">
 									</div>
 									<div class="form-group"> 
-										<textarea rows="6" class="form-control" placeholder="Besked *"></textarea>  
+										<textarea rows="6" class="form-control required" placeholder="Besked *" name="comment"></textarea>  
 									</div>
 									<p>Felter markeret med * skal udfyldes</p>
 									<div class="checkbox checkboxNyhedsbrev">
 										<label>
-										  <input type="checkbox"> Jeg tilmelder mig Domus Holidays Nyhedsbrev</a>
+										  <input type="checkbox" name="newsletter"> Jeg tilmelder mig Domus Holidays Nyhedsbrev</a>
 										</label>
 									 </div>
 									<div class="checkbox checkboxAccepterer">
 										<label>
-										  <input type="checkbox"> Jeg accepterer <a href="handelsbetingelser.php" target="_blank">handelsbetingelser</a>
+										  <input type="checkbox" class="required"> Jeg accepterer <a href="handelsbetingelser.php" target="_blank">handelsbetingelser</a>
 										</label>
 									 </div> 
 									<a href="tak.php" class="btn">SEND FORESPØRGSEL</a>

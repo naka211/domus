@@ -17,6 +17,15 @@ foreach($calendar->calendar->status as $key=>$item){
 	unset($calendar->calendar->status[$key]);
 }
 $disable = rtrim($disable, ',');
+
+if(JRequest::getVar('zone')){
+	$zone = 'zone/'.JRequest::getVar('zone');
+	$zone1 = '&zone='.JRequest::getVar('zone');
+} else {
+	$zone = '';
+	$zone1 = '';
+}
+$other_houses = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchhouses/start/0/items/9/country/ITA/'.$zone.'/api.xml');
 ?>
 <script type="text/javascript">
     $(document).ready(function () {  
@@ -330,85 +339,21 @@ $disable = rtrim($disable, ',');
 				<h2>Ledige lejligheder i ejendommen</h2>
 				<div class="row">
 					<ul class="list_available">
+						<?php foreach($other_houses->property as $house){
+							$link = "index.php?option=com_booking&view=detail&id=".$house['id'].$zone1;
+						?>
 						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Rosa</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+							<h3><a href="<?php echo $link;?>"><?php echo $house->name;?></a></h3>
+							<div class="wrap-icon-star">
+							<?php for($i=1; $i<=$house->stars; $i++){?>
+							<i class="fa fa-star"></i>
+							<?php }?>
+							</div>
 							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
+							  <li><span>Sleeps: </span><?php echo $house->minsleeps;?></li><li><span>Double bedrooms: </span><?php echo $house->doublebedrooms;?></li><li><span>Bathrooms: </span><?php echo $house->bathrooms;?></li> 
 							</ul> 
 						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Ciclamino</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Ginestra</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Papavero</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Iris</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Magnolia</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li> 
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Girasole</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Panzé</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Margherita</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>  
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Glicine </a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Tulipano</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Mimos</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
-						<li class="col-sm-6 col-md-4">
-							<h3><a href="#">Casabianca Geranio</a></h3><div class="wrap-icon-star"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-							<ul class="list-unstyled clearfix"> 
-							  <li><span>Sleeps: </span>2</li><li><span>Double bedrooms: </span>1</li><li><span>Bathrooms: </span>1</li> 
-							</ul> 
-						</li>
+						<?php }?>
 					</ul>
 				</div>	
 			</div><!-- available_apartments -->

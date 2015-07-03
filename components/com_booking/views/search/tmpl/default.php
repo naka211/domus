@@ -35,22 +35,22 @@ $db->setQuery("SELECT value FROM #__settings WHERE id = 10");
 $rate = $db->loadResult();
 
 if(JRequest::getVar('start')){
-	$limit_text = "start/".JRequest::getVar('start')."/items/".$limit."/";
+	$limit_text = "start/".JRequest::getVar('start')."/items/".$limit;
 	$start_view = JRequest::getVar('start');
 } else {
-	$limit_text = "start/0/items/".$limit."/";
+	$limit_text = "start/0/items/".$limit;
 	$start_view = 1;
 }
 
 if(JRequest::getVar('zone')){
 	if(JRequest::getVar('subzone')){
 		if(JRequest::getVar('town')){
-			$zone_text = "town/".JRequest::getVar('town')."/";
+			$zone_text = "town/".JRequest::getVar('town');
 		} else {
-			$zone_text = "zone/".JRequest::getVar('subzone')."/";
+			$zone_text = "zone/".JRequest::getVar('subzone');
 		}
 	} else {
-		$zone_text = "zone/".JRequest::getVar('zone')."/";
+		$zone_text = "zone/".JRequest::getVar('zone');
 	}
 	
 } else {
@@ -330,7 +330,12 @@ $(document).ready(function(){
 					<div class="list-items">
 						<?php $i = 0; 
 							foreach($houses->property as $house){
-								$link = "index.php?option=com_booking&view=detail&id=".$house['id'];
+								if(JRequest::getVar('zone')){
+									$zone = "&zone=".JRequest::getVar('zone');
+								} else {
+									$zone = "";
+								}
+								$link = "index.php?option=com_booking&view=detail&id=".$house['id'].$zone;
 								$day_price = $house->prices->price[0]->value;
 								foreach($house->prices->price as $price){
 									if((int)$day_price > (int)$price->value){
