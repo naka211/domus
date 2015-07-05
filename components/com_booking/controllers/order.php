@@ -33,4 +33,8 @@ class BookingControllerOrder extends BookingController
 		
 		 $this->setRedirect(JRoute::_('index.php?option=com_booking&view=order', false));
 	}
+	
+	function save_order(){
+		
+	}
 }

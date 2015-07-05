@@ -35,29 +35,28 @@ $db->setQuery("SELECT value FROM #__settings WHERE id = 10");
 $rate = $db->loadResult();
 
 if(JRequest::getVar('start')){
-	$limit_text = "start/".JRequest::getVar('start')."/items/".$limit;
+	$limit_text = "start/".JRequest::getVar('start')."/items/".$limit."/";
 	$start_view = JRequest::getVar('start');
 } else {
-	$limit_text = "start/0/items/".$limit;
+	$limit_text = "start/0/items/".$limit."/";
 	$start_view = 1;
 }
 
-if(JRequest::getVar('zone')){
-	if(JRequest::getVar('subzone')){
-		if(JRequest::getVar('town')){
-			$zone_text = "town/".JRequest::getVar('town');
+if(JRequest::getVar('town')){
+	$zone_text = "town/".JRequest::getVar('town')."/";
+} else {
+	if(JRequest::getVar('zone')){
+		if(JRequest::getVar('subzone')){
+			$zone_text = "zone/".JRequest::getVar('subzone')."/";
 		} else {
-			$zone_text = "zone/".JRequest::getVar('subzone');
+			$zone_text = "zone/".JRequest::getVar('zone')."/";
 		}
 	} else {
-		$zone_text = "zone/".JRequest::getVar('zone');
+		$zone_text = "";
 	}
-	
-} else {
-	$zone_text = "";
 }
 
-$link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."/country/ITA/".$zone_text.$time_text."/data/description:1,pictures:1,prices:1/api.xml";
+$link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."country/ITA/".$zone_text.$time_text."data/description:1,pictures:1,prices:1/api.xml";
 $houses = simplexml_load_file($link);
 ?>
 <script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script> 

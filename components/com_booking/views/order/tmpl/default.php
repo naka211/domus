@@ -1,6 +1,7 @@
 <?php
 // no direct access
 defined('_JEXEC') or die;
+JHTML::_('behavior.formvalidator');
 $tmpl = JURI::base().'templates/domus/';
 $session = JFactory::getSession();
 $all = $session->get('all');
@@ -197,8 +198,11 @@ $detail = simplexml_load_string($all['data']);
 										<label>
 										  <input type="checkbox" class="required"> Jeg accepterer <a href="handelsbetingelser.php" target="_blank">handelsbetingelser</a>
 										</label>
-									 </div> 
-									<a href="tak.php" class="btn">SEND FORESPØRGSEL</a>
+									 </div>
+									 <input type="submit" class="validate btn" value="SEND FORESPØRGSEL" />
+									 <input type="hidden" name="option" value="com_booking" />
+									 <input type="hidden" name="task" value="order.save_order" />
+									<!--<a href="tak.php" class="btn">SEND FORESPØRGSEL</a>-->
 								</form> 
 							</div>
 						</div>

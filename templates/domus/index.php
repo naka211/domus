@@ -254,7 +254,7 @@ JHTML::_('behavior.formvalidator');
 	<?php if(JUri::getInstance()->toString() == JUri::base()){?>
     <script> 
 	  $(document).ready(function() {
-	    //$("#myModal").modal('show'); 
+	    $("#myModal").modal('show'); 
 	});
   	</script>
 	{module AcyMailing Module Popup}
