@@ -26,6 +26,7 @@ class BookingViewOrder extends JViewLegacy {
         $app = JFactory::getApplication();
 		$this->params = $app->getParams('com_booking');
 		
+		$this->setLayout(JRequest::getVar('layout'), 'default');
         $this->_prepareDocument();
         parent::display($tpl);
     }
@@ -54,9 +55,13 @@ class BookingViewOrder extends JViewLegacy {
         } elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
             $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
         }
-        $this->document->setTitle('Domus Holidays - Ordre booking');
-
-        if ($this->params->get('menu-meta_description')) {
+		if(JRequest::getVar('layout')){
+			$this->document->setTitle('Domus Holidays - Booking successfully');
+		} else {
+			$this->document->setTitle('Domus Holidays - Ordre booking');
+		}
+        
+	    if ($this->params->get('menu-meta_description')) {
             $this->document->setDescription($this->params->get('menu-meta_description'));
         }
 
