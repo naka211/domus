@@ -116,7 +116,10 @@ if (!empty($this->extra_sidebar)) {
 						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 					</th>
                 <?php endif; ?>
-                    
+                
+				<th width="1%" class="nowrap center hidden-phone">
+					<?php echo JHtml::_('grid.sort', 'Order number', 'a.id', $listDirn, $listOrder); ?>
+				</th>
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_SUPPLIER_ID', 'a.supplier_id', $listDirn, $listOrder); ?>
 				</th>
@@ -141,13 +144,11 @@ if (!empty($this->extra_sidebar)) {
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_PAY_ALL', 'a.pay_all', $listDirn, $listOrder); ?>
 				</th>
+                
+				<th class='left'>
+				<?php echo "Status"; ?>
+				</th>
                     
-                    
-                <?php if (isset($this->items[0]->id)): ?>
-					<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
-					</th>
-                <?php endif; ?>
 				</tr>
 			</thead>
 			<tfoot>
@@ -203,10 +204,12 @@ if (!empty($this->extra_sidebar)) {
 						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'bookings.', $canChange, 'cb'); ?>
 					</td>
                 <?php endif; ?>
-                    
+                
 				<td>
-
-					<?php echo $item->supplier_id; ?>
+					<a href="<?php echo JRoute::_('index.php?option=com_booking&task=booking.edit&id='.(int) $item->id); ?>"><?php echo sprintf('%05d',$item->id); ?></a>
+				</td>  
+				<td>
+					<?php echo $item->supplier_id==0?$item->supplier_id:"Vacavilla"; ?>
 				</td>
 				<td>
 				<?php if (isset($item->checked_out) && $item->checked_out) : ?>
@@ -225,15 +228,15 @@ if (!empty($this->extra_sidebar)) {
 				</td>
 				<td>
 
-					<?php echo $item->checkin; ?>
+					<?php echo date("d-m-Y", $item->checkin); ?>
 				</td>
 				<td>
 
-					<?php echo $item->checkout; ?>
+					<?php echo date("d-m-Y", $item->checkout); ?>
 				</td>
 				<td>
 
-					<?php echo $item->total; ?>
+					<?php echo $item->total_da; ?> DKK
 				</td>
 				<td>
 
@@ -243,13 +246,11 @@ if (!empty($this->extra_sidebar)) {
 
 					<?php echo $item->pay_all; ?>
 				</td>
+				
+				<td>
 
-
-                <?php if (isset($this->items[0]->id)): ?>
-					<td class="center hidden-phone">
-						<?php echo (int) $item->id; ?>
-					</td>
-                <?php endif; ?>
+					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else echo "Accept";?>
+				</td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>
