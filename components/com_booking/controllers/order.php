@@ -180,18 +180,33 @@ class BookingControllerOrder extends BookingController
 		$db->setQuery("UPDATE #__booking SET status = 2 WHERE id = ".$order_id);
 		$db->query();
 		
-		$sent = $this->send_email_user_accept($order_id);
+		$db->setQuery("SELECT checkin FROM #__booking WHERE id = ".$order_id);
+		$checkin = $db->loadResult();
 		
-		if($sent){
-			$db->setQuery("UPDATE #__booking SET send_email_30_time = ".time()." WHERE id = ".$order_id);
-			$db->query();
-			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=accept', false));
+		$number_of_days_time = $checkin - time();
+		$number_of_days = floor($number_of_days_time/(60*60*24));
+		
+		if($number_of_days <= 10){
+			$sent = $this->send_email_user_all($order_id);
+			if($sent){
+				$db->setQuery("UPDATE #__booking SET send_email_payall_time = ".time()." WHERE id = ".$order_id);
+			} else {
+				die('Sending email error in payment all');
+			}
 		} else {
-			die('Sending email error');
+			$sent = $this->send_email_user_30($order_id);
+			if($sent){
+				$db->setQuery("UPDATE #__booking SET send_email_30_time = ".time()." WHERE id = ".$order_id);
+			} else {
+				die('Sending email error in payment 30%');
+			}
 		}
+		$db->query();	
+		
+		$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=accept', false));
 	}
 	
-	function send_email_user_accept($order_id){
+	function send_email_user_all($order_id){
 		$db = JFactory::getDBO();
 		$db->setQuery("SELECT * FROM #__booking WHERE id = ".$order_id);
 		$info = $db->loadObject();
@@ -211,6 +226,53 @@ class BookingControllerOrder extends BookingController
 		House name: ".$house->name."<br>
 		From: ".date("d-m-Y", $info->checkin)." for ".$number_of_days." days<br>
 		Number of people: ".$info->number_of_person."<br>
+		Total price: ".number_format($info->total_da, 2, ',', '.')." DKK<br><br>
+		
+		<strong>Client Details:</strong><br>
+		Name: ".$info->first_name." ".$info->first_name."<br>
+		Address: ".$info->address."<br>
+		Town: ".$info->city."<br>
+		Telephone: ".$info->phone."<br>
+		Email: ".$info->email."<br><hr><br>
+		
+		<strong>Payment:</strong><br>
+		•	<strong>".number_format($info->total_da, 2, ',', '.')." DKK</strong>, to be paid within <strong>3</strong> days after receveing this email (".date('d-m-Y', strtotime("+3 day")).").<br>
+		<strong>Remember, the payment is due within 3 days after the receipt of this email, on pain of cancellation.</strong><br><br>
+		
+		You can pay via Credit Card by clicking on the link below:<br>
+		<a href='".JURI::base()."index.php?option=com_booking&task=order.pay_all&order_id=".$order_id."'>".JURI::base()."index.php?option=com_booking&task=order.pay_all&order_id=".$order_id."</a><br><br>
+		
+		(If the link doesn't work copy and paste the link to the address bar of your browser) <br><hr><br>
+		We remain at your disposal and we invite you to contact us at the number 41628001 or send us an email to info@domusholidays.com for any clarification.<br>
+		Thank you for choosing a Domus Holidays property for your holiday.<br><br>
+		
+		Yours sincerely,<br>
+		The Domus Holidays Team
+		";
+		$ok = $this->send_email($order_id, $info->email, $body, "Booking payment for");
+		return $ok;
+	}
+	
+	function send_email_user_30($order_id){
+		$db = JFactory::getDBO();
+		$db->setQuery("SELECT * FROM #__booking WHERE id = ".$order_id);
+		$info = $db->loadObject();
+		
+		$house = simplexml_load_string($info->information);
+		
+		$number_of_days_time = $info->checkout - $info->checkin;
+		$number_of_days = floor($number_of_days_time/(60*60*24));
+		
+		$body = "Dear ".$info->first_name." ".$info->first_name.", <br /><br />
+		
+		Thank you for booking with Domus Holidays.<br>
+		We confirm your Booking <strong>".sprintf('%05d',$order_id)."</strong> for the house <strong>".$house->name."</strong> from <strong>".date("d-m-Y", $info->checkin)."</strong> for <strong>".$number_of_days."</strong> days. <br><hr><br>
+		
+		<strong>Booking Summary:</strong> <br>
+		Booking Number: ".sprintf('%05d',$order_id)."<br>
+		House name: ".$house->name."<br>
+		From: ".date("d-m-Y", $info->checkin)." for ".$number_of_days." days<br>
+		Number of people: ".$info->number_of_persons."<br>
 		Total price: ".number_format($info->total_da, 2, ',', '.')." DKK<br><br>
 		
 		<strong>Client Details:</strong><br>
@@ -241,7 +303,30 @@ class BookingControllerOrder extends BookingController
 	
 	function pay_30(){
 		$order_id = JRequest::getVar('order_id');
-		die("Payment gateway is installing.");
+		
+		$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=payment30&order_id='.$order_id, false));
+	}
+	
+	function pay_all(){
+		$order_id = JRequest::getVar('order_id');
+		
+		$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=paymentall&order_id='.$order_id, false));
+	}
+	
+	function complete_payment_30(){
+		die('complete 30');
+	}
+	
+	function cancel_payment_30(){
+		die('cancel 30');
+	}
+	
+	function complete_payment_all(){
+		die('complete all');
+	}
+	
+	function cancel_payment_all(){
+		die('cancel all');
 	}
 	
 	function send_email($order_id, $receiver, $body, $subject){
