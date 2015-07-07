@@ -249,7 +249,7 @@ if (!empty($this->extra_sidebar)) {
 				
 				<td>
 
-					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else echo "Accept";?>
+					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else if($item->status == 3) echo "Paid 30%"; else echo "Paid 100%";?>
 				</td>
 				</tr>
 				<?php endforeach; ?>

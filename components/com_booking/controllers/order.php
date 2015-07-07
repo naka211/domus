@@ -180,10 +180,10 @@ class BookingControllerOrder extends BookingController
 		$db->setQuery("UPDATE #__booking SET status = 2 WHERE id = ".$order_id);
 		$db->query();
 		
-		$db->setQuery("SELECT checkin FROM #__booking WHERE id = ".$order_id);
-		$checkin = $db->loadResult();
+		$db->setQuery("SELECT checkin, booking_date FROM #__booking WHERE id = ".$order_id);
+		$info = $db->loadResult();
 		
-		$number_of_days_time = $checkin - time();
+		$number_of_days_time = $info->checkin - $info->booking_date;
 		$number_of_days = floor($number_of_days_time/(60*60*24));
 		
 		if($number_of_days <= 10){
@@ -276,7 +276,7 @@ class BookingControllerOrder extends BookingController
 		Total price: ".number_format($info->total_da, 2, ',', '.')." DKK<br><br>
 		
 		<strong>Client Details:</strong><br>
-		Name: ".$info->first_name." ".$info->first_name."<br>
+		Name: ".$info->first_name." ".$info->last_name."<br>
 		Address: ".$info->address."<br>
 		Town: ".$info->city."<br>
 		Telephone: ".$info->phone."<br>
@@ -317,16 +317,82 @@ class BookingControllerOrder extends BookingController
 		die('complete 30');
 	}
 	
-	function cancel_payment_30(){
-		die('cancel 30');
+	function cancel_payment(){
+		$order_id = JRequest::getVar('order_id');
+		
+		$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=paymentcancel&order_id='.$order_id, false));
 	}
 	
 	function complete_payment_all(){
-		die('complete all');
+		$order_id = JRequest::getVar('order_id');
+		
+		$db = JFactory::getDBO();
+		$db->setQuery("UPDATE #__booking SET status = 4 WHERE id = ".$order_id);
+		$db->query();
+		
+		$sent1 = $this->send_email_user_payall($order_id);
+		$sent2 = $this->send_email_admin_payall($order_id);
+		
+		if($sent1 && $sent2){
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=finish', false));
+		} else {
+			die('Sending email error in completing order');
+		}
 	}
 	
-	function cancel_payment_all(){
-		die('cancel all');
+	function send_email_user_payall($order_id){
+		$db = JFactory::getDBO();
+		$db->setQuery("SELECT * FROM #__booking WHERE id = ".$order_id);
+		$info = $db->loadObject();
+		
+		$house = simplexml_load_string($info->information);
+		
+		$number_of_days_time = $info->checkout - $info->checkin;
+		$number_of_days = floor($number_of_days_time/(60*60*24));
+		
+		$body = "Dear ".$info->first_name." ".$info->first_name.", <br /><br />
+		
+		Thank you for booking with Domus Holidays.<br>
+		We confirm your Booking <strong>".sprintf('%05d',$order_id)."</strong> for the house <strong>".$house->name."</strong> from <strong>".date("d-m-Y", $info->checkin)."</strong> for <strong>".$number_of_days."</strong> days. <br><br>
+		
+		<strong>Paid 100%</strong>
+		<hr><br>
+		
+		<strong>Booking Summary:</strong> <br>
+		Booking Number: ".sprintf('%05d',$order_id)."<br>
+		House name: ".$house->name."<br>
+		From: ".date("d-m-Y", $info->checkin)." for ".$number_of_days." days<br>
+		Number of people: ".$info->number_of_persons."<br>
+		Total price: ".number_format($info->total_da, 2, ',', '.')." DKK<br><br>
+		
+		<strong>Client Details:</strong><br>
+		Name: ".$info->first_name." ".$info->last_name."<br>
+		Address: ".$info->address."<br>
+		Town: ".$info->city."<br>
+		Telephone: ".$info->phone."<br>
+		Email: ".$info->email."<br>
+
+		Yours sincerely,<br />
+		The DomusHolidays Team
+		";
+		$ok = $this->send_email($order_id, $info->email, $body, "Booking finish");
+		return $ok;
+	}
+	
+	function send_email_admin_payall($order_id){
+		$db = JFactory::getDBO();
+		$db->setQuery("SELECT email FROM #__users WHERE id = 116");
+		$receiver = $db->loadResult();
+		
+		$body = "Dear Administrator, <br /><br />
+		
+		Booking Number <strong>".sprintf('%05d',$order_id)."</strong> is paid 100%<br />
+		
+		Yours sincerely,<br />
+		The DomusHolidays Team
+		";
+		$ok = $this->send_email($order_id, $receiver, $body, "Booking finish");
+		return $ok;
 	}
 	
 	function send_email($order_id, $receiver, $body, $subject){

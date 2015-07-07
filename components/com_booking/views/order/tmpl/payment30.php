@@ -20,7 +20,7 @@ $number_of_days = floor($number_of_days_time/(60*60*24));
          'currency': "DKK",
 		 'orderid': "<?php echo sprintf('%05d',$order_id);?>",
 		 'accepturl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.complete_payment_30&order_id=<?php echo $order_id;?>",
-		 'cancelurl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.cancel_payment_30&order_id=<?php echo $order_id;?>"
+		 'cancelurl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.cancel_payment&order_id=<?php echo $order_id;?>"
      });
 </script>
   

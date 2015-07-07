@@ -20,7 +20,7 @@ $number_of_days = floor($number_of_days_time/(60*60*24));
          'currency': "DKK",
 		 'orderid': "<?php echo sprintf('%05d',$order_id);?>",
 		 'accepturl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.complete_payment_all&order_id=<?php echo $order_id;?>",
-		 'cancelurl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.cancel_payment_all&order_id=<?php echo $order_id;?>"
+		 'cancelurl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.cancel_payment&order_id=<?php echo $order_id;?>"
      });
 </script>
   
@@ -29,7 +29,7 @@ $number_of_days = floor($number_of_days_time/(60*60*24));
 		<div class="main-content content-article clearfix">  
 				<div class="row">
 					<div class="col-sm-12">
-						<h4>Payment 30%</h4> 
+						<h4>Payment</h4> 
 						Dear, <?php echo $info->first_name.' '.$info->last_name;?><br><br>
 						<strong>Booking Summary:</strong><br>
 						Booking Number: <?php echo sprintf('%05d',$order_id);?><br>
