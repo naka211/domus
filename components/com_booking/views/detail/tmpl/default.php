@@ -26,6 +26,8 @@ if(JRequest::getVar('zone')){
 	$zone1 = '';
 }
 $other_houses = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchhouses/start/0/items/9/country/ITA/'.$zone.'/api.xml');
+
+JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 ?>
 <script type="text/javascript">
     $(document).ready(function () {  

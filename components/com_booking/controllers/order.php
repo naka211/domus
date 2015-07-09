@@ -181,10 +181,10 @@ class BookingControllerOrder extends BookingController
 		$db->query();
 		
 		$db->setQuery("SELECT checkin, booking_date FROM #__booking WHERE id = ".$order_id);
-		$info = $db->loadResult();
+		$info = $db->loadObject();
 		
 		$number_of_days_time = $info->checkin - $info->booking_date;
-		$number_of_days = floor($number_of_days_time/(60*60*24));
+		$number_of_days = ceil($number_of_days_time/(60*60*24));
 		
 		if($number_of_days <= 10){
 			$sent = $this->send_email_user_all($order_id);
