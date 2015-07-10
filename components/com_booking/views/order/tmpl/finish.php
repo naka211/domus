@@ -22,7 +22,7 @@ $detail = simplexml_load_string($info->information);
 					<div class="infomations"> 
 						<div class="row">
 							 <div class="col-sm-12">
-								<h2>Garibaldi</h2>
+								<h2><?php echo $detail->name;?></h2>
 								<div class="each_box_info"><label><?php echo $detail->town;?> - <?php echo $detail->zone;?></label></div>
 								<div class="each_box_info">
 									<div class="each_row"><label>Property type:</label><span><?php echo $detail->proptype;?></span></div>

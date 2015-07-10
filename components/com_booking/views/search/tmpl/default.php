@@ -306,19 +306,24 @@ $(document).ready(function(){
 					   </div>-->
 					   <div class="col-sm-5 nav-btn">
 						  <span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
-						  <?php if(JRequest::getVar('start')){
-							$query = $_GET;
-							$query['start'] = JRequest::getVar('start') - $limit;
-							$query_result = http_build_query($query); 
+						  <?php 
+						  if(JRequest::getVar('zone')) $zone = "&zone=".JRequest::getVar('zone'); else $zone="";
+						  if(JRequest::getVar('subzone')) $subzone = "&subzone=".JRequest::getVar('subzone');else $subzone="";
+						  if(JRequest::getVar('town')) $town = "&town=".JRequest::getVar('town');else $town="";
+						  if(JRequest::getVar('start_date')) $start_date = "&start_date=".JRequest::getVar('start_date');else $start_date="";
+						  if(JRequest::getVar('end_date')) $end_date = "&end_date=".JRequest::getVar('end_date');else $end_date="";
+						  
+						  if(JRequest::getVar('start')){
+							  $prev = JRequest::getVar('start') - $limit;
+							  $prev_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$prev;
 							?>
-						  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+						  <a href="<?php echo $prev_link; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
 						  <?php }?>
 						  <?php if(count($houses->property) == $limit){
-							$query = $_GET;
-							$query['start'] = JRequest::getVar('start') + $limit;
-							$query_result = http_build_query($query);  
+							  $next = JRequest::getVar('start') + $limit;
+							  $next_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$next;
 							?>
-						  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+						  <a href="<?php echo $next_link; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
 						  <?php }?>
 					   </div>
 					   <!--<div class="col-sm-3 text-right">
@@ -384,21 +389,20 @@ $(document).ready(function(){
 							</select>
 					   </div>-->
 					   <div class="col-sm-5 nav-btn">
-						  	<span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
-							<?php if(JRequest::getVar('start')){
-							$query = $_GET;
-							$query['start'] = JRequest::getVar('start') - $limit;
-							$query_result = http_build_query($query); 
+						  <span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
+						  <?php 
+						  if(JRequest::getVar('start')){
+							  $prev = JRequest::getVar('start') - $limit;
+							  $prev_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$prev;
 							?>
-							<a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
-							<?php }?>
-							<?php if(count($houses->property) == $limit){
-							$query = $_GET;
-							$query['start'] = JRequest::getVar('start') + $limit;
-							$query_result = http_build_query($query);  
+						  <a href="<?php echo $prev_link; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
+						  <?php }?>
+						  <?php if(count($houses->property) == $limit){
+							  $next = JRequest::getVar('start') + $limit;
+							  $next_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$next;
 							?>
-							<a href="<?php echo $_SERVER['PHP_SELF']; ?>?<?php echo $query_result; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
-							<?php }?>
+						  <a href="<?php echo $next_link; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
+						  <?php }?>
 					   </div>
 					   <!--<div class="col-sm-3 text-right">
 						  <a href="#popupMap_larger" class="btn btn-xs fancybox search-results-on-map"> <i class="fa fa-map-marker"></i>View on map </a> 

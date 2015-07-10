@@ -16,7 +16,7 @@ $number_of_days = floor($number_of_days_time/(60*60*24));
 <script type="text/javascript">
      paymentwindow = new PaymentWindow({
          'merchantnumber': "8016239",
-         'amount': "<?php echo floor($info->total_da*0.7);?>",
+         'amount': "<?php echo $info->total_da*0.7*100;?>",
          'currency': "DKK",
 		 'orderid': "<?php echo sprintf('%05d',$order_id);?>",
 		 'accepturl': "<?php echo JURI::base();?>index.php?option=com_booking&task=order.complete_payment_70&order_id=<?php echo $order_id;?>",

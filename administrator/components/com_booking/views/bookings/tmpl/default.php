@@ -138,12 +138,6 @@ if (!empty($this->extra_sidebar)) {
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_TOTAL', 'a.total', $listDirn, $listOrder); ?>
 				</th>
-				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_PAY_30', 'a.pay_30', $listDirn, $listOrder); ?>
-				</th>
-				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_PAY_ALL', 'a.pay_all', $listDirn, $listOrder); ?>
-				</th>
                 
 				<th class='left'>
 				<?php echo "Status"; ?>
@@ -236,20 +230,12 @@ if (!empty($this->extra_sidebar)) {
 				</td>
 				<td>
 
-					<?php echo $item->total_da; ?> DKK
-				</td>
-				<td>
-
-					<?php echo $item->pay_30; ?>
-				</td>
-				<td>
-
-					<?php echo $item->pay_all; ?>
+					<?php echo number_format($item->total_da, 2, ',', '.'); ?> DKK
 				</td>
 				
 				<td>
 
-					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else if($item->status == 3) echo "Paid 30%"; else if($item->status == 4) echo "Paid 100%"; else echo "Cancelled";?>
+					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else if($item->status == 3) echo "Paid 30%"; else if($item->status == 4) echo "Paid 100%"; else if($item->status == 2) echo "Accepted"; else echo "Cancelled";?>
 				</td>
 				</tr>
 				<?php endforeach; ?>

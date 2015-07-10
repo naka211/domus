@@ -327,7 +327,7 @@ class BookingControllerOrder extends BookingController
 		$sent2 = $this->send_email_admin_pay30($order_id);
 		
 		if($sent1 && $sent2){
-			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=finish30', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=paymentfinish30&order_id='.$order_id, false));
 		} else {
 			die('Sending email error in completing payment 30%');
 		}
@@ -405,7 +405,7 @@ class BookingControllerOrder extends BookingController
 		Address: ".$info->address."<br>
 		Town: ".$info->city."<br>
 		Telephone: ".$info->phone."<br>
-		Email: ".$info->email."<br>
+		Email: ".$info->email."<br><br>
 		
 		Yours sincerely,<br />
 		The DomusHolidays Team
@@ -426,12 +426,14 @@ class BookingControllerOrder extends BookingController
 		$db = JFactory::getDBO();
 		$db->setQuery("UPDATE #__booking SET status = 4 WHERE id = ".$order_id);
 		$db->query();
+		$db->setQuery("UPDATE #__booking SET send_email_payall = 0 WHERE id = ".$order_id);
+		$db->query();
 		
 		$sent1 = $this->send_email_user_payall($order_id);
 		$sent2 = $this->send_email_admin_payall($order_id);
 		
 		if($sent1 && $sent2){
-			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=finish', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=paymentfinish&order_id='.$order_id, false));
 		} else {
 			die('Sending email error in completing order');
 		}
@@ -528,8 +530,8 @@ class BookingControllerOrder extends BookingController
 		$orders_30 = $db->loadObjectList();
 		
 		foreach($orders_30 as $order){
-			$number_of_days_time = $order->send_email_30_time - $time();
-			$number_of_days = floor($number_of_days_time/(60*60*24));
+			$number_of_days_time = time() - $order->send_email_30_time;
+			$number_of_days = ceil($number_of_days_time/(60*60*24));
 			
 			if($number_of_days == 9){
 				$order_id = $order->id;
@@ -596,8 +598,10 @@ class BookingControllerOrder extends BookingController
 				The DomusHolidays Team
 				";
 				$ok2 = $this->send_email($order_id, $supplier_email, $body, "Booking cancelled");
-				if($ok){
+				if($ok1&&$ok2){
 					$db->setQuery("UPDATE #__booking SET status = 5 WHERE id = ".$order_id);
+					$db->query();
+					$db->setQuery("UPDATE #__booking SET send_email_30 = 0 WHERE id = ".$order_id);
 					$db->query();
 				} else {
 					die("Sending email error in checking payment 30%");
@@ -608,12 +612,12 @@ class BookingControllerOrder extends BookingController
 	
 	function check_payment_all(){
 		$db = JFactory::getDBO();
-		$db->setQuery("SELECT id, send_email_payall_time FROM #__booking WHERE send_email_all = 1");
+		$db->setQuery("SELECT id, send_email_payall_time FROM #__booking WHERE send_email_payall = 1");
 		$orders_all = $db->loadObjectList();
 		
 		foreach($orders_all as $order){
-			$number_of_days_time = $order->send_email_payall_time - $time();
-			$number_of_days = floor($number_of_days_time/(60*60*24));
+			$number_of_days_time = time() - $order->send_email_payall_time;
+			$number_of_days = ceil($number_of_days_time/(60*60*24));
 			
 			if($number_of_days == 4){
 				$order_id = $order->id;
@@ -680,11 +684,13 @@ class BookingControllerOrder extends BookingController
 				The DomusHolidays Team
 				";
 				$ok2 = $this->send_email($order_id, $supplier_email, $body, "Booking cancelled");
-				if($ok){
+				if($ok1&&$ok2){
 					$db->setQuery("UPDATE #__booking SET status = 5 WHERE id = ".$order_id);
 					$db->query();
+					$db->setQuery("UPDATE #__booking SET send_email_payall = 0 WHERE id = ".$order_id);
+					$db->query();
 				} else {
-					die("Sending email error in checking payment 30%");
+					die("Sending email error in checking payment all");
 				}
 			}
 		}
@@ -692,12 +698,12 @@ class BookingControllerOrder extends BookingController
 	
 	function check_and_send_pay70(){
 		$db = JFactory::getDBO();
-		$db->setQuery("SELECT id, checkout FROM #__booking WHERE status = 3");
+		$db->setQuery("SELECT id, checkin FROM #__booking WHERE status = 3");
 		$orders = $db->loadObjectList();
 		
 		foreach($orders as $order){
-			$number_of_days_time = $order->checkout - $time();
-			$number_of_days = floor($number_of_days_time/(60*60*24));
+			$number_of_days_time = $order->checkin - time();
+			$number_of_days = ceil($number_of_days_time/(60*60*24));
 			
 			if($number_of_days == 10){
 				$ok = $this->send_email_user_70($order->id);
@@ -757,8 +763,16 @@ class BookingControllerOrder extends BookingController
 	
 	function pay_70(){
 		$order_id = JRequest::getVar('order_id');
+		$db = JFactory::getDBO();
+		$db->setQuery("SELECT status FROM #__booking WHERE id = ".$order_id);
+		$status = $db->loadResult();
+		if($status == 3){
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=payment70&order_id='.$order_id, false));
+		} else {
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=payment70fail&order_id='.$order_id, false));
+		}
 		
-		$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=payment70&order_id='.$order_id, false));
+		
 	}
 	
 	function complete_payment_70(){
@@ -767,12 +781,14 @@ class BookingControllerOrder extends BookingController
 		$db = JFactory::getDBO();
 		$db->setQuery("UPDATE #__booking SET status = 4 WHERE id = ".$order_id);
 		$db->query();
+		$db->setQuery("UPDATE #__booking SET send_email_payall = 0 WHERE id = ".$order_id);
+		$db->query();
 		
 		$sent1 = $this->send_email_user_payall($order_id);
 		$sent2 = $this->send_email_admin_payall($order_id);
 		
 		if($sent1 && $sent2){
-			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=finish', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_booking&view=order&layout=paymentfinish&order_id='.$order_id, false));
 		} else {
 			die('Sending email error in completing payment 70%');
 		}
