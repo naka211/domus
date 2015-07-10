@@ -18,6 +18,12 @@ JHtml::_('behavior.keepalive');
 // Import CSS
 $document = JFactory::getDocument();
 $document->addStyleSheet('components/com_booking/assets/css/booking.css');
+
+$db= JFactory::getDBO();
+$db->setQuery("SELECT name FROM #__supplier WHERE id = ".$this->item->supplier_id);
+$supplier = $db->loadResult();
+
+$house = simplexml_load_string($this->item->information);
 ?>
 <script type="text/javascript">
     js = jQuery.noConflict();
@@ -53,82 +59,78 @@ $document->addStyleSheet('components/com_booking/assets/css/booking.css');
             <div class="span10 form-horizontal">
                 <fieldset class="adminform">
 
-                    				<input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
+            <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('supplier_id'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('supplier_id'); ?></div>
+				<div class="controls"><?php echo $supplier; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('first_name'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('first_name'); ?></div>
+				<div class="controls"><?php echo $this->item->first_name; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('last_name'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('last_name'); ?></div>
+				<div class="controls"><?php echo $this->item->last_name; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('house_id'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('house_id'); ?></div>
+				<div class="controls"><?php echo $this->item->house_id; ?></div>
 			</div>
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('information'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('information'); ?></div>
+				<div class="control-label">House name</div>
+				<div class="controls"><?php echo $house->name; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('checkin'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('checkin'); ?></div>
+				<div class="controls"><?php echo date("d-m-Y",$this->item->checkin); ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('checkout'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('checkout'); ?></div>
+				<div class="controls"><?php echo date("d-m-Y",$this->item->checkout); ?></div>
 			</div>
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('total'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('total'); ?></div>
+				<div class="control-label">Total euro</div>
+				<div class="controls"><?php echo $this->item->total_eu; ?> EUR</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">Total danish</div>
+				<div class="controls"><?php echo number_format($this->item->total_da, 2, ',', '.'); ?> DKK</div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('booking_date'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('booking_date'); ?></div>
-			</div>
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('pay_30'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('pay_30'); ?></div>
-			</div>
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('pay_all'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('pay_all'); ?></div>
+				<div class="controls"><?php echo date("d-m-Y",$this->item->booking_date); ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('status'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('status'); ?></div>
+				<div class="controls"><?php if($this->item->status == 1) echo "Pending"; else if($this->item->status == 0) echo "Reject"; else if($this->item->status == 3) echo "Paid 30%"; else if($this->item->status == 4) echo "Paid 100%"; else if($this->item->status == 2) echo "Accepted"; else echo "Cancelled";?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('number_of_persons'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('number_of_persons'); ?></div>
+				<div class="controls"><?php echo $this->item->number_of_persons; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('address'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('address'); ?></div>
+				<div class="controls"><?php echo $this->item->address; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('zip'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('zip'); ?></div>
+				<div class="controls"><?php echo $this->item->zip; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('city'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('city'); ?></div>
+				<div class="controls"><?php echo $this->item->city; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('email'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('email'); ?></div>
+				<div class="controls"><?php echo $this->item->email; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('phone'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('phone'); ?></div>
+				<div class="controls"><?php echo $this->item->phone; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('comment'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('comment'); ?></div>
+				<div class="controls"><?php echo $this->item->comment; ?></div>
 			</div>
 
 
