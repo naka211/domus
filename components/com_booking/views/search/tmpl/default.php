@@ -2,15 +2,21 @@
 // no direct access
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
+$arrContextOptions=array(
+	"ssl"=>array(
+		"verify_peer"=>false,
+		"verify_peer_name"=>false,
+	),
+);
 
-$zones = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+$zones = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml', false, stream_context_create($arrContextOptions)));
 
 if(JRequest::getVar('zone')){
-	$subzones = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/subzones_in_zone/zone/'.JRequest::getVar('zone').'/depth/1/api.xml');
+	$subzones = simplexml_load_string(file_get_contents('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/subzones_in_zone/zone/'.JRequest::getVar('zone').'/depth/1/api.xml', false, stream_context_create($arrContextOptions)));
 	if(JRequest::getVar('subzone')){
-		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('subzone').'/api.xml');
+		$towns = simplexml_load_string(file_get_contents('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('subzone').'/api.xml', false, stream_context_create($arrContextOptions)));
 	} else {
-		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('zone').'/api.xml');
+		$towns = simplexml_load_string(file_get_contents('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.JRequest::getVar('zone').'/api.xml', false, stream_context_create($arrContextOptions)));
 	}
 }
 
@@ -57,7 +63,7 @@ if(JRequest::getVar('town')){
 }
 
 $link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."country/ITA/".$zone_text.$time_text."data/description:1,pictures:1,prices:1/api.xml";
-$houses = simplexml_load_file($link);
+$houses = simplexml_load_string(file_get_contents($link, false, stream_context_create($arrContextOptions)));
 ?>
 <script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script> 
 <script language="javascript">

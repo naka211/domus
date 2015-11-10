@@ -170,7 +170,14 @@ JHTML::_('behavior.formvalidator');
 					<div class="col-md-3 col-xs-6 col-2">
 						<h2>Destinations</h2>
 						<?php 
-						$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+					   $arrContextOptions=array(
+							"ssl"=>array(
+								"verify_peer"=>false,
+								"verify_peer_name"=>false,
+							),
+						);
+					   
+						$des = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml', false, stream_context_create($arrContextOptions)));
 						?>
 						<ul>
 						<?php foreach($des->zone as $item){?>

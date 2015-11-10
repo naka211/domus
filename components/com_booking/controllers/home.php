@@ -35,9 +35,15 @@ class BookingControllerHome extends BookingController
 	
 	function getSubzone(){
 		$zone = JRequest::getVar('zone');
-		
-		$subzones = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/subzones_in_zone/zone/'.$zone.'/depth/1/api.xml');
-		
+			
+	   $arrContextOptions=array(
+			"ssl"=>array(
+				"verify_peer"=>false,
+				"verify_peer_name"=>false,
+			),
+		);
+	   
+		$subzones = simplexml_load_string(file_get_contents('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/subzones_in_zone/zone/'.$zone.'/depth/1/api.xml', false, stream_context_create($arrContextOptions)));		
 		$html = '';
 		foreach($subzones as $subzone){
 			$html .= '<option value="'.$subzone['code'].'">'.$subzone->name.'</option>';
@@ -48,8 +54,15 @@ class BookingControllerHome extends BookingController
 	function getTown(){
 		$subzone = JRequest::getVar('subzone');
 		
-		$towns = simplexml_load_file('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.$subzone.'/api.xml');
-
+		$arrContextOptions=array(
+			"ssl"=>array(
+				"verify_peer"=>false,
+				"verify_peer_name"=>false,
+			),
+		);
+	   
+		$towns = simplexml_load_string(file_get_contents('https://www.vacavilla.com/webservices/v1/service/searchformhelper/helperservice/towns_in_zone/zone/'.$subzone.'/api.xml', false, stream_context_create($arrContextOptions)));
+		
 		$html = '';
 		foreach($towns->town as $town){
 			$html .= '<option value="'.$town.'">'.$town.'</option>';

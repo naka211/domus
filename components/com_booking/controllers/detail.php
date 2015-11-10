@@ -40,7 +40,14 @@ class BookingControllerDetail extends BookingController
 		$end_tmp = explode("-", $end_date);
 		$end_time = mktime(0, 0, 0, $end_tmp[1], $end_tmp[0], $end_tmp[2]);
 		
-		$prices = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/prices:1/house/'.JRequest::getVar('id').'/api.xml');
+		$arrContextOptions=array(
+			"ssl"=>array(
+				"verify_peer"=>false,
+				"verify_peer_name"=>false,
+			),
+		);
+
+		$prices = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/prices:1/house/'.JRequest::getVar('id').'/api.xml', false, stream_context_create($arrContextOptions)));
 
 		$i = 0;
 		foreach($prices->prices->price as $price){

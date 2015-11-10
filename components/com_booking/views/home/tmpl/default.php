@@ -141,8 +141,15 @@ $(document).ready(function(){
 				<div class="row">
 					<div class="col-md-12">
 						<div class="option">
-							<?php 
-							$des = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml');
+							<?php 					   
+					   		$arrContextOptions=array(
+								"ssl"=>array(
+									"verify_peer"=>false,
+									"verify_peer_name"=>false,
+								),
+							);
+							$des = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml', false, stream_context_create($arrContextOptions)));
+							
 							?>
 							<select class="form-control mb10" name="zone" id="zone">
 								<option value="0">Any Region</option>

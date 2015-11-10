@@ -2,8 +2,14 @@
 // no direct access
 defined('_JEXEC') or die;
 $tmpl = JURI::base().'templates/domus/';
-$detail = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/description:1,amenities:1,pictures:1,prices:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml');
-$get = file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/calendar:1/house/'.JRequest::getVar('id').'/api.xml');
+$arrContextOptions=array(
+	"ssl"=>array(
+		"verify_peer"=>false,
+		"verify_peer_name"=>false,
+	),
+);
+$detail = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/description:1,amenities:1,pictures:1,prices:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml', false, stream_context_create($arrContextOptions)));
+$get = file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/calendar:1/house/'.JRequest::getVar('id').'/api.xml', false, stream_context_create($arrContextOptions));
 $get = str_replace('">A</status>', '"><a>A</a></status>', $get);
 $get = str_replace('">O</status>', '"><a>O</a></status>', $get);
 $get = str_replace('">B</status>', '"><a>B</a></status>', $get);
@@ -25,8 +31,9 @@ if(JRequest::getVar('zone')){
 	$zone = '';
 	$zone1 = '';
 }
-$other_houses = simplexml_load_file('https://www.vacavilla.com/en/webservices/v1/service/searchhouses/start/0/items/9/country/ITA/'.$zone.'/api.xml');
+$other_houses = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/searchhouses/start/0/items/9/country/ITA/'.$zone.'/api.xml', false, stream_context_create($arrContextOptions)));
 
+$data = file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/amenities:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml', false, stream_context_create($arrContextOptions));
 JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 ?>
 <script type="text/javascript">
@@ -279,7 +286,7 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 									<input type="hidden" name="id" value="<?php echo JRequest::getVar('id');?>" />
 									<input type="hidden" name="amountda" id="amountda" value="" />
 									<input type="hidden" name="amounteu" id="amounteu" value="" />
-									<input type="hidden" name="data" id="data" value='<?php echo file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/viewhouse/data/amenities:1,extraprices:1/house/'.JRequest::getVar('id').'/api.xml');?>' />
+									<input type="hidden" name="data" id="data" value="<?php echo htmlspecialchars($data);?>" />
 									<input type="hidden" name="option" value="com_booking" />
 									<input type="hidden" name="task" value="order.order" />
 								</form> 
