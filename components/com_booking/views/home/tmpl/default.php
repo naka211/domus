@@ -222,7 +222,7 @@ $(document).ready(function(){
 </section>
 
 <section class="info">
-	<div class="container">
+	<!--<div class="container">
 		<div class="row">
 			<div class="col-md-3 pad0">
 				<a href="#">
@@ -253,9 +253,9 @@ $(document).ready(function(){
 				</a>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </section>
-
+<?php /*?>
 <section class="slider">
 	<div class="container">
 		<div id="myCarousel2" class="carousel slide" data-interval="3000" data-ride="carousel">
@@ -273,4 +273,5 @@ $(document).ready(function(){
 		</div>
 	</div>
 </section>
+<?php */?>
 {module AcyMailing Module}

@@ -294,7 +294,7 @@ $(document).ready(function(){
 						<a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"><img src="<?php echo $images->image_intro;?>"></a>
 						<div class="txt-desc">
 							<h2><a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"> <?php echo $this->article->title;?></a></h2>
-							<?php echo $this->article->introtext;?> <a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>">see_more</a></p>
+							<?php echo $this->article->introtext;?> <a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>">See more</a></p>
 						</div>
 					</div><!-- top-description -->
 					<?php }?>

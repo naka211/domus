@@ -120,7 +120,8 @@ JHTML::_('behavior.formvalidator');
 	
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
+            	{module Top Menu}
+				<!--<ul class="nav navbar-nav">
 					<li><a href="index.php?option=com_booking&view=search&zone=TOS">Tuscany</a></li>
 					<li><a href="index.php?option=com_booking&view=search&zone=VEN&subzone=VNZ">Venice</a></li>
 					<li><a href="index.php?option=com_booking&view=search">Villas</a></li>
@@ -129,7 +130,7 @@ JHTML::_('behavior.formvalidator');
 							<li><a href="index.php?option=com_booking&view=map&Itemid=143">Italy</a></li> 
 						</ul>
 					</li>
-				</ul>
+				</ul>-->
 				<!--<form role="search" class="navbar-form navbar-right">
 					<div class="form-group search">
 						<input type="text" placeholder="Søg efter by eller sted" class="form-control">

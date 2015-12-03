@@ -31,7 +31,7 @@ class BookingModelSearch extends JModelList
 		$query
 			->select($db->quoteName(array('id', 'title', 'alias', 'introtext', 'fulltext', 'images')))
 			->from($db->quoteName('#__content'))
-			->where($db->quoteName('xreference') . ' LIKE \''.$zone.'\'');
+			->where($db->quoteName('xreference') . ' LIKE \''.$zone.'\' AND catid = 10');
 		 
 		$db->setQuery($query);
 		 
