@@ -120,7 +120,6 @@ JHTML::_('behavior.formvalidator');
 	
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            	{module Top Menu}
 				<!--<ul class="nav navbar-nav">
 					<li><a href="index.php?option=com_booking&view=search&zone=TOS">Tuscany</a></li>
 					<li><a href="index.php?option=com_booking&view=search&zone=VEN&subzone=VNZ">Venice</a></li>
@@ -131,6 +130,7 @@ JHTML::_('behavior.formvalidator');
 						</ul>
 					</li>
 				</ul>-->
+                {module Top Menu}
 				<!--<form role="search" class="navbar-form navbar-right">
 					<div class="form-group search">
 						<input type="text" placeholder="Søg efter by eller sted" class="form-control">
@@ -171,13 +171,12 @@ JHTML::_('behavior.formvalidator');
 					<div class="col-md-3 col-xs-6 col-2">
 						<h2>Destinations</h2>
 						<?php 
-					   $arrContextOptions=array(
+						$arrContextOptions=array(
 							"ssl"=>array(
 								"verify_peer"=>false,
 								"verify_peer_name"=>false,
 							),
 						);
-					   
 						$des = simplexml_load_string(file_get_contents('https://www.vacavilla.com/en/webservices/v1/service/searchformhelper/helperservice/zones_in_country/country/ITA/depth/1/api.xml', false, stream_context_create($arrContextOptions)));
 						?>
 						<ul>
@@ -259,13 +258,13 @@ JHTML::_('behavior.formvalidator');
 		</div>
 	</div>
 
-	<?php if(JUri::getInstance()->toString() == JUri::base()){?>
+	<?php if(JUri::getInstance()->toString() == JUri::base() && $session->get('newsletter') != 1){?>
     <script> 
 	  $(document).ready(function() {
 	    $("#myModal").modal('show'); 
 	});
   	</script>
 	{module AcyMailing Module Popup}
-	<?php }?>
+	<?php $session->set('newsletter', 1);}?>
 </body> 
 </html>

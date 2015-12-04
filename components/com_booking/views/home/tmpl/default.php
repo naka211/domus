@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 </script>
 <section class="banner">
-	<div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
+	<div id="myCarousel" class="carousel slide" data-interval="8000" data-ride="carousel">
 	   <!-- Carousel items -->
 		<div class="carousel-inner">
 			{module Home Slider - Top}
@@ -71,7 +71,7 @@ $(document).ready(function(){
 				<div class="row mb10">
 					<div class="col-md-12">
 						<h2>Find your italian villa in Tuscany and other regions</h2>
-						<!--<div class="form-inline">
+						<div class="form-inline">
 							<?php if($this->filters['apartment']){?>
 							<div class="checkbox col-sm-5ths col-xs-6">
 								<label>
@@ -135,7 +135,7 @@ $(document).ready(function(){
 								</label>
 							</div>
 							<?php }?>
-						</div>-->
+						</div>
 					</div>
 				</div>
 				<div class="row">

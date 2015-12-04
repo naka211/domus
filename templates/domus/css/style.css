@@ -60,9 +60,9 @@ img {max-width: 100%;}
 	.navbar-fixed-top.navbar-shrink{padding:10px 0}
 	.navbar-fixed-top.navbar-shrink .navbar-brand{font-size:1.5em}
 }
-.under .navbar>.container .navbar-brand {margin-left: 15px;}
+/*.under .navbar>.container .navbar-brand {margin-left: 15px;}*/
 .navbar a:focus{outline:0}
-.navbar .navbar-nav {font-size: 14px; margin-left: 220px;}
+.navbar .navbar-nav {font-size: 14px; margin-left: 205px;}
 .navbar .navbar-nav li a:focus{outline:0}
 .navbar-default,.navbar-inverse{border:0}
 

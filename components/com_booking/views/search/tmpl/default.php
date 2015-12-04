@@ -61,6 +61,34 @@ if(JRequest::getVar('town')){
 		$zone_text = "";
 	}
 }
+$amenities = array();
+if(JRequest::getVar('apartment')){
+	$amenities[] = 6;
+}
+if(JRequest::getVar('independent_house')){
+	$amenities[] = 1;
+}
+if(JRequest::getVar('villa')){
+	$amenities[] = 449;
+}
+if(JRequest::getVar('pet_allowed')){
+	$amenities[] = 21;
+}
+if(JRequest::getVar('air_conditioning')){
+	$amenities[] = 4;
+}
+if(JRequest::getVar('internet_access')){
+	$amenities[] = 44;
+}
+if(JRequest::getVar('swimming_pool')){
+	$amenities[] = 67;
+}
+if(JRequest::getVar('golf_course')){
+	$amenities[] = 16;
+}
+if(JRequest::getVar('tennis')){
+	$amenities[] = 37;
+}
 
 $link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."country/ITA/".$zone_text.$time_text."data/description:1,pictures:1,prices:1/api.xml";
 $houses = simplexml_load_string(file_get_contents($link, false, stream_context_create($arrContextOptions)));
@@ -168,7 +196,7 @@ $(document).ready(function(){
 									<input id="end_date" name="end_date" type="text" class="form-control date-input" placeholder="Ending date" value="<?php echo JRequest::getVar('end_date');?>">
 								</div>
 							</div><!-- each_wrapper -->
-							<?php /*?>
+							
 							<div class="each_wrapper wrap_checbox">
 								<?php if($this->filters['apartment']){?>
 								<div class="checkbox">
@@ -233,7 +261,8 @@ $(document).ready(function(){
 									</label>
 								</div>
 								<?php }?>
-							</div> <!--  wrap_checbox -->         
+							</div> <!--  wrap_checbox -->
+                            <?php /*?>      
 							<script>  
 							   $(function(){ 
 								  $('#range-1').noUiSlider({
