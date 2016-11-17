@@ -121,13 +121,13 @@ if (!empty($this->extra_sidebar)) {
 					<?php echo JHtml::_('grid.sort', 'Order number', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 				<th class='left'>
-				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_SUPPLIER_ID', 'a.supplier_id', $listDirn, $listOrder); ?>
-				</th>
-				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_FIRST_NAME', 'a.first_name', $listDirn, $listOrder); ?>
 				</th>
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_LAST_NAME', 'a.last_name', $listDirn, $listOrder); ?>
+				</th>
+				<th class='left'>
+				<?php echo JHtml::_('grid.sort',  'Email', 'a.email', $listDirn, $listOrder); ?>
 				</th>
 				<th class='left'>
 				<?php echo JHtml::_('grid.sort',  'COM_BOOKING_BOOKINGS_CHECKIN', 'a.checkin', $listDirn, $listOrder); ?>
@@ -141,6 +141,9 @@ if (!empty($this->extra_sidebar)) {
                 
 				<th class='left'>
 				<?php echo "Status"; ?>
+				</th>
+				<th class='left'>
+				Supplier
 				</th>
                     
 				</tr>
@@ -199,29 +202,27 @@ if (!empty($this->extra_sidebar)) {
 					</td>
                 <?php endif; ?>
                 
-				<td>
+				<td style="text-align:center">
 					<a href="<?php echo JRoute::_('index.php?option=com_booking&task=booking.edit&id='.(int) $item->id); ?>"><?php echo sprintf('%05d',$item->id); ?></a>
 				</td>  
-				<td>
-					<?php echo $item->supplier_id==0?$item->supplier_id:"Vacavilla"; ?>
-				</td>
 				<td>
 				<?php if (isset($item->checked_out) && $item->checked_out) : ?>
 					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'bookings.', $canCheckin); ?>
 				<?php endif; ?>
-				<?php if ($canEdit) : ?>
+				<?php /*if ($canEdit) : ?>
 					<a href="<?php echo JRoute::_('index.php?option=com_booking&task=booking.edit&id='.(int) $item->id); ?>">
 					<?php echo $this->escape($item->first_name); ?></a>
-				<?php else : ?>
+				<?php else : */?>
 					<?php echo $this->escape($item->first_name); ?>
-				<?php endif; ?>
+				<?php /*endif; */?>
 				</td>
 				<td>
-
 					<?php echo $item->last_name; ?>
 				</td>
 				<td>
-
+					<?php echo $item->email; ?>
+				</td>
+				<td>
 					<?php echo date("d-m-Y", $item->checkin); ?>
 				</td>
 				<td>
@@ -229,13 +230,33 @@ if (!empty($this->extra_sidebar)) {
 					<?php echo date("d-m-Y", $item->checkout); ?>
 				</td>
 				<td>
-
-					<?php echo number_format($item->total_da, 2, ',', '.'); ?> DKK
+					<?php echo @number_format($item->total_da, 2, ',', '.'); ?> DKK
 				</td>
 				
 				<td>
-
-					<?php if($item->status == 1) echo "Pending"; else if($item->status == 0) echo "Reject"; else if($item->status == 3) echo "Paid 30%"; else if($item->status == 4) echo "Paid 100%"; else if($item->status == 2) echo "Accepted"; else echo "Cancelled";?>
+					<?php if($item->supplier_id == 0){
+						if($item->status == 1) echo "Sent email"; 
+						else if($item->status == 0) echo "Pending"; 
+						else if($item->status == 2) echo "Paid";
+					} else {
+						if($item->status == 1) echo "Pending"; 
+						else if($item->status == 0) echo "Reject"; 
+						else if($item->status == 3) echo "Paid 30%"; 
+						else if($item->status == 4) echo "Paid 100%"; 
+						else if($item->status == 2) echo "Accepted"; 
+						else echo "Cancelled";
+					}
+					?>
+				</td>
+				<td>
+					<?php if($item->supplier_id == 0){
+						echo "Self";
+					} else if($item->supplier_id == 1){
+						echo "Vaca Villa";
+					} else {
+						echo "GotoItaly";
+					}
+					?>
 				</td>
 				</tr>
 				<?php endforeach; ?>

@@ -130,7 +130,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu {display: block;}
 .btnkontact:hover {text-decoration: none; background: #15852e !important; color: #fff;}
 .main-search .option_day input , .search-filter-left .option_day input,.book-house-form .input-group input {background: #fff url(../img/icon-datetime.png) no-repeat 97% center;}
 
-footer {position: relative; z-index: 10;}
+footer {position: relative; z-index: 2;}
 .footer-above {background: #027fb5; color: #fff; padding: 20px 0;}
 .footer-above h2 {font-size: 13px; text-transform: uppercase;}
 .footer-above ul {padding-left: 15px;}
@@ -199,7 +199,7 @@ footer {position: relative; z-index: 10;}
 .list-tours-item a h2 {background: url(../img/opacity2.png) repeat; padding: 10px; color: #fff; position: absolute; bottom: 0; left: 0; width: 100%; margin-bottom: 0;}
 .list-tours-item a:hover h2 {bottom: -50px; -webkit-transition: all 600ms ease-out; -moz-transition: all 600ms ease-out;-ms-transition: all 600ms ease-out; -o-transition: all 600ms ease-out; transition: all 600ms ease-out;}
 
-.cookies {background: #48484b url(../img/icon-foot.png) no-repeat 97% 12%; color: #fff; position: fixed; top: 15%; right: 1%; padding: 15px;-webkit-border-radius: 5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; padding-right: 100px;}
+.cookies {background: #48484b url(../img/icon-foot.png) no-repeat 97% 12%; color: #fff; position: fixed; top: 15%; right: 1%; padding: 15px;-webkit-border-radius: 5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; padding-right: 100px; z-index:3;}
 .cookies .btnClose {color: #fff; text-decoration: underline;}
  
 /** CSS Tuscany page  @tho**/
@@ -385,7 +385,7 @@ img.img_article {margin: 12px 0 15px 0;}
 .wrapper_map {margin-top: 20px; margin-bottom: 30px;width: 990px; overflow: auto;}
 .wrapper_map img {max-width: inherit; width: 990px;}
 
-.detail-content  .pro_gallary {padding-top: 40px;}
+.detail-content  .pro_gallary {padding-top: 40px; min-height:550px;}
 #slideshow-main {
    /* width:429px; */
     float:left; 
@@ -565,6 +565,36 @@ img.img_article {margin: 12px 0 15px 0;}
  margin-top: 5px;
  color: #303030;
 }
+.top-description {
+/*min-height: 355px;*/
+}
+
+.mt30 {
+    margin-top: 30px;
+}
+.box_customer_info {
+    display: none;
+}
+.i_date {
+    background: #fff url("../img/icon-datetime.png") no-repeat scroll 97% center;
+}
+
+.article_detail {
+ margin: 30px 0;
+ display: none;
+ border: 1px solid #ccc;
+ background: #f7f7f7;
+ padding: 15px;
+}
+
+.img_tuscany_detail {
+ margin-right: 15px;
+ margin-bottom: 5px;
+ float: left;
+ 	width:290px;
+}
+
+.btn_seemore {color:#009ddf !important;}
 
 @media (min-width: 768px){
  .modal-dialog {width: 400px;}

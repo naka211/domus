@@ -189,9 +189,10 @@ JHTML::_('behavior.formvalidator');
 						<h2>Domus Holidays </h2>
 						<img src="<?php echo $tmpl;?>img/logo2.png" alt=""> 
 						<p class="info_ft">
-						Domus Holidays<br> 
+						Domus Holidays ApS<br> 
 						Idrætsvej 62<br>
-						DK-2650 Hvidovre<br> </p>
+						DK-2650 Hvidovre<br>
+                        CVR-nr. 37311774<br></p>
 	
 						<p class="links_ft">
 						<a href="mailto:info@domusholidays.com">info@domusholidays.com</a><br>
@@ -201,7 +202,7 @@ JHTML::_('behavior.formvalidator');
 					<div class="col-md-3 col-xs-6 col-4">
 						<h2>VI MODTAGER</h2>
 						<img src="<?php echo $tmpl;?>img/cart.png" alt="">
-						<a href="#"><img src="<?php echo $tmpl;?>img/face.png" alt=""></a>
+						<a href="https://www.facebook.com/DomusHolidays/?fref=ts" target="_blank"><img src="<?php echo $tmpl;?>img/face.png" alt=""></a>
 					</div>
 				</div>
 			</div>
@@ -210,7 +211,7 @@ JHTML::_('behavior.formvalidator');
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 text-center">
-						<p>© 2015 Domus Holidays. All Rights Reserved. </p>
+						<p>© 2016 Domus Holidays. All Rights Reserved. </p>
 					</div>
 				</div>
 			</div>
@@ -258,13 +259,13 @@ JHTML::_('behavior.formvalidator');
 		</div>
 	</div>
 
-	<?php if(JUri::getInstance()->toString() == JUri::base() && $session->get('newsletter') != 1){?>
+	<?php /*if(JUri::getInstance()->toString() == JUri::base() && $session->get('newsletter') != 1){?>
     <script> 
 	  $(document).ready(function() {
 	    $("#myModal").modal('show'); 
 	});
   	</script>
 	{module AcyMailing Module Popup}
-	<?php $session->set('newsletter', 1);}?>
+	<?php $session->set('newsletter', 1);}*/?>
 </body> 
 </html>

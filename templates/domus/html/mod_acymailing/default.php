@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidator');
 ?>
-<div id="myModal" class="modal fade">
+<!--<div id="myModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -10,8 +10,8 @@ JHTML::_('behavior.formvalidator');
 				<h4>Nyhedsbrev tilmelding</h4>
 				<p>Få inspiration, nyheder og fantastiske priser. Send mig nyeste rejseinspiration, insidertips og gode priser fra Domus Holidays</p>
 			</div>
-			<div class="modal-body">
-				<form class="form-validate" id="<?php echo $formName; ?>" action="<?php echo JRoute::_('index.php'); ?>" onsubmit="return submitacymailingform('optin','<?php echo $formName;?>')" method="post" name="<?php echo $formName ?>" <?php if(!empty($fieldsClass->formoption)) echo $fieldsClass->formoption; ?>>
+			<div class="modal-body">-->
+				<form class="form-validate form-group" id="<?php echo $formName; ?>" action="<?php echo JRoute::_('index.php'); ?>" onsubmit="return submitacymailingform('optin','<?php echo $formName;?>')" method="post" name="<?php echo $formName ?>" <?php if(!empty($fieldsClass->formoption)) echo $fieldsClass->formoption; ?>>
 					<div class="form-group">
 						<input id="user_name_<?php echo $formName; ?>" placeholder="Navn *" class="inputbox form-control required" type="text" name="user[name]" value=""/>
 					</div> 
@@ -32,7 +32,7 @@ JHTML::_('behavior.formvalidator');
 					<input type="hidden" name="hiddenlists" value="<?php echo $hiddenLists;?>"/>
 					<input type="hidden" name="acyformname" value="<?php echo $formName; ?>" />
 				</form>
-			</div>
+			<!--</div>
 		</div>
 	</div>
-</div>
+</div>-->

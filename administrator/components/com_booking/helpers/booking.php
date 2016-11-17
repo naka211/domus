@@ -24,6 +24,7 @@ class BookingHelper {
 			'index.php?option=com_booking&view=bookings',
 			$vName == 'bookings'
 		);
+		
 
     }
 

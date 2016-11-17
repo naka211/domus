@@ -23,7 +23,7 @@ $db= JFactory::getDBO();
 $db->setQuery("SELECT name FROM #__supplier WHERE id = ".$this->item->supplier_id);
 $supplier = $db->loadResult();
 
-$house = simplexml_load_string($this->item->information);
+//$house = simplexml_load_string($this->item->information);
 ?>
 <script type="text/javascript">
     js = jQuery.noConflict();
@@ -49,6 +49,14 @@ $house = simplexml_load_string($this->item->information);
     }
 </script>
 
+<?php if($this->item->supplier_id == 0){?>
+<form action="index.php?option=com_booking&task=sendEmail" method="post">
+<div class="control-group">
+	Amount <input type="text" name="amount"> <input type="submit" value="Send email" id="sendEmail">
+	<input type="hidden" name="orderid" value="<?php echo $this->item->id; ?>" />
+</div>
+</form>
+<?php }?>
 <form action="<?php echo JRoute::_('index.php?option=com_booking&layout=edit&id=' . (int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="booking-form" class="form-validate">
 
     <div class="form-horizontal">
@@ -61,10 +69,6 @@ $house = simplexml_load_string($this->item->information);
 
             <input type="hidden" name="jform[id]" value="<?php echo $this->item->id; ?>" />
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('supplier_id'); ?></div>
-				<div class="controls"><?php echo $supplier; ?></div>
-			</div>
-			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('first_name'); ?></div>
 				<div class="controls"><?php echo $this->item->first_name; ?></div>
 			</div>
@@ -73,28 +77,24 @@ $house = simplexml_load_string($this->item->information);
 				<div class="controls"><?php echo $this->item->last_name; ?></div>
 			</div>
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('house_id'); ?></div>
+				<div class="control-label">House</div>
 				<div class="controls"><?php echo $this->item->house_id; ?></div>
 			</div>
-			<div class="control-group">
+			<!--<div class="control-group">
 				<div class="control-label">House name</div>
 				<div class="controls"><?php echo $house->name; ?></div>
-			</div>
+			</div>-->
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('checkin'); ?></div>
+				<div class="control-label">Start date</div>
 				<div class="controls"><?php echo date("d-m-Y",$this->item->checkin); ?></div>
 			</div>
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('checkout'); ?></div>
+				<div class="control-label">End date</div>
 				<div class="controls"><?php echo date("d-m-Y",$this->item->checkout); ?></div>
 			</div>
 			<div class="control-group">
-				<div class="control-label">Total euro</div>
-				<div class="controls"><?php echo $this->item->total_eu; ?> EUR</div>
-			</div>
-			<div class="control-group">
-				<div class="control-label">Total danish</div>
-				<div class="controls"><?php echo number_format($this->item->total_da, 2, ',', '.'); ?> DKK</div>
+				<div class="control-label">Total</div>
+				<div class="controls"><?php echo $this->item->total_da?@number_format($this->item->total_da, 2, ',', '.').' DKK':''; ?></div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('booking_date'); ?></div>
@@ -102,7 +102,26 @@ $house = simplexml_load_string($this->item->information);
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('status'); ?></div>
-				<div class="controls"><?php if($this->item->status == 1) echo "Pending"; else if($this->item->status == 0) echo "Reject"; else if($this->item->status == 3) echo "Paid 30%"; else if($this->item->status == 4) echo "Paid 100%"; else if($this->item->status == 2) echo "Accepted"; else echo "Cancelled";?></div>
+				<div class="controls">
+					<?php 
+					/*if($this->item->status == 1) echo "Sent email"; 
+					else if($this->item->status == 0) echo "Pending"; 
+					else if($this->item->status == 2) echo "Paid";*/
+					?>
+					<?php if($this->item->supplier_id == 0){
+						if($this->item->status == 1) echo "Sent email"; 
+						else if($this->item->status == 0) echo "Pending"; 
+						else if($this->item->status == 2) echo "Paid";
+					} else {
+						if($this->item->status == 1) echo "Pending"; 
+						else if($this->item->status == 0) echo "Reject"; 
+						else if($this->item->status == 3) echo "Paid 30%"; 
+						else if($this->item->status == 4) echo "Paid 100%"; 
+						else if($this->item->status == 2) echo "Accepted"; 
+						else echo "Cancelled";
+					}
+					?>
+				</div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('number_of_persons'); ?></div>
@@ -132,8 +151,6 @@ $house = simplexml_load_string($this->item->information);
 				<div class="control-label"><?php echo $this->form->getLabel('comment'); ?></div>
 				<div class="controls"><?php echo $this->item->comment; ?></div>
 			</div>
-
-
                 </fieldset>
             </div>
         </div>

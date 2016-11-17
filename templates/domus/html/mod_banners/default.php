@@ -18,7 +18,7 @@ $modparams = json_decode($module->params);
 	<?php echo $headerText; ?>
 <?php endif; ?>
 <?php if(JRequest::getVar('view')== 'featured'){ ?>
-    <?php if($module->id == 95){ ?>
+    <?php if($module->id == 95){?>
     <section class="banner">
         <div id="myCarousel" class="carousel slide" data-interval="<?php echo $modparams->cache_time; ?>" data-ride="carousel">
            <!-- Carousel items -->

@@ -22,5 +22,4 @@ class BookingControllerBooking extends JControllerForm
         $this->view_list = 'bookings';
         parent::__construct();
     }
-
 }

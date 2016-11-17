@@ -8,6 +8,18 @@ $all = $session->get('all');
 $detail = simplexml_load_string($all['data']);
 //print_r($detail);exit;
 ?>
+<script>
+$(document).ready(function(){
+	$('input').on('change invalid', function() {
+		var textfield = $(this).get(0);
+		textfield.setCustomValidity('');
+		
+		if (!textfield.validity.valid) {
+		  textfield.setCustomValidity('Udfyld dette felt');  
+		}
+	});  
+});
+</script>
 <section class="content clearfix">
 	<div class="container pad0">
 		<div class="main-content orderbooking-content clearfix"> 
@@ -186,7 +198,7 @@ $detail = simplexml_load_string($all['data']);
 										<input type="text" class="form-control required" placeholder="Telefon *" name="phone">
 									</div>
 									<div class="form-group"> 
-										<textarea rows="6" class="form-control required" placeholder="Besked *" name="comment"></textarea>  
+										<textarea rows="6" class="form-control" placeholder="Besked" name="comment"></textarea>  
 									</div>
 									<p>Felter markeret med * skal udfyldes</p>
 									<div class="checkbox checkboxNyhedsbrev">
@@ -202,6 +214,7 @@ $detail = simplexml_load_string($all['data']);
 									 <input type="submit" class="validate btn" value="SEND FORESPØRGSEL" />
 									 <input type="hidden" name="option" value="com_booking" />
 									 <input type="hidden" name="task" value="order.save_order" />
+									 <input type="hidden" name="supplier" value="1" />
 									<!--<a href="tak.php" class="btn">SEND FORESPØRGSEL</a>-->
 								</form> 
 							</div>

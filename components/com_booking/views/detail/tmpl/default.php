@@ -94,6 +94,14 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 				var maxDateValue = '';
 				<?php }?>
 				
+				var arr = selected.split("-");
+            	var date = new Date(arr[2]+"-"+arr[1]+"-"+arr[0]);
+				var d = date.getDate();
+				var m = date.getMonth();
+				var y = date.getFullYear();
+				var minEndDate = new Date(y, m, d + 7);
+				
+			
 				$( "#end_date" ).datepicker({
 					"option"    :$.datepicker.regional[ "da" ],
 					minDate: minDateValue,
@@ -106,6 +114,22 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 							return [false];
 						}
 					}
+				});
+				$("#end_date").datepicker('setDate', minEndDate);
+				
+				//$('#loading_image').show();
+				$(".price").html('<img src="images/loading.gif" id="loading_image">');
+				$.ajax({
+					method: "POST",
+					url: "<?php echo JURI::base();?>index.php?option=com_booking&task=detail.getPrice",
+					data: { start_date: $("#start_date").val(), end_date: $("#end_date").val(), id: <?php echo JRequest::getVar('id');?> }
+				}).done(function( html ) {
+					//$('#loading_image').hide();
+					var data = jQuery.parseJSON(html);
+					$(".price").html(data.text);
+					$("#amountda").val(data.amountda);
+					$("#amounteu").val(data.amounteu);
+					$(".btn-book").show();
 				});
 			},
 			beforeShowDay: function(date){
@@ -120,7 +144,7 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 			}
 		});
 		$('#loading_image').hide();
-		$("#end_date").change(function(e) {
+		$("#start_date").change(function(e) {
 			$('#loading_image').show();
 			$.ajax({
 				method: "POST",
@@ -157,7 +181,7 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 			<div class="pro_gallary">
 				<div class="row">   
 					<div id="slideshow-main" class="col-xs-9 col-sm-10">   
-						<a rel="gallery1" href="#" class="btn_zoom fancybox"><i class="fa fa-search-plus"></i> Zoom</a>
+						<a rel="gallery1" href="#" class="btn_zoom fancybox"><i class="fa fa-search-plus"></i> Se billeder</a>
 						<ul>
 							<li class="p1 active">
 								<a rel="gallery1" href="<?php echo $detail->pictures->mainpicture['path'];?>" class="fancybox">
@@ -261,7 +285,7 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 						<div class="each_box_info">
 							<div class="header-meta">
 							  <!--<p><i class="fa fa-tag"></i><span class="price">from <span class="price_line_through">1.743</span> 1.484 EUR/WEEK (fra 21.500 DKK/UGE)</span></p>-->
-							  <p><i class="fa fa-tag"></i><span class="price"><img id="loading_image" src="<?php echo JURI::base().'images/loading.gif';?>" /></span></p>
+							  <p><i class="fa fa-tag"></i><span class="price"><!--<img id="loading_image" src="<?php echo JURI::base().'images/loading.gif';?>" />--></span></p>
 							</div>
 						</div>
 					</div> <!-- col-sm-6 --> 
@@ -287,6 +311,7 @@ JFactory::getDocument()->setTitle($detail->name.' - Domus Holiday');
 									<input type="hidden" name="amountda" id="amountda" value="" />
 									<input type="hidden" name="amounteu" id="amounteu" value="" />
 									<input type="hidden" name="data" id="data" value="<?php echo htmlspecialchars($data);?>" />
+									<input type="hidden" name="house_name" value="<?php echo $detail->name;?>" />
 									<input type="hidden" name="option" value="com_booking" />
 									<input type="hidden" name="task" value="order.order" />
 								</form> 

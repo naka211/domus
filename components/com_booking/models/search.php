@@ -18,23 +18,18 @@ class BookingModelSearch extends JModelList
 {
 
 	function getArticle(){
-		if(JRequest::getVar('subzone')){
+		/*if(JRequest::getVar('subzone')){
 			$zone = JRequest::getVar('subzone');
-		} else {
+		} else {*/
 			$zone = JRequest::getVar('zone', 'ITA');
-		}
+		/*}*/
 
 		$db = JFactory::getDbo();
 		 
 		$query = $db->getQuery(true);
 
-		$query
-			->select($db->quoteName(array('id', 'title', 'alias', 'introtext', 'fulltext', 'images')))
-			->from($db->quoteName('#__content'))
-			->where($db->quoteName('xreference') . ' LIKE \''.$zone.'\' AND catid = 10');
-		 
+		$query = "SELECT id, title, alias, introtext, images, `fulltext` FROM #__content WHERE xreference = '".$zone."' AND catid = 10";
 		$db->setQuery($query);
-		 
 		$result = $db->loadObject();
 		
 		return $result;

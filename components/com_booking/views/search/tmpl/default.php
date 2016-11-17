@@ -1,6 +1,8 @@
 <?php
 // no direct access
 defined('_JEXEC') or die;
+
+$myurl = JURI::current(). "?" . $_SERVER['QUERY_STRING'];
 $tmpl = JURI::base().'templates/domus/';
 $arrContextOptions=array(
 	"ssl"=>array(
@@ -61,16 +63,33 @@ if(JRequest::getVar('town')){
 		$zone_text = "";
 	}
 }
+
+if(JRequest::getVar('person')){
+	$person_text = "sleeps/".JRequest::getVar('person')."/";
+} else {
+	$person_text = "";
+}
+
 $amenities = array();
+$house_type = 0;
+$params = array();
 if(JRequest::getVar('apartment')){
-	$amenities[] = 6;
+	$params[] = "user_pluginsmanager_pi1[proptype]=6";
+	$house_type = 1;
 }
 if(JRequest::getVar('independent_house')){
-	$amenities[] = 1;
+	$params[] = "user_pluginsmanager_pi1[proptype]=1";
+	$house_type = 2;
 }
 if(JRequest::getVar('villa')){
-	$amenities[] = 449;
+	$params[] = "user_pluginsmanager_pi1[proptype]=449";
+	$house_type = 3;
 }
+$min = JRequest::getVar('upper_value', 0);
+$max = JRequest::getVar('lower_value', 10000);
+$params[] = "user_pluginsmanager_pi1[price_range]=".$min."-".$max;
+$params_text = implode("&", $params);
+
 if(JRequest::getVar('pet_allowed')){
 	$amenities[] = 21;
 }
@@ -89,9 +108,65 @@ if(JRequest::getVar('golf_course')){
 if(JRequest::getVar('tennis')){
 	$amenities[] = 37;
 }
+if($amenities){
+	$amenities_text = '';
+	foreach($amenities as $amenity){
+		$amenities_text .= "amenities:".$amenity.",";
+	}
+} else {
+	$amenities_text = '';
+}
 
-$link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."country/ITA/".$zone_text.$time_text."data/description:1,pictures:1,prices:1/api.xml";
+$link = "https://www.vacavilla.com/webservices/v1/service/searchhouses/".$limit_text."country/ITA/".$person_text.$zone_text.$time_text."data/description:1,".$amenities_text."pictures:1,prices:1/api.xml?".$params_text;
 $houses = simplexml_load_string(file_get_contents($link, false, stream_context_create($arrContextOptions)));
+
+
+// GotoItaly
+if(empty(JRequest::getVar('start'))){
+	$params1 = array();
+	if(JRequest::getVar('zone')){
+		foreach($zones->zone as $item){
+			if($item['code'] == JRequest::getVar('zone')){
+				$zone_name = (string)$item->name;
+				break;
+			}
+		}
+		$params1[] = "zone=".rawurlencode($zone_name);
+	}
+	if(JRequest::getVar('subzone')){
+		foreach($subzones->zone as $item){
+			if($item['code'] == JRequest::getVar('subzone')){
+				$subzone_name = (string)$item->name;
+				break;
+			}
+		}
+		$params1[] = "subzone=".rawurlencode($subzone_name);
+	}
+	if(JRequest::getVar('town')){
+		$params1[] = "town=".rawurlencode(JRequest::getVar('town'));
+	}
+	if($house_type){
+		$params1[] = "house_type=".$house_type;
+	}
+	if(JRequest::getVar('pet_allowed')){
+		$params1[] = 'pet_allowed=1';
+	}
+	if(JRequest::getVar('air_conditioning')){
+		$params1[] = 'air_conditioning=1';
+	}
+	if(JRequest::getVar('internet_access')){
+		$params1[] = 'internet_access=1';
+	}
+	if(JRequest::getVar('swimming_pool')){
+		$params1[] = 'swimming_pool=1';
+	}
+	$params1[] = 'min='.$min;
+	$params1[] = 'max='.$max;
+	$params1_text = implode('&', $params1);
+	$gti_link = 'http://go-to-italy.dk/index.php?option=com_houses&task=house.getHouses&'.$params1_text;
+	$italy_houses = file_get_contents($gti_link, false, stream_context_create($arrContextOptions));
+	$italy_houses = json_decode($italy_houses);
+}
 ?>
 <script src="<?php echo $tmpl;?>js/jquery.nouislider.all.min.js"></script> 
 <script language="javascript">
@@ -148,6 +223,10 @@ $(document).ready(function(){
 			});
 		}
 	});
+	
+	$(".btn_seemore").click(function() {
+		$('.article_detail').slideToggle('slow');
+	});
 });
 </script> 
 <section class="content clearfix">
@@ -183,13 +262,13 @@ $(document).ready(function(){
 										<option value="<?php echo $item;?>" <?php if($item == JRequest::getVar('town')) echo 'selected';?>><?php echo $item;?></option>
 										<?php }}?>
 									</select>
-									<!--<select class="form-control" name="person">
+									<select class="form-control" name="person">
 										<option value="0">Person</option>
 										<option value="Any" <?php if(JRequest::getVar('person')=='Any') echo 'selected';?>>Any</option>
 										<?php for($i=2; $i<=30; $i++){?>
 										<option value="<?php echo $i;?>" <?php if(JRequest::getVar('person')==$i) echo 'selected';?>><?php echo $i;?></option>
 										<?php }?>
-									</select>-->
+									</select>
 								</div>
 								<div class="option option_day">
 									<input id="start_date" name="start_date" type="text" class="form-control date-input mb10" placeholder="Starting date" value="<?php echo JRequest::getVar('start_date');?>">
@@ -262,11 +341,10 @@ $(document).ready(function(){
 								</div>
 								<?php }?>
 							</div> <!--  wrap_checbox -->
-                            <?php /*?>      
 							<script>  
 							   $(function(){ 
 								  $('#range-1').noUiSlider({
-									 start: [ <?php echo JRequest::getVar('upper_value')?>, <?php echo JRequest::getVar('lower_value')?> ],
+									 start: [ <?php echo JRequest::getVar('upper_value', 0)?>, <?php echo JRequest::getVar('lower_value', 10000)?> ],
 									 step: 500,
 									 margin: 20,
 									 connect: true,
@@ -307,7 +385,6 @@ $(document).ready(function(){
 							</div>
 							<input id="lower_value" name="lower_value" type="hidden">
 							<input id="upper_value" name="upper_value" type="hidden">
-							<?php */?>
 							<input type="submit" class="btn btnSearch" value="Search" />
 							<input type="hidden" name="option" value="com_booking" />
 							<input type="hidden" name="view" value="search" />
@@ -323,9 +400,13 @@ $(document).ready(function(){
 						<a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"><img src="<?php echo $images->image_intro;?>"></a>
 						<div class="txt-desc">
 							<h2><a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>"> <?php echo $this->article->title;?></a></h2>
-							<?php echo $this->article->introtext;?> <a href="index.php?option=com_content&view=article&id=<?php echo $this->article->id.'-'.$this->article->alias;?>">See more</a></p>
+							<?php echo $this->article->introtext;?> <a href="javascript:void(0);" class="btn_seemore">Læs mere.... <i class="fa fa-angle-double-down fa-lg" aria-hidden="true"></i></a></p>
 						</div>
 					</div><!-- top-description -->
+					<div class="article_detail" style="display: none;">
+						<?php echo $this->article->fulltext;?>
+						<p class="text-center"><a href="javascript:void(0);" class="btn_seemore"><i aria-hidden="true" class="fa fa-angle-double-up fa-3x"></i></a></p>
+					</div>
 					<?php }?>
 					<!--<h1>6 Holiday homes in Tuscany, Florence</h1> -->  
 					 
@@ -342,21 +423,16 @@ $(document).ready(function(){
 					   <div class="col-sm-5 nav-btn">
 						  <span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
 						  <?php 
-						  if(JRequest::getVar('zone')) $zone = "&zone=".JRequest::getVar('zone'); else $zone="";
-						  if(JRequest::getVar('subzone')) $subzone = "&subzone=".JRequest::getVar('subzone');else $subzone="";
-						  if(JRequest::getVar('town')) $town = "&town=".JRequest::getVar('town');else $town="";
-						  if(JRequest::getVar('start_date')) $start_date = "&start_date=".JRequest::getVar('start_date');else $start_date="";
-						  if(JRequest::getVar('end_date')) $end_date = "&end_date=".JRequest::getVar('end_date');else $end_date="";
-						  
+						  $link = preg_replace("/&start=(.+)/", "", $myurl);
 						  if(JRequest::getVar('start')){
 							  $prev = JRequest::getVar('start') - $limit;
-							  $prev_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$prev;
+							  $prev_link = $link."&start=".$prev;
 							?>
 						  <a href="<?php echo $prev_link; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
 						  <?php }?>
 						  <?php if(count($houses->property) == $limit){
 							  $next = JRequest::getVar('start') + $limit;
-							  $next_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$next;
+							  $next_link = $link."&start=".$next;
 							?>
 						  <a href="<?php echo $next_link; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
 						  <?php }?>
@@ -367,6 +443,39 @@ $(document).ready(function(){
 					</div><!-- search-results-nav -->
 
 					<div class="list-items">
+						<?php if($italy_houses){
+							foreach($italy_houses as $house){
+								if(JRequest::getVar('zone')){
+									$zone = "&zone=".JRequest::getVar('zone');
+								} else {
+									$zone = "";
+								}
+								$link = "index.php?option=com_booking&view=detail1&id=".$house->id.$zone;
+								if($house->type == 1) $house_type = "Apartment";
+								if($house->type == 2) $house_type = "Independent house ";
+								if($house->type == 3) $house_type = "Villa";
+						?>
+						<div class="each-result-item">
+							<h2><a href="<?php echo $link;?>"><?php echo $house->name;?></a></h2>
+							<div class="row">
+							   <div class="col-sm-12 col-img">
+								  <a href="<?php echo $link;?>" class="loader" title=""><img src="<?php echo $house->image1;?>" alt="<?php echo strip_tags($house->description);?>" class="img_tuscany_detail"></a>
+								 <div class="info-top"><span><strong>Area:</strong> </span><?php echo $house->town;?> - <?php echo $house->subzone;?> - <?php echo $house->zone;?> <a class="fancybox view-map" href="#popupMap1_min<?php echo $house->id;?>"> <i class="fa fa-map-marker"></i>View Map</a></div>
+								 <div id="popupMap1_min<?php echo $house->id;?>" style="display:none;">
+									<div class="wrap_popupMap_min">
+										<iframe width="578" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $house->latitude.','.$house->longitude;?>&amp;z=13&amp;output=embed"></iframe>
+									</div><!-- wrap_popupMap -->
+								</div><!-- popupMap -->
+								<div class="info-top">
+									<span><strong>Property type:</strong> </span><?php echo $house_type;?><br />
+								 </div>
+								 <div class="info-top" style="font-size:20px; margin:5px 0;">from <?php echo $house->price*7;?> DKK/UGE</div>
+								 <p class="description"><?php echo implode(' ', array_slice(explode(' ', $house->description), 0, 40));?>... <a href="<?php echo $link;?>" class="see_more">Se mere</a></p>
+							   </div>
+							</div>
+						</div><!-- each-result-item -->
+						<?php }
+						}?>
 						<?php $i = 0; 
 							foreach($houses->property as $house){
 								if(JRequest::getVar('zone')){
@@ -388,24 +497,22 @@ $(document).ready(function(){
 						<div class="each-result-item">
 							<h2><a href="<?php echo $link;?>"><?php echo $house->name;?></a></h2>
 							<div class="row">
-							   <div class="col-sm-4 col-img">
-								  <a href="<?php echo $link;?>" class="loader" title=""><img src="<?php echo $house->pictures->mainpicture['path'];?>" alt="<?php echo $house->pictures->mainpicture->description;?>"></a>
-							   </div>
-							   <div class="col-sm-8 col-txt"> 
-									 <div class="info-top"><span><strong>Area:</strong> </span><?php echo $house->town;?> - <?php echo $house->zone;?> <a class="fancybox view-map" href="#popupMap_min<?php echo $i;?>"> <i class="fa fa-map-marker"></i>View Map</a></div>
-									 <div id="popupMap_min<?php echo $i;?>" style="display:none;">
-										<div class="wrap_popupMap_min">
-											<iframe width="578" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $house->latitute.','.$house->longitude;?>&amp;z=13&amp;output=embed"></iframe>
-										</div><!-- wrap_popupMap -->
-									</div><!-- popupMap -->
-									 <div class="info-top">
-									 	<span><strong>Property type:</strong> </span><?php echo $house->proptype;?><br />
-										<span><strong>Sleeps:</strong> </span><?php echo $house->minsleeps;?><br />
-										<span><strong>Double bedrooms:</strong> </span><?php echo $house->doublebedrooms;?><br />
-										<span><strong>Bathrooms:</strong> </span><?php echo $house->bathrooms;?><br />
-									 </div>
-									 <div class="info-top" style="font-size:20px;">from <?php echo $week_price_eu;?> EUR/WEEK (<?php echo $week_price_da;?> DKK/UGE)</div>
-									 <p class="description"><?php echo $house->descriptions->description;?> <a href="<?php echo $link;?>" class="see_more">Se mere</a></p>
+							   <div class="col-sm-12 col-img">
+								  <a href="<?php echo $link;?>" class="loader" title=""><img src="<?php echo $house->pictures->mainpicture['path'];?>" alt="<?php echo $house->pictures->mainpicture->description;?>" class="img_tuscany_detail"></a>
+								 <div class="info-top"><span><strong>Area:</strong> </span><?php echo $house->town;?> - <?php echo $house->zone;?> <a class="fancybox view-map" href="#popupMap_min<?php echo $i;?>"> <i class="fa fa-map-marker"></i>View Map</a></div>
+								 <div id="popupMap_min<?php echo $i;?>" style="display:none;">
+									<div class="wrap_popupMap_min">
+										<iframe width="578" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $house->latitute.','.$house->longitude;?>&amp;z=13&amp;output=embed"></iframe>
+									</div><!-- wrap_popupMap -->
+								</div><!-- popupMap -->
+								 <div class="info-top">
+									<span><strong>Property type:</strong> </span><?php echo $house->proptype;?><br />
+									<span><strong>Sleeps:</strong> </span><?php echo $house->minsleeps;?><br />
+									<span><strong>Double bedrooms:</strong> </span><?php echo $house->doublebedrooms;?><br />
+									<span><strong>Bathrooms:</strong> </span><?php echo $house->bathrooms;?><br />
+								 </div>
+								 <div class="info-top" style="font-size:20px; margin:5px 0;">from <?php echo $week_price_eu;?> EUR/WEEK (<?php echo $week_price_da;?> DKK/UGE)</div>
+								 <p class="description"><?php echo implode(' ', array_slice(explode(' ', $house->descriptions->description), 0, 40));?>... <a href="<?php echo $link;?>" class="see_more">Se mere</a></p>
 							   </div>
 							</div>
 						</div><!-- each-result-item -->
@@ -426,15 +533,16 @@ $(document).ready(function(){
 					   <div class="col-sm-5 nav-btn">
 						  <span>Displaying <strong class="liststart"><?php echo $start_view;?></strong> - <strong class="listend"><?php echo $start_view - 1 + count($houses->property);?></strong></span>
 						  <?php 
+						  $link = preg_replace("/&start=(.+)/", "", $myurl);
 						  if(JRequest::getVar('start')){
 							  $prev = JRequest::getVar('start') - $limit;
-							  $prev_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$prev;
+							  $prev_link = $link."&start=".$prev;
 							?>
 						  <a href="<?php echo $prev_link; ?>" class="btn btn-xs btn-prev"><i class="fa fa-arrow-left"></i> Prev </a> 
 						  <?php }?>
 						  <?php if(count($houses->property) == $limit){
 							  $next = JRequest::getVar('start') + $limit;
-							  $next_link = "index.php?option=com_booking&view=search".$zone.$subzone.$town.$start_date.$end_date."&start=".$next;
+							  $next_link = $link."&start=".$next;
 							?>
 						  <a href="<?php echo $next_link; ?>" class="btn btn-xs btn-next">Next <i class="fa fa-arrow-right"></i> </a>
 						  <?php }?>

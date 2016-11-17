@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 </script>
 <section class="banner">
-	<div id="myCarousel" class="carousel slide" data-interval="8000" data-ride="carousel">
+	<div id="myCarousel" class="carousel slide" data-interval="11000" data-ride="carousel">
 	   <!-- Carousel items -->
 		<div class="carousel-inner">
 			{module Home Slider - Top}
@@ -208,8 +208,19 @@ $(document).ready(function(){
 					{article 13}{text}{/article}
 				</div>
 				<div class="box-text">
-					<h2>{article 14}{title}{/article}</h2>
+					<h2>{article 14}{title}{/article}</h4>
 					{article 14}{text}{/article}
+					{module AcyMailing Module Popup}
+					<!--<form>
+						<div class="form-group">
+							<input type="email" placeholder="Navn *" class="form-control">
+						</div> 
+						<div class="form-group">
+							<input type="email" placeholder="E-mail *" class="form-control">
+						</div>
+						<p>Felter markeret med * skal udfyldes</p>
+						<button class="btn" type="submit">TILMELD</button>
+					</form>-->
 				</div>
 			</div>
 			<div class="list-tours">
@@ -274,4 +285,4 @@ $(document).ready(function(){
 	</div>
 </section>
 <?php */?>
-{module AcyMailing Module}
+

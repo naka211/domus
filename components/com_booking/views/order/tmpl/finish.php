@@ -15,7 +15,7 @@ $detail = simplexml_load_string($info->information);
 			<div class="row">
 				<div class="col-md-12">  
 					<h4>Tak for din ordre</h4> 
-					<p>Ordrenummer: <span><?php echo sprintf('%05d',$info->id);?></span><br/>
+					<p>Ordrenummer: <span><?php echo sprintf($info->supplier_id.'%04d',$info->id);?></span><br/>
 					En ordrebekræftelse vil blive sendt til <span><?php echo $info->email;?></span><br/>
 					Har du spørgsmål, kan du kontakte os på +45 4162 8001 
 					</p>
@@ -87,10 +87,9 @@ $detail = simplexml_load_string($info->information);
 					<div class="tak_footer"> 
 						<p>Vi vender hurtigt tilbage med endelig bekræftelse (inden for 48 timer), samt et link til betalingen</p>
 						<br/>
-						<p><b>Domus Holiday</b><br/>
-						 Hesselrødvej 26, Karlebo<br/>
-						 2980 Kokkedal<br/>
-						 Mobil: 41628001<br/>
+						<p><b>Domus Holiday ApS</b><br/>
+						 Idrætsvej 62<br/>
+						 DK-2650 Hvidovre<br/>
 						 Email: <a href="mailto:info@domusholidays.com"> info@domusholidays.com</a></p> 
 					</div><!-- tak_footer -->
 					<div class="wrap_btn"> 

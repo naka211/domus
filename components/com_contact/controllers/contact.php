@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_contact
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -87,12 +87,12 @@ class ContactControllerContact extends JControllerForm
 			return false;
 		}
 
-		/*$validate = $model->validate($form, $data);
+		$validate = $model->validate($form, $data);
 
 		if ($validate === false)
 		{
 			// Get the validation messages.
-			$errors	= $model->getErrors();
+			$errors = $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
@@ -114,7 +114,7 @@ class ContactControllerContact extends JControllerForm
 			$this->setRedirect(JRoute::_('index.php?option=com_contact&view=contact&id=' . $stub, false));
 
 			return false;
-		}*/
+		}
 
 		// Validation succeeded, continue with custom handlers
 		$results = $dispatcher->trigger('onValidateContact', array(&$contact, &$data));
@@ -167,9 +167,9 @@ class ContactControllerContact extends JControllerForm
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param   array      $data                  The data to send in the email.
-	 * @param   stdClass   $contact               The user information to send the email to
-	 * @param   boolean    $copy_email_activated  True to send a copy of the email to the user.
+	 * @param   array     $data                  The data to send in the email.
+	 * @param   stdClass  $contact               The user information to send the email to
+	 * @param   boolean   $copy_email_activated  True to send a copy of the email to the user.
 	 *
 	 * @return  boolean  True on success sending the email, false on failure.
 	 *
@@ -190,21 +190,19 @@ class ContactControllerContact extends JControllerForm
 			$sitename = $app->get('sitename');
 
 			$name    = $data['contact_name'];
-			//$email   = JStringPunycode::emailToPunycode($data['contact_email']);
-			$email   = $data['contact_email'];
-			$phone = $data['contact_phone'];
+			$email   = JStringPunycode::emailToPunycode($data['contact_email']);
+			$subject = $data['contact_subject'];
 			$body    = $data['contact_message'];
 
 			// Prepare email body
 			$prefix = JText::sprintf('COM_CONTACT_ENQUIRY_TEXT', JUri::base());
-			//$body	= $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
-			$body	= 'Navn: '.$name . "\n\nTelefon: " . $phone . "\n\nE-mail: " . $email ."\n\nBesked: " . stripslashes($body);
+			$body   = $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
 
 			$mail = JFactory::getMailer();
 			$mail->addRecipient($contact->email_to);
 			$mail->addReplyTo($email, $name);
 			$mail->setSender(array($mailfrom, $fromname));
-			$mail->setSubject($sitename . ': From contact form');
+			$mail->setSubject($sitename . ': ' . $subject);
 			$mail->setBody($body);
 			$sent = $mail->Send();
 
@@ -219,7 +217,7 @@ class ContactControllerContact extends JControllerForm
 
 				$mail = JFactory::getMailer();
 				$mail->addRecipient($email);
-				$mail->addReplyTo(array($email, $name));
+				$mail->addReplyTo($email, $name);
 				$mail->setSender(array($mailfrom, $fromname));
 				$mail->setSubject($copysubject);
 				$mail->setBody($copytext);

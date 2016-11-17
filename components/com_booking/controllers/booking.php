@@ -140,5 +140,4 @@ class BookingControllerBooking extends BookingController {
             throw new Exception(500);
         }
     }
-
 }
